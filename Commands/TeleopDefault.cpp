@@ -10,8 +10,8 @@
 #include "../RobotMap.h"
 
 TeleopDefault::TeleopDefault() {
-	//Requires(drivetrain);
-	drivetrain = new DriveTrain();
+	Requires(drivetrain);
+	//drivetrain = new DriveTrain();
 	TeleopTimer = new Timer();
 }
 

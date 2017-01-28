@@ -10,6 +10,7 @@
 
 DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	frc::Subsystem("DriveTrain");
+	std::cout << "INITIALIZING DRIVE STATION!" << std::endl << std::endl;
 
 	DriveFrontLeftCAN = new CANTalon(FrontLeftCANPort);
 	DriveBackLeftCAN = new CANTalon(BackLeftCANPort);
@@ -42,6 +43,7 @@ void DriveTrain::Drive(double speed) {
 	DriveBackRight->Set(-speed);
 	DriveFrontLeft->Set(speed);
 	DriveFrontRight->Set(-speed);
+	std::cout << "Drive! " << speed << std::endl;
 	return;
 
 }
