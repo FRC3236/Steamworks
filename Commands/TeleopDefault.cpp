@@ -7,6 +7,7 @@
 
 #include "TeleopDefault.h"
 #include "../CommandBase.h"
+#include "../RobotMap.h"
 
 TeleopDefault::TeleopDefault() {
 	//Requires(drivetrain);
@@ -21,21 +22,34 @@ void TeleopDefault::Initialize() {
 }
 
 void TeleopDefault::Execute() {
-	double TurnAngle = controls->RightStick->GetX();
-	double Speed = controls->LeftStick->GetY()/4;
+	double DeadzoneX = controls->RightStick->GetX();
+	double DeadzoneY = controls->RightStick->GetY();
+
+	//Turning Code//
 	if (controls->TraverseButton->Get()) {
-		TurnAngle = TurnAngle/4;
-		drivetrain->DoAutoAlign(TurnAngle, TurnAngle, TurnAngle, TurnAngle);
+		if (DeadzoneX > JOYSTICKDEADZONE || DeadzoneX < -JOYSTICKDEADZONE) {
+			double TurnAngle = controls->RightStick->GetX()/4;
+			drivetrain->DoAutoAlign(TurnAngle,TurnAngle,TurnAngle,TurnAngle);
+		}
+		if (DeadzoneY > JOYSTICKDEADZONE || DeadzoneY < -JOYSTICKDEADZONE) {
+			double Speed = controls->RightStick->GetY()/2;
+			drivetrain->Drive(Speed);
+		}
 	} else if (controls->SpinButton->Get()) {
-		TurnAngle = TurnAngle/4;
-		drivetrain->DoAutoAlign(0.125, -0.125, 0.125, -0.125);
-		drivetrain->Drive(Speed);
+		if (DeadzoneX > JOYSTICKDEADZONE || DeadzoneX < -JOYSTICKDEADZONE) {
+			double Speed = controls->RightStick->GetY()/4;
+			drivetrain->Drive(Speed);
+		}
 	} else {
-		TurnAngle = TurnAngle/6;
-		drivetrain->DoAutoAlign(TurnAngle, -TurnAngle, -TurnAngle, TurnAngle);
-		drivetrain->Drive(Speed);
+		if (DeadzoneX > JOYSTICKDEADZONE || DeadzoneX < -JOYSTICKDEADZONE) {
+			double TurnAngle = controls->RightStick->GetX()/4;
+			drivetrain->DoAutoAlign(TurnAngle, -TurnAngle, -TurnAngle, TurnAngle);
+		}
+		if (DeadzoneY > JOYSTICKDEADZONE || DeadzoneY < -JOYSTICKDEADZONE) {
+			double Speed = controls->RightStick->GetY()/2;
+			drivetrain->Drive(Speed);
+		}
 	}
-	return;
 }
 
 bool TeleopDefault::IsFinished() {

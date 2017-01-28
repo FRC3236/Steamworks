@@ -4,8 +4,8 @@
 
 OI::OI() {
 	// Process operator interface input here.
-	RightStick = new Joystick(RIGHTSTICKPORT);
-	LeftStick = new Joystick(LEFTSTICKPORT);
+	RightStick = new Joystick(RIGHTSTICKPORT); //Driver stick
+	LeftStick = new Joystick(LEFTSTICKPORT); //Operator Stick
 
 	SpinButton = new JoystickButton(RightStick, SPINBUTTON);
 	ResetButton = new JoystickButton(RightStick, RESETBUTTON);
