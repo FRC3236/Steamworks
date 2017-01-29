@@ -11,21 +11,21 @@
 
 TeleopDefault::TeleopDefault() {
 	Requires(drivetrain);
-	//drivetrain = new DriveTrain();
 	TeleopTimer = new Timer();
 }
 
 void TeleopDefault::Initialize() {
+	std::cout << "[teleop] Teleop initalizing..." << std::endl;
 	drivetrain->ResetAlignment();
 	TeleopTimer->Reset();
 	TeleopTimer->Start();
+	std::cout << "[teleop] Teleop initialized." << std::endl;
 }
 
 void TeleopDefault::Execute() {
 	double DeadzoneX = controls->RightStick->GetX();
 	double DeadzoneY = controls->RightStick->GetY();
 
-	//Turning Code//
 	if (controls->TraverseButton->Get()) {
 		if (DeadzoneX > JOYSTICKDEADZONE || DeadzoneX < -JOYSTICKDEADZONE) {
 			double TurnAngle = controls->RightStick->GetX()/4;
@@ -57,10 +57,12 @@ bool TeleopDefault::IsFinished() {
 }
 
 void TeleopDefault::End() {
+	std::cout << "[teleop] Teleop->End() has been called. Ending Teleop..." << std::endl;
 	drivetrain->KillDrive();
 }
 
 void TeleopDefault::Interrupted() {
+	std::cout << "[teleop] Teleop was interrtuped. Aborting..." << std::endl;
 	drivetrain->KillDrive();
 }
 

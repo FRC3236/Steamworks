@@ -3,6 +3,9 @@
 #include "WPILib.h"
 
 OI::OI() {
+
+	std::cout << "[oi] OperatorInterface initializing..." << std::endl;
+
 	// Process operator interface input here.
 	RightStick = new Joystick(RIGHTSTICKPORT); //Driver stick
 	LeftStick = new Joystick(LEFTSTICKPORT); //Operator Stick
@@ -10,4 +13,6 @@ OI::OI() {
 	SpinButton = new JoystickButton(RightStick, SPINBUTTON);
 	ResetButton = new JoystickButton(RightStick, RESETBUTTON);
 	TraverseButton = new JoystickButton(RightStick, TRAVERSEBUTTON);
+
+	std::cout << "[oi] OperatorInterface initialized." << std::endl;
 }

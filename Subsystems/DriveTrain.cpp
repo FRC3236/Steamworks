@@ -5,12 +5,12 @@
  *      Author: ROBOTICS-Net
  */
 #include "DriveTrain.h"
-
+#include "WPILib.h"
 #include "../RobotMap.h"
 
 DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	frc::Subsystem("DriveTrain");
-	std::cout << "INITIALIZING DRIVE STATION!" << std::endl << std::endl;
+	std::cout << "[drivetrain] DriveTrain initializing..." << std::endl;
 
 	DriveFrontLeftCAN = new CANTalon(FrontLeftCANPort);
 	DriveBackLeftCAN = new CANTalon(BackLeftCANPort);
@@ -30,6 +30,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	DriveFrontRight = new Talon(FrontRightPWMPort);
 	DriveBackLeft = new Talon(BackLeftPWMPort);
 	DriveBackRight = new Talon(BackRightPWMPort);
+	std::cout << "[drivetrain] DriveTrain initialized." << std::endl;
 }
 
 void DriveTrain::Initialize() {
@@ -101,6 +102,7 @@ void DriveTrain::DriveSpecial(double DFLS, double DBLS, double DBRS, double DFRS
 }
 
 void DriveTrain::KillDrive() {
+	std::cout << "[drivetrain] DriveTrain->KillDrive() has been executed." << std::endl;
 	this->DoAutoAlign(0,0,0,0);
 	DriveFrontLeft->Set(0);
 	DriveFrontRight->Set(0);

@@ -1,3 +1,27 @@
+/*
+*
+*  $$$$$$$$\        $$\ $$$$$$$$\                                             $$$$$$\   $$$$$$\   $$$$$$\   $$$$$$\
+*  \__$$  __|       \__|$$  _____|                                           $$ ___$$\ $$  __$$\ $$ ___$$\ $$  __$$\
+*     $$ | $$$$$$\  $$\ $$ |    $$$$$$\   $$$$$$\   $$$$$$$\  $$$$$$\        \_/   $$ |\__/  $$ |\_/   $$ |$$ /  \__|
+*     $$ |$$  __$$\ $$ |$$$$$\ $$  __$$\ $$  __$$\ $$  _____|$$  __$$\         $$$$$ /  $$$$$$  |  $$$$$ / $$$$$$$\
+*     $$ |$$ |  \__|$$ |$$  __|$$ /  $$ |$$ |  \__|$$ /      $$$$$$$$ |        \___$$\ $$  ____/   \___$$\ $$  __$$\
+*     $$ |$$ |      $$ |$$ |   $$ |  $$ |$$ |      $$ |      $$   ____|      $$\   $$ |$$ |      $$\   $$ |$$ /  $$ |
+*     $$ |$$ |      $$ |$$ |   \$$$$$$  |$$ |      \$$$$$$$\ \$$$$$$$\       \$$$$$$  |$$$$$$$$\ \$$$$$$  | $$$$$$  |
+*     \__|\__|      \__|\__|    \______/ \__|       \_______| \_______|       \______/ \________| \______/  \______/
+*
+*  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+*
+*  Lead Programmer: Eric Bernard
+*  Programmer's Assistants:
+*  	+ John Winship
+*  	+ Antonio Figuerido
+*
+*  	Thanks to all the teams who helped us
+*  	out via email and through ChiefDelphi!
+*
+*/
+
+
 #include <memory>
 
 #include <Commands/Command.h>
@@ -7,10 +31,8 @@
 #include <SmartDashboard/SendableChooser.h>
 #include <SmartDashboard/SmartDashboard.h>
 
-#include "Commands/ExampleCommand.h"
 #include "Commands/AutoDefault.h"
 #include "Commands/TeleopDefault.h"
-#include "Commands/TestCommand.h"
 #include "CommandBase.h"
 
 class Robot: public frc::IterativeRobot {
@@ -22,39 +44,33 @@ private:
 
 public:
 	void RobotInit() override {
-		std::cout << "ROBOT INIT!" << std::endl;
+		std::cout << "[robot] Robot initalizing..." << std::endl;
 
 		CommandBase::init();
 		teleopChooser.AddDefault("Default", new TeleopDefault());
-
 		autonomousChooser.AddDefault("Default", new AutoDefault());
-		autonomousChooser.AddObject("Example", new ExampleCommand());
-		autonomousChooser.AddObject("Test", new TestCommand());
+
 		frc::SmartDashboard::PutData("Auto Modes", &autonomousChooser);
+		frc::SmartDashboard::PutData("Teleop Modes", &teleopChooser);
+
+		std::cout << "[robot] Robot initialized." << std::endl;
 	}
 
 	void AutonomousInit() override {
 		autonomousMode.reset(autonomousChooser.GetSelected());
-		std::cout << "Autonomous mode: " << autonomousChooser.GetSelected() << std::endl;
 		if (autonomousMode != nullptr) {
 			autonomousMode->Start();
-			std::cout << "HOUSTON, WE HAVE LIFTOFF" << std::endl << "/" << std::endl;
+			std::cout << "[autonomous] Autonomous program has started." << std::endl;
 		} else {
-			std::cout << "HOUSTON, WE HAVE A PROBLEM!" << std::endl << "/" << std::endl;
+			std::cout << "[autonomous] There was a problem starting the autonomous mode." << std::endl;
 		}
 	}
 
 	void AutonomousPeriodic() override {
-		std::cout << "AutonomousPeriodic " << frc::Scheduler::GetInstance() << std::endl;
 		frc::Scheduler::GetInstance()->Run();
 	}
 
 	void TeleopInit() override {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-
 		teleopMode.reset(teleopChooser.GetSelected());
 		if (teleopMode != nullptr) {
 			teleopMode->Start();

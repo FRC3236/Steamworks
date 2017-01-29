@@ -17,8 +17,13 @@ CommandBase::CommandBase(char const *name): frc::Command(name) {}
 CommandBase::CommandBase(): frc::Command() {}
 
 void CommandBase::init() {
+
+	std::cout << "[commandbase] CommandBase initalizing..." << std::endl;
+
 	drivetrain = new DriveTrain();
 	controls = new OI();
 	ropeclimber = new RopeClimber();
 	gearsystem = new GearSystem();
+
+	std::cout << "[commandbase] CommandBase initialized." << std::endl;
 }

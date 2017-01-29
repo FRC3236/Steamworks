@@ -9,18 +9,18 @@
 
 AutoDefault::AutoDefault() : CommandBase("AutoDefault") {
 	Requires(drivetrain);
-	//drivetrain = new DriveTrain();
 	AutoTimer = new Timer();
 }
 
 void AutoDefault::Initialize() {
-	//drivetrain->ResetAlignment();
+	std::cout << "[autonomous] Program 'AutoDefault' is initializing." << std::endl;
+	drivetrain->ResetAlignment();
 	AutoTimer->Reset();
 	AutoTimer->Start();
 }
 
 void AutoDefault::Execute() {
-	std::cout << "AUTODEFAULT GO!" << std::endl;
+	std::cout << "[autonomous] Program 'AutoDefault' is executing." << std::endl;
 	if (AutoTimer->Get() < 1) {
 		drivetrain->Drive(0.5);
 	} else {
@@ -29,23 +29,22 @@ void AutoDefault::Execute() {
 }
 
 bool AutoDefault::IsFinished() {
-	std::cout << "AUTODEFAULT::ISFINISHED() " << AutoTimer->Get() << std::endl;
 	if (AutoTimer->Get() < 1) {
-		std::cout << "AUTODEFAULT is NOT done." << std::endl;
 		return false;
 	} else {
-		std::cout << "AUTODEFAULT is DONE." << std::endl;
+		this->End();
 		return true;
 	}
 }
 
 void AutoDefault::Interrupted() {
-	std::cout << "INTERRUPTED!" << std::endl;
+	std::cout << "[autonomous] Program 'AutoDefault' has been interrupted. Aborting..." << std::endl;
+	this->End();
 	return;
 }
 
 void AutoDefault::End() {
-	std::cout << "Ending!" << std::endl;
+	std::cout << "[autonomous] Program 'AutoDefault' has reached the end of its sequence." << std::endl;
 	drivetrain->KillDrive();
 	AutoTimer->Stop();
 	return;

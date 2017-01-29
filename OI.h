@@ -9,9 +9,16 @@ public:
 	Joystick *RightStick;
 	Joystick *LeftStick;
 
+	//Driver stick stuff
 	JoystickButton *ResetButton;
 	JoystickButton *SpinButton;
 	JoystickButton *TraverseButton;
+
+	//Operator stick stuff
+	/*JoystickButton *RopeClimbUp;
+	JoystickButton *RopeClimbDown;
+	JoystickButton *GearDoor;
+	JoystickButton *GearPusher;*/
 };
 
 #endif  // OI_H

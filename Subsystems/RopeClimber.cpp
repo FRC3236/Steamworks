@@ -11,7 +11,11 @@
 RopeClimber::RopeClimber() : Subsystem("RopeClimber") {
 	frc::Subsystem("RopeClimber");
 
+	std::cout << "[ropeclimber] RopeClimber initializing..." << std::endl;
+
 	ClimbTalon = new Talon(ClimberPWMPort);
+
+	std::cout << "[ropeclimber] RopeClimber initialized." << std::endl;
 }
 
 void RopeClimber::Initialize() {

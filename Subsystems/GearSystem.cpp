@@ -4,10 +4,14 @@
 GearSystem::GearSystem() : Subsystem("GearSystem") {
 	frc::Subsystem("GearSystem");
 
+	std::cout << "[gearsystem] GearSystem initializing..." << std::endl;
+
 	SolenoidICAN = new CANTalon(SolenoidICANPort);
 	SolenoidIICAN = new CANTalon(SolenoidIICANPort);
 	SolenoidIIICAN = new CANTalon(SolenoidIIICANPort);
 	SolenoidIVCAN = new CANTalon(SolenoidIVCANPort);
+
+	std::cout << "[gearsystem] GearSystem initialized." << std::endl;
 
 }
 
