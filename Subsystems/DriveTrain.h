@@ -32,6 +32,7 @@ public:
 	void Drive(double);
 	void KillDrive();
 	void DriveSpecial(double, double, double, double);
+	void KillSpin();
 };
 
 

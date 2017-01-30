@@ -26,6 +26,11 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	DriveFrontLeftCAN->SetFeedbackDevice(CANTalon::QuadEncoder);
 	DriveFrontLeftCAN->ConfigEncoderCodesPerRev(412.5);
 
+	DriveFrontLeftCAN->SetPosition(0);
+	DriveFrontRightCAN->SetPosition(0);
+	DriveBackRightCAN->SetPosition(0);
+	DriveBackLeftCAN->SetPosition(0);
+
 	DriveFrontLeft = new Talon(FrontLeftPWMPort);
 	DriveFrontRight = new Talon(FrontRightPWMPort);
 	DriveBackLeft = new Talon(BackLeftPWMPort);
@@ -50,6 +55,7 @@ void DriveTrain::Drive(double speed) {
 }
 
 void DriveTrain::DoAutoAlign(double DFLA, double DBLA, double DBRA, double DFRA) {
+	std::cout << "[drivetrain] DoAutoAlign: " << DFLA << " " << DBLA << " " << DBRA << " " << DFRA;
 	double TURNMODIFIERCORRECTION = fabs(((DriveBackLeftCAN->GetPosition()-DBLA))*6) + 0.1;
 	if (DBLA + TURNMARGINOFERROR <= DriveBackLeftCAN->GetPosition() )
 	{
@@ -113,6 +119,14 @@ void DriveTrain::KillDrive() {
 
 void DriveTrain::ResetAlignment() {
 	this->DoAutoAlign(0,0,0,0);
+	return;
+}
+
+void DriveTrain::KillSpin() {
+	DriveFrontLeftCAN->Set(0.0);
+	DriveFrontRightCAN->Set(0.0);
+	DriveBackLeftCAN->Set(0.0);
+	DriveBackRightCAN->Set(0.0);
 	return;
 }
 

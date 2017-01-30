@@ -14,7 +14,7 @@
 *  Lead Programmer: Eric Bernard
 *  Programmer's Assistants:
 *  	+ John Winship
-*  	+ Antonio Figuerido
+*  	+ Antonio Figueiredo
 *
 *  	Thanks to all the teams who helped us
 *  	out via email and through ChiefDelphi!
@@ -73,7 +73,10 @@ public:
 	void TeleopInit() override {
 		teleopMode.reset(teleopChooser.GetSelected());
 		if (teleopMode != nullptr) {
+			std::cout << "[teleop] Teleop mode is starting." << std::endl;
 			teleopMode->Start();
+		} else {
+			std::cout << "[teleop] Teleop mode could not start." << std::endl;
 		}
 	}
 

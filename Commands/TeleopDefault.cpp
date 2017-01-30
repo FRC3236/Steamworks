@@ -30,24 +30,37 @@ void TeleopDefault::Execute() {
 		if (DeadzoneX > JOYSTICKDEADZONE || DeadzoneX < -JOYSTICKDEADZONE) {
 			double TurnAngle = controls->RightStick->GetX()/4;
 			drivetrain->DoAutoAlign(TurnAngle,TurnAngle,TurnAngle,TurnAngle);
+		} else {
+			drivetrain->KillSpin();
 		}
 		if (DeadzoneY > JOYSTICKDEADZONE || DeadzoneY < -JOYSTICKDEADZONE) {
 			double Speed = controls->RightStick->GetY()/2;
 			drivetrain->Drive(Speed);
+		} else {
+			drivetrain->Drive(0);
 		}
 	} else if (controls->SpinButton->Get()) {
 		if (DeadzoneX > JOYSTICKDEADZONE || DeadzoneX < -JOYSTICKDEADZONE) {
 			double Speed = controls->RightStick->GetY()/4;
 			drivetrain->Drive(Speed);
+		} else {
+			drivetrain->Drive(0);
 		}
 	} else {
 		if (DeadzoneX > JOYSTICKDEADZONE || DeadzoneX < -JOYSTICKDEADZONE) {
 			double TurnAngle = controls->RightStick->GetX()/4;
+			if (DeadzoneY < 0) {
+				TurnAngle = (controls->RightStick->GetX()/4)*-1;
+			}
 			drivetrain->DoAutoAlign(TurnAngle, -TurnAngle, -TurnAngle, TurnAngle);
+		} else {
+			drivetrain->KillSpin();
 		}
 		if (DeadzoneY > JOYSTICKDEADZONE || DeadzoneY < -JOYSTICKDEADZONE) {
 			double Speed = controls->RightStick->GetY()/2;
 			drivetrain->Drive(Speed);
+		} else {
+			drivetrain->Drive(0);
 		}
 	}
 }
