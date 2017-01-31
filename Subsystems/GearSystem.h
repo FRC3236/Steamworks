@@ -17,6 +17,7 @@ public:
 	CANTalon *SolenoidIICAN;
 	CANTalon *SolenoidIIICAN;
 	CANTalon *SolenoidIVCAN;
+	CANTalon *PCMCAN;
 
 	GearSystem();
 	void Initalize();

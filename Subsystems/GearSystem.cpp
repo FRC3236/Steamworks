@@ -6,6 +6,8 @@ GearSystem::GearSystem() : Subsystem("GearSystem") {
 
 	std::cout << "[gearsystem] GearSystem initializing..." << std::endl;
 
+	PCMCAN = new CANTalon(PCMCANPort);
+
 	SolenoidICAN = new CANTalon(SolenoidICANPort);
 	SolenoidIICAN = new CANTalon(SolenoidIICANPort);
 	SolenoidIIICAN = new CANTalon(SolenoidIIICANPort);

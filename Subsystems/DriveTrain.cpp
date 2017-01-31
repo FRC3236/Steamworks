@@ -49,14 +49,13 @@ void DriveTrain::Drive(double speed) {
 	DriveBackRight->Set(-speed);
 	DriveFrontLeft->Set(speed);
 	DriveFrontRight->Set(-speed);
-	std::cout << "Drive! " << speed << std::endl;
 	return;
 
 }
 
 void DriveTrain::DoAutoAlign(double DFLA, double DBLA, double DBRA, double DFRA) {
-	std::cout << "[drivetrain] DoAutoAlign: " << DFLA << " " << DBLA << " " << DBRA << " " << DFRA;
-	double TURNMODIFIERCORRECTION = fabs(((DriveBackLeftCAN->GetPosition()-DBLA))*6) + 0.1;
+	std::cout << "[drivetrain] DoAutoAlign: " << DFLA << " " << DBLA << " " << DBRA << " " << DFRA << std::endl;
+	double TURNMODIFIERCORRECTION = fabs(((DriveBackLeftCAN->GetPosition()-DBLA))*6) + 0.04;
 	if (DBLA + TURNMARGINOFERROR <= DriveBackLeftCAN->GetPosition() )
 	{
 		DriveBackLeftCAN->Set(TURNVELOCITY * TURNMODIFIERCORRECTION);
@@ -66,35 +65,29 @@ void DriveTrain::DoAutoAlign(double DFLA, double DBLA, double DBRA, double DFRA)
 	} else {
 		DriveBackLeftCAN->Set(0.0);
 	}
-	TURNMODIFIERCORRECTION = fabs(((DriveBackRightCAN->GetPosition()-DBRA))*6) + 0.1;
+	TURNMODIFIERCORRECTION = fabs(((DriveBackRightCAN->GetPosition()-DBRA))*6)+ 0.04;
 	if (DBRA + TURNMARGINOFERROR <= DriveBackRightCAN->GetPosition() )
 	{
 		DriveBackRightCAN->Set(TURNVELOCITY * TURNMODIFIERCORRECTION);
 	} else if (DBRA - TURNMARGINOFERROR >= DriveBackRightCAN->GetPosition() )
 	{
 		DriveBackRightCAN->Set(-TURNVELOCITY * TURNMODIFIERCORRECTION);
-	} else {
-		DriveBackRightCAN->Set(0.0);
 	}
-	TURNMODIFIERCORRECTION = fabs(((DriveFrontRightCAN->GetPosition()-DFRA))*6) + 0.1;
+	TURNMODIFIERCORRECTION = fabs(((DriveFrontRightCAN->GetPosition()-DFRA))*6)+ 0.04;
 	if (DFRA + TURNMARGINOFERROR <= DriveFrontRightCAN->GetPosition() )
 	{
 		DriveFrontRightCAN->Set(TURNVELOCITY * TURNMODIFIERCORRECTION);
 	} else if (DFRA - TURNMARGINOFERROR >= DriveFrontRightCAN->GetPosition() )
 	{
 		DriveFrontRightCAN->Set(-TURNVELOCITY * TURNMODIFIERCORRECTION);
-	} else {
-		DriveFrontRightCAN->Set(0.0);
 	}
-	TURNMODIFIERCORRECTION = fabs(((DriveFrontLeftCAN->GetPosition()-DFLA))*6) + 0.1;
+	TURNMODIFIERCORRECTION = fabs(((DriveFrontLeftCAN->GetPosition()-DFLA))*6)+ 0.04;
 	if (DFLA + TURNMARGINOFERROR <= DriveFrontLeftCAN->GetPosition() )
 	{
 		DriveFrontLeftCAN->Set(TURNVELOCITY * TURNMODIFIERCORRECTION);
 	} else if (DFLA - TURNMARGINOFERROR >= DriveFrontLeftCAN->GetPosition() )
 	{
 		DriveFrontLeftCAN->Set(-TURNVELOCITY * TURNMODIFIERCORRECTION);
-	} else {
-		DriveFrontLeftCAN->Set(0.0);
 	}
 	return;
 }

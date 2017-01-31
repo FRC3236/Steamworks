@@ -15,10 +15,9 @@ public:
 	JoystickButton *TraverseButton;
 
 	//Operator stick stuff
-	/*JoystickButton *RopeClimbUp;
-	JoystickButton *RopeClimbDown;
-	JoystickButton *GearDoor;
-	JoystickButton *GearPusher;*/
+	JoystickButton *RopeClimbButton;
+	//JoystickButton *GearDoor;
+	//JoystickButton *GearPusher;
 };
 
 #endif  // OI_H

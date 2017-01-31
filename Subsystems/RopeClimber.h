@@ -13,14 +13,16 @@
 
 class RopeClimber: public frc::Subsystem {
 public:
-	Talon *ClimbTalon;
+	Talon *ClimbLeftTalon;
+	Talon *ClimbRightTalon;
 
 	RopeClimber();
 	void Initialize();
 	void Execute();
-	void ClimbUp();
-	void ClimbDown();
+	void ClimbUp(double);
+	void ClimbDown(double);
 	void Stop();
+	void Climb(double);
 };
 
 

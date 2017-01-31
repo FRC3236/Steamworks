@@ -9,6 +9,7 @@
 
 AutoDefault::AutoDefault() : CommandBase("AutoDefault") {
 	Requires(drivetrain);
+	drivetrain->ResetAlignment();
 	AutoTimer = new Timer();
 }
 
@@ -22,17 +23,20 @@ void AutoDefault::Initialize() {
 void AutoDefault::Execute() {
 	std::cout << "[autonomous] Program 'AutoDefault' is executing." << std::endl;
 	if (AutoTimer->Get() < 1) {
-		drivetrain->Drive(0.5);
+		drivetrain->Drive(0.2);
+	} else if (AutoTimer->Get() > 1 && AutoTimer->Get() < 2) {
+		std::cout << "BEGINNING ALIGNMENT" << std::endl;
+		drivetrain->DoAutoAlign(0.125, 0.125, 0.125, 0.125);
+		drivetrain->Drive(-0.2);
 	} else {
 		this->End();
 	}
 }
 
 bool AutoDefault::IsFinished() {
-	if (AutoTimer->Get() < 1) {
+	if (AutoTimer->Get() < 2) {
 		return false;
 	} else {
-		this->End();
 		return true;
 	}
 }
@@ -45,6 +49,7 @@ void AutoDefault::Interrupted() {
 
 void AutoDefault::End() {
 	std::cout << "[autonomous] Program 'AutoDefault' has reached the end of its sequence." << std::endl;
+	drivetrain->ResetAlignment();
 	drivetrain->KillDrive();
 	AutoTimer->Stop();
 	return;

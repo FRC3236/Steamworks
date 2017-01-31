@@ -13,13 +13,15 @@ RopeClimber::RopeClimber() : Subsystem("RopeClimber") {
 
 	std::cout << "[ropeclimber] RopeClimber initializing..." << std::endl;
 
-	ClimbTalon = new Talon(ClimberPWMPort);
+	ClimbLeftTalon = new Talon(ClimberLeftPWMPort);
+	ClimbRightTalon = new Talon(ClimberRightPWMPort);
 
 	std::cout << "[ropeclimber] RopeClimber initialized." << std::endl;
 }
 
 void RopeClimber::Initialize() {
-	ClimbTalon->Set(0);
+	ClimbLeftTalon->Set(0);
+	ClimbRightTalon->Set(0);
 	return;
 }
 
@@ -27,17 +29,25 @@ void RopeClimber::Execute() {
 	return;
 }
 
-void RopeClimber::ClimbUp() {
-	ClimbTalon->Set(1);
+void RopeClimber::Climb(double Multiplier) {
+	ClimbLeftTalon->Set(-1*Multiplier);
+	ClimbRightTalon->Set(-1*Multiplier);
+}
+
+void RopeClimber::ClimbUp(double Multiplier) {
+	ClimbLeftTalon->Set(1*Multiplier);
+	ClimbRightTalon->Set(1*Multiplier);
 	return;
 }
 
-void RopeClimber::ClimbDown() {
-	ClimbTalon->Set(-1);
+void RopeClimber::ClimbDown(double Multiplier) {
+	ClimbLeftTalon->Set(-1*Multiplier);
+	ClimbRightTalon->Set(-1*Multiplier);
 	return;
 }
 
 void RopeClimber::Stop() {
-	ClimbTalon->Set(0);
+	ClimbLeftTalon->Set(0);
+	ClimbRightTalon->Set(0);
 	return;
 }

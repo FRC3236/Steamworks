@@ -14,5 +14,7 @@ OI::OI() {
 	ResetButton = new JoystickButton(RightStick, RESETBUTTON);
 	TraverseButton = new JoystickButton(RightStick, TRAVERSEBUTTON);
 
+	RopeClimbButton = new JoystickButton(LeftStick, 1);
+
 	std::cout << "[oi] OperatorInterface initialized." << std::endl;
 }

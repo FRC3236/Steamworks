@@ -47,8 +47,8 @@ public:
 		std::cout << "[robot] Robot initalizing..." << std::endl;
 
 		CommandBase::init();
-		teleopChooser.AddDefault("Default", new TeleopDefault());
-		autonomousChooser.AddDefault("Default", new AutoDefault());
+		teleopChooser.AddDefault("Default Driver", new TeleopDefault());
+		autonomousChooser.AddDefault("AutoDefault", new AutoDefault());
 
 		frc::SmartDashboard::PutData("Auto Modes", &autonomousChooser);
 		frc::SmartDashboard::PutData("Teleop Modes", &teleopChooser);
@@ -67,7 +67,9 @@ public:
 	}
 
 	void AutonomousPeriodic() override {
+		std::cout << "AutoPeriodic Before" << std::endl;
 		frc::Scheduler::GetInstance()->Run();
+		std::cout << "AutoPeriodic After" << std::endl;
 	}
 
 	void TeleopInit() override {
@@ -81,7 +83,14 @@ public:
 	}
 
 	void TeleopPeriodic() override {
+		std::cout << "TeleopPeriodic before" << std::endl;
 		frc::Scheduler::GetInstance()->Run();
+		std::cout << "TeleopPeriodic after" << std::endl;
+	}
+
+	void DisabledInit() override {
+		std::cout << "[robot] Reseting all frc scheduler instances..." << std::endl;
+		frc::Scheduler::GetInstance()->ResetAll();
 	}
 };
 

@@ -10,13 +10,15 @@
 #define SolenoidIICANPort 6
 #define SolenoidIIICANPort 7
 #define SolenoidIVCANPort 8
+#define PCMCANPort 11
 
 //PWM PORTS
 #define FrontLeftPWMPort 0
 #define BackLeftPWMPort 1
 #define BackRightPWMPort 2
 #define FrontRightPWMPort 3
-#define ClimberPWMPort 4
+#define ClimberLeftPWMPort 4
+#define ClimberRightPWMPort 5
 
 //TURN INFORMATION
 #define TURNMARGINOFERROR 0.004125

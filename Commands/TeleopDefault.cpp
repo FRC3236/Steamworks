@@ -11,6 +11,8 @@
 
 TeleopDefault::TeleopDefault() {
 	Requires(drivetrain);
+	Requires(gearsystem);
+	Requires(ropeclimber);
 	TeleopTimer = new Timer();
 }
 
@@ -25,13 +27,15 @@ void TeleopDefault::Initialize() {
 void TeleopDefault::Execute() {
 	double DeadzoneX = controls->RightStick->GetX();
 	double DeadzoneY = controls->RightStick->GetY();
-
 	if (controls->TraverseButton->Get()) {
 		if (DeadzoneX > JOYSTICKDEADZONE || DeadzoneX < -JOYSTICKDEADZONE) {
-			double TurnAngle = controls->RightStick->GetX()/4;
+			double TurnAngle = (controls->RightStick->GetX()/4)*-1;
+			if (DeadzoneY < 0.1) {
+				TurnAngle = (controls->RightStick->GetX()/4);
+			}
 			drivetrain->DoAutoAlign(TurnAngle,TurnAngle,TurnAngle,TurnAngle);
 		} else {
-			drivetrain->KillSpin();
+			drivetrain->DoAutoAlign(0,0,0,0);
 		}
 		if (DeadzoneY > JOYSTICKDEADZONE || DeadzoneY < -JOYSTICKDEADZONE) {
 			double Speed = controls->RightStick->GetY()/2;
@@ -40,21 +44,22 @@ void TeleopDefault::Execute() {
 			drivetrain->Drive(0);
 		}
 	} else if (controls->SpinButton->Get()) {
+		drivetrain->DoAutoAlign(0.125, -0.125, 0.125, -0.125);
 		if (DeadzoneX > JOYSTICKDEADZONE || DeadzoneX < -JOYSTICKDEADZONE) {
 			double Speed = controls->RightStick->GetY()/4;
-			drivetrain->Drive(Speed);
+			drivetrain->DriveSpecial(Speed, Speed, Speed, Speed);
 		} else {
 			drivetrain->Drive(0);
 		}
 	} else {
 		if (DeadzoneX > JOYSTICKDEADZONE || DeadzoneX < -JOYSTICKDEADZONE) {
-			double TurnAngle = controls->RightStick->GetX()/4;
-			if (DeadzoneY < 0) {
-				TurnAngle = (controls->RightStick->GetX()/4)*-1;
+			double TurnAngle = (controls->RightStick->GetX()/8)*-1;
+			if (DeadzoneY < -0.1) {
+				TurnAngle = (controls->RightStick->GetX()/8)*-1;
 			}
-			drivetrain->DoAutoAlign(TurnAngle, -TurnAngle, -TurnAngle, TurnAngle);
+			drivetrain->DoAutoAlign(-TurnAngle, TurnAngle, TurnAngle, -TurnAngle);
 		} else {
-			drivetrain->KillSpin();
+			drivetrain->DoAutoAlign(0,0,0,0);
 		}
 		if (DeadzoneY > JOYSTICKDEADZONE || DeadzoneY < -JOYSTICKDEADZONE) {
 			double Speed = controls->RightStick->GetY()/2;
@@ -62,6 +67,15 @@ void TeleopDefault::Execute() {
 		} else {
 			drivetrain->Drive(0);
 		}
+	}
+
+	//Operator stuff
+	double POV = controls->RopeClimbButton->Get();
+	double POVMultiplier = controls->LeftStick->GetRawAxis(3);
+	if (POV) {
+		ropeclimber->Climb(POVMultiplier);
+	} else {
+		ropeclimber->Stop();
 	}
 }
 
