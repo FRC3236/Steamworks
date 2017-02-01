@@ -16,8 +16,10 @@ public:
 
 	//Operator stick stuff
 	JoystickButton *RopeClimbButton;
-	//JoystickButton *GearDoor;
-	//JoystickButton *GearPusher;
+	JoystickButton *ExtendGearDoor;
+	JoystickButton *RetractGearDoor;
+	JoystickButton *ExtendGearPusher;
+	JoystickButton *RetractGearPusher;
 };
 
 #endif  // OI_H

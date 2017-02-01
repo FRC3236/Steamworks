@@ -46,23 +46,25 @@ void TeleopDefault::Execute() {
 	} else if (controls->SpinButton->Get()) {
 		drivetrain->DoAutoAlign(0.125, -0.125, 0.125, -0.125);
 		if (DeadzoneX > JOYSTICKDEADZONE || DeadzoneX < -JOYSTICKDEADZONE) {
-			double Speed = controls->RightStick->GetY()/4;
+			double Speed = controls->RightStick->GetX()/2;
 			drivetrain->DriveSpecial(Speed, Speed, Speed, Speed);
 		} else {
 			drivetrain->Drive(0);
 		}
 	} else {
+		double TurnAngle = (controls->RightStick->GetX()/10)*-1;
 		if (DeadzoneX > JOYSTICKDEADZONE || DeadzoneX < -JOYSTICKDEADZONE) {
-			double TurnAngle = (controls->RightStick->GetX()/8)*-1;
-			if (DeadzoneY < -0.1) {
-				TurnAngle = (controls->RightStick->GetX()/8)*-1;
-			}
 			drivetrain->DoAutoAlign(-TurnAngle, TurnAngle, TurnAngle, -TurnAngle);
 		} else {
 			drivetrain->DoAutoAlign(0,0,0,0);
 		}
 		if (DeadzoneY > JOYSTICKDEADZONE || DeadzoneY < -JOYSTICKDEADZONE) {
-			double Speed = controls->RightStick->GetY()/2;
+			double Speed = controls->RightStick->GetY()/1.2;
+			if (TurnAngle > 0) {
+				drivetrain->DriveSpecial(Speed/2, Speed/2, -Speed, -Speed);
+			} else {
+				drivetrain->DriveSpecial(Speed, Speed, -Speed/2, -Speed/2);
+			}
 			drivetrain->Drive(Speed);
 		} else {
 			drivetrain->Drive(0);
@@ -74,8 +76,24 @@ void TeleopDefault::Execute() {
 	double POVMultiplier = controls->LeftStick->GetRawAxis(3);
 	if (POV) {
 		ropeclimber->Climb(POVMultiplier);
+		//gearsystem->SolenoidIII->Set(DoubleSolenoid::Value::kReverse);
 	} else {
+		//gearsystem->SolenoidIII->Set(DoubleSolenoid::Value::kOff);
 		ropeclimber->Stop();
+	}
+	if (controls->ExtendGearDoor->Get()) {
+		gearsystem->SolenoidI->Set(DoubleSolenoid::Value::kForward);
+	} else if (controls->RetractGearDoor->Get()) {
+		gearsystem->SolenoidI->Set(DoubleSolenoid::Value::kReverse);
+	} else {
+		gearsystem->SolenoidI->Set(DoubleSolenoid::Value::kOff);
+	}
+	if (controls->ExtendGearPusher->Get()) {
+		gearsystem->SolenoidII->Set(DoubleSolenoid::Value::kReverse);
+	} else if (controls->RetractGearPusher->Get()) {
+		gearsystem->SolenoidII->Set(DoubleSolenoid::Value::kForward);
+	} else {
+		gearsystem->SolenoidII->Set(DoubleSolenoid::Value::kOff);
 	}
 }
 

@@ -13,15 +13,22 @@
 #include "CANTalon.h"
 class GearSystem: public frc::Subsystem {
 public:
-	CANTalon *SolenoidICAN;
-	CANTalon *SolenoidIICAN;
-	CANTalon *SolenoidIIICAN;
-	CANTalon *SolenoidIVCAN;
-	CANTalon *PCMCAN;
+	DoubleSolenoid *SolenoidI;
+	DoubleSolenoid *SolenoidII;
+	DoubleSolenoid *SolenoidIII;
+	DoubleSolenoid *SolenoidIV;
+
+	Compressor *CompressorPort;
+	//CANTalon *PCMCAN;
 
 	GearSystem();
 	void Initalize();
 	void Execute();
+	void ExtendGearInput();
+	void RetractGearInput();
+	void PushGearOutput();
+	void PullGearOutput();
+	void RunTest();
 };
 
 

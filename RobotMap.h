@@ -6,11 +6,13 @@
 #define BackLeftCANPort 2
 #define BackRightCANPort 3
 #define FrontRightCANPort 4
-#define SolenoidICANPort 5
-#define SolenoidIICANPort 6
-#define SolenoidIIICANPort 7
-#define SolenoidIVCANPort 8
+
 #define PCMCANPort 11
+
+#define SolenoidIPort 0
+#define SolenoidIIPort 2
+#define SolenoidIIIPort 4
+#define SolenoidIVPort 6
 
 //PWM PORTS
 #define FrontLeftPWMPort 0

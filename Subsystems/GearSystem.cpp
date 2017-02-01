@@ -1,26 +1,40 @@
 #include "GearSystem.h"
 #include "../RobotMap.h"
+#include "WPILib.h"
 
 GearSystem::GearSystem() : Subsystem("GearSystem") {
 	frc::Subsystem("GearSystem");
 
 	std::cout << "[gearsystem] GearSystem initializing..." << std::endl;
 
-	PCMCAN = new CANTalon(PCMCANPort);
+	//Solenoid1 is Extending Gear Slot - forward
+	//Solenoid2 extends gear pusher - reverse
+	//Solenoid3
 
-	SolenoidICAN = new CANTalon(SolenoidICANPort);
-	SolenoidIICAN = new CANTalon(SolenoidIICANPort);
-	SolenoidIIICAN = new CANTalon(SolenoidIIICANPort);
-	SolenoidIVCAN = new CANTalon(SolenoidIVCANPort);
+	//PCMCAN = new CANTalon(PCMCANPort);
+	CompressorPort = new Compressor(0);
+	std::cout << "[gearsystem] Compressor test: " << CompressorPort->Enabled() << " " << CompressorPort->GetCompressorCurrent() << std::endl;
+	SolenoidI = new DoubleSolenoid(SolenoidIPort, SolenoidIPort+1);
+	SolenoidII = new DoubleSolenoid(SolenoidIIPort, SolenoidIIPort+1);
+	SolenoidIII = new DoubleSolenoid(SolenoidIIIPort, SolenoidIIIPort+1);
+	SolenoidIV = new DoubleSolenoid(SolenoidIVPort, SolenoidIVPort+1);
 
 	std::cout << "[gearsystem] GearSystem initialized." << std::endl;
 
 }
 
 void GearSystem::Initalize() {
+	SolenoidI->Set(DoubleSolenoid::Value::kOff);
+	SolenoidII->Set(DoubleSolenoid::Value::kOff);
+	SolenoidIII->Set(DoubleSolenoid::Value::kOff);
+	SolenoidIV->Set(DoubleSolenoid::Value::kOff);
 	return;
 }
 
 void GearSystem::Execute() {
 	return;
+}
+
+void GearSystem::ExtendGearInput() {
+
 }
