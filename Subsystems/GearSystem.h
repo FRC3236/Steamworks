@@ -29,6 +29,7 @@ public:
 	void PushGearOutput();
 	void PullGearOutput();
 	void RunTest();
+	void StopAll();
 };
 
 

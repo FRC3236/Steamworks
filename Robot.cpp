@@ -33,6 +33,10 @@
 
 #include "Commands/AutoDefault.h"
 #include "Commands/TeleopDefault.h"
+#include "Commands/AutoMoveForward.h"
+#include "Commands/AutoTest2.h"
+#include "Commands/AutoTest3.h"
+
 #include "CommandBase.h"
 
 class Robot: public frc::IterativeRobot {
@@ -49,7 +53,9 @@ public:
 		CommandBase::init();
 		teleopChooser.AddDefault("Default Driver", new TeleopDefault());
 		autonomousChooser.AddDefault("AutoDefault", new AutoDefault());
-
+		autonomousChooser.AddObject("AutoMoveForward", new AutoMoveForward());
+		autonomousChooser.AddObject("AutoTest2", new AutoTest2());
+		autonomousChooser.AddObject("AutoTest3", new AutoTest3());
 		frc::SmartDashboard::PutData("Auto Modes", &autonomousChooser);
 		frc::SmartDashboard::PutData("Teleop Modes", &teleopChooser);
 

@@ -36,5 +36,24 @@ void GearSystem::Execute() {
 }
 
 void GearSystem::ExtendGearInput() {
+	SolenoidI->Set(DoubleSolenoid::Value::kForward);
+}
 
+void GearSystem::RetractGearInput() {
+	SolenoidI->Set(DoubleSolenoid::Value::kReverse);
+}
+
+void GearSystem::PushGearOutput() {
+	SolenoidII->Set(DoubleSolenoid::Value::kReverse);
+}
+
+void GearSystem::PullGearOutput() {
+	SolenoidII->Set(DoubleSolenoid::Value::kForward);
+}
+
+void GearSystem::StopAll() {
+	SolenoidI->Set(DoubleSolenoid::Value::kOff);
+	SolenoidII->Set(DoubleSolenoid::Value::kOff);
+	SolenoidIII->Set(DoubleSolenoid::Value::kOff);
+	SolenoidIV->Set(DoubleSolenoid::Value::kOff);
 }

@@ -102,7 +102,10 @@ void DriveTrain::DriveSpecial(double DFLS, double DBLS, double DBRS, double DFRS
 
 void DriveTrain::KillDrive() {
 	std::cout << "[drivetrain] DriveTrain->KillDrive() has been executed." << std::endl;
-	this->DoAutoAlign(0,0,0,0);
+	DriveFrontLeftCAN->Set(0.0);
+	DriveFrontRightCAN->Set(0.0);
+	DriveBackLeftCAN->Set(0.0);
+	DriveBackRightCAN->Set(0.0);
 	DriveFrontLeft->Set(0);
 	DriveFrontRight->Set(0);
 	DriveBackLeft->Set(0);
