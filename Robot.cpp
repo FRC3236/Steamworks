@@ -37,6 +37,8 @@
 #include "Commands/AutoMoveForward.h"
 #include "Commands/AutoTest2.h"
 #include "Commands/AutoTest3.h"
+#include "Commands/DropGear.h"
+#include "Commands/PushGear.h"
 
 #include "CommandBase.h"
 
@@ -79,6 +81,8 @@ public:
 		autonomousChooser.AddObject("AutoMoveForward", new AutoMoveForward());
 		autonomousChooser.AddObject("AutoTest2", new AutoTest2());
 		autonomousChooser.AddObject("AutoTest3", new AutoTest3());
+		autonomousChooser.AddObject("DropGear", new DropGear());
+		autonomousChooser.AddObject("PushGear", new PushGear());
 		frc::SmartDashboard::PutData("Auto Modes", &autonomousChooser);
 		frc::SmartDashboard::PutData("Teleop Modes", &teleopChooser);
 
@@ -96,11 +100,11 @@ public:
 	}
 
 	void AutonomousPeriodic() override {
-		std::cout << "AutoPeriodic Before" << std::endl;
+		//std::cout << "AutoPeriodic Before" << std::endl;
 		frc::Scheduler::GetInstance()->Run();
-		std::cout << "AutoPeriodic After" << std::endl;
+		//std::cout << "AutoPeriodic After" << std::endl;
 	}
-
+	//what does this do
 	void TeleopInit() override {
 		teleopMode.reset(teleopChooser.GetSelected());
 		if (teleopMode != nullptr) {

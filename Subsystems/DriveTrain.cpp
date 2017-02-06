@@ -12,8 +12,8 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	frc::Subsystem("DriveTrain");
 	std::cout << "[drivetrain] DriveTrain initializing..." << std::endl;
 
-	Gyro = new AnalogGyro(1);
-	Accelerometer = new AnalogAccelerometer(0);
+	Gyro = new AnalogGyro(3);
+	Accelerometer = new AnalogAccelerometer(2);
 
 	DriveFrontLeftCAN = new CANTalon(FrontLeftCANPort);
 	DriveBackLeftCAN = new CANTalon(BackLeftCANPort);
@@ -34,6 +34,8 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	DriveBackLeft = new Talon(BackLeftPWMPort);
 	DriveBackRight = new Talon(BackRightPWMPort);
 
+	double CorrectionMultiplier = 5;
+	double CorrectionAdditive = 0.1;
 
 	frc::SmartDashboard::PutNumber("Front Left Wheel Angle", DriveFrontLeftCAN->GetPosition());
 	frc::SmartDashboard::PutNumber("Front Right Wheel Angle", DriveFrontRightCAN->GetPosition());
@@ -41,12 +43,15 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	frc::SmartDashboard::PutNumber("Back Right Wheel Angle", DriveBackRightCAN->GetPosition());
 	frc::SmartDashboard::PutNumber("Gyro Angle", Gyro->GetAngle());
 	frc::SmartDashboard::PutNumber("Accelerometer Angle", Accelerometer->GetAcceleration());
+	frc::SmartDashboard::PutNumber("Wheel Alignment Correction", CorrectionMultiplier);
+	frc::SmartDashboard::PutNumber("Wheel Alignment Additive", CorrectionAdditive);
+
+	this->SetZeros();
 
 	std::cout << "[drivetrain] DriveTrain initialized." << std::endl;
 }
 
 void DriveTrain::Initialize() {
-	this->SetZeros();
 	Gyro->Reset();
 	Accelerometer->SetSensitivity(0.018);
 	Accelerometer->SetZero(2.5);
@@ -70,8 +75,11 @@ double DriveTrain::DegreeToRadian(double Degree) {
 }
 
 void DriveTrain::DoAutoAlign(double DFLA, double DBLA, double DBRA, double DFRA) {
-	double CorrectionMultiplier = 5;
-	double CorrectionAdditive = 0.1;
+
+	double CorrectionMultiplier = 5; //frc::SmartDashboard::GetNumber("Wheel Alignment Correction", CorrectionMultiplier);
+	double CorrectionAdditive = 0.1; //frc::SmartDashboard::GetNumber("Wheel Alignment Additive", CorrectionAdditive);
+
+	std::cout << "CORRECTION NUMBERS:: " << CorrectionMultiplier << " " << CorrectionAdditive;
 
 	double TURNMODIFIERCORRECTION = fabs(((DriveBackLeftCAN->GetPosition()-DBLA))*CorrectionMultiplier) + CorrectionAdditive;
 	if (DBLA + TURNMARGINOFERROR <= DriveBackLeftCAN->GetPosition() )
@@ -159,6 +167,3 @@ void DriveTrain::KillSpin() {
 	DriveBackRightCAN->Set(0.0);
 	return;
 }
-
-
-

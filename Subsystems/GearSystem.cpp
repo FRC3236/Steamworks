@@ -9,7 +9,8 @@ GearSystem::GearSystem() : Subsystem("GearSystem") {
 
 	//Solenoid1 is Extending Gear Slot - forward
 	//Solenoid2 extends gear pusher - reverse
-	//Solenoid3
+	//Solenoid3 does nothing
+	//Solenoid4 is the gear/ball toggle
 
 	//PCMCAN = new CANTalon(PCMCANPort);
 	CompressorPort = new Compressor(0);

@@ -13,7 +13,7 @@ TeleopDefault::TeleopDefault() {
 	Requires(drivetrain);
 	Requires(gearsystem);
 	Requires(ropeclimber);
-	Requires(gearballtoggle);
+	//Requires(gearballtoggle);
 	TeleopTimer = new Timer();
 }
 
@@ -97,7 +97,8 @@ void TeleopDefault::Execute() {
 		gearsystem->SolenoidII->Set(DoubleSolenoid::Value::kOff);
 	}
 	if (controls->ToggleGearBall->Get()) {
-		gearballtoggle->Toggle();
+		//gearballtoggle->Extend();
+		//gearballtoggle->GetValue();
 	}
 }
 
