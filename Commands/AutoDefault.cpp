@@ -15,6 +15,8 @@ AutoDefault::AutoDefault() : CommandBase("AutoDefault") {
 
 void AutoDefault::Initialize() {
 	std::cout << "[autonomous] Program 'AutoDefault' is initializing." << std::endl;
+
+	frc::SmartDashboard::PutNumber("Autonomous Time", AutoTimer->Get());
 	drivetrain->ResetAlignment();
 	AutoTimer->Reset();
 	AutoTimer->Start();
@@ -25,7 +27,6 @@ void AutoDefault::Execute() {
 	if (AutoTimer->Get() < 1) {
 		drivetrain->Drive(0.2);
 	} else if (AutoTimer->Get() > 1 && AutoTimer->Get() < 2) {
-		std::cout << "BEGINNING ALIGNMENT" << std::endl;
 		drivetrain->DoAutoAlign(0.125, 0.125, 0.125, 0.125);
 		drivetrain->Drive(-0.2);
 	} else {

@@ -9,6 +9,7 @@ AutoTest3::AutoTest3() {
 
 // Called just before this Command runs the first time
 void AutoTest3::Initialize() {
+	frc::SmartDashboard::PutNumber("Autonomous Time", AutoTimer->Get());
 	drivetrain->ResetAlignment();
 	AutoTimer->Reset();
 	AutoTimer->Start();

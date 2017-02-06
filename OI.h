@@ -20,6 +20,7 @@ public:
 	JoystickButton *RetractGearDoor;
 	JoystickButton *ExtendGearPusher;
 	JoystickButton *RetractGearPusher;
+	JoystickButton *ToggleGearBall;
 };
 
 #endif  // OI_H

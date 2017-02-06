@@ -9,6 +9,8 @@ AutoMoveForward::AutoMoveForward() {
 
 // Called just before this Command runs the first time
 void AutoMoveForward::Initialize() {
+
+	frc::SmartDashboard::PutNumber("Autonomous Time", AutoTimer->Get());
 	drivetrain->ResetAlignment();
 	AutoTimer->Reset();
 	AutoTimer->Start();
@@ -18,6 +20,10 @@ void AutoMoveForward::Initialize() {
 void AutoMoveForward::Execute() {
 	if (AutoTimer->Get() < 4.7) {
 		drivetrain->Drive(0.3);
+		double CorrectionAngle = drivetrain->DegreeToRadian(drivetrain->Gyro->GetAngle());
+		drivetrain->DoAutoAlign(CorrectionAngle, -CorrectionAngle, -CorrectionAngle, CorrectionAngle);
+	} else if (AutoTimer->Get() > 4.7 && AutoTimer->Get() < 5.5) {
+		drivetrain->ResetAlignment();
 	} else {
 		drivetrain->KillDrive();
 	}
@@ -25,7 +31,7 @@ void AutoMoveForward::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool AutoMoveForward::IsFinished() {
-	if (AutoTimer->Get() < 4.7) {
+	if (AutoTimer->Get() < 5.5) {
 		return false;
 	} else {
 		return true;

@@ -12,6 +12,9 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	frc::Subsystem("DriveTrain");
 	std::cout << "[drivetrain] DriveTrain initializing..." << std::endl;
 
+	Gyro = new AnalogGyro(1);
+	Accelerometer = new AnalogAccelerometer(0);
+
 	DriveFrontLeftCAN = new CANTalon(FrontLeftCANPort);
 	DriveBackLeftCAN = new CANTalon(BackLeftCANPort);
 	DriveFrontRightCAN = new CANTalon(FrontRightCANPort);
@@ -26,21 +29,30 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	DriveFrontLeftCAN->SetFeedbackDevice(CANTalon::QuadEncoder);
 	DriveFrontLeftCAN->ConfigEncoderCodesPerRev(412.5);
 
-	DriveFrontLeftCAN->SetPosition(0);
-	DriveFrontRightCAN->SetPosition(0);
-	DriveBackRightCAN->SetPosition(0);
-	DriveBackLeftCAN->SetPosition(0);
-
 	DriveFrontLeft = new Talon(FrontLeftPWMPort);
 	DriveFrontRight = new Talon(FrontRightPWMPort);
 	DriveBackLeft = new Talon(BackLeftPWMPort);
 	DriveBackRight = new Talon(BackRightPWMPort);
+
+
+	frc::SmartDashboard::PutNumber("Front Left Wheel Angle", DriveFrontLeftCAN->GetPosition());
+	frc::SmartDashboard::PutNumber("Front Right Wheel Angle", DriveFrontRightCAN->GetPosition());
+	frc::SmartDashboard::PutNumber("Back Left Wheel Angle", DriveBackLeftCAN->GetPosition());
+	frc::SmartDashboard::PutNumber("Back Right Wheel Angle", DriveBackRightCAN->GetPosition());
+	frc::SmartDashboard::PutNumber("Gyro Angle", Gyro->GetAngle());
+	frc::SmartDashboard::PutNumber("Accelerometer Angle", Accelerometer->GetAcceleration());
+
 	std::cout << "[drivetrain] DriveTrain initialized." << std::endl;
 }
 
 void DriveTrain::Initialize() {
-	this->DoAutoAlign(0,0,0,0);
+	this->SetZeros();
+	Gyro->Reset();
+	Accelerometer->SetSensitivity(0.018);
+	Accelerometer->SetZero(2.5);
+	this->ResetAlignment();
 	this->Drive(0);
+	return;
 }
 
 void DriveTrain::Drive(double speed) {
@@ -53,9 +65,15 @@ void DriveTrain::Drive(double speed) {
 
 }
 
+double DriveTrain::DegreeToRadian(double Degree) {
+	return 360/Degree;
+}
+
 void DriveTrain::DoAutoAlign(double DFLA, double DBLA, double DBRA, double DFRA) {
-	std::cout << "[drivetrain] DoAutoAlign: " << DFLA << " " << DBLA << " " << DBRA << " " << DFRA << std::endl;
-	double TURNMODIFIERCORRECTION = fabs(((DriveBackLeftCAN->GetPosition()-DBLA))*6) + 0.04;
+	double CorrectionMultiplier = 5;
+	double CorrectionAdditive = 0.1;
+
+	double TURNMODIFIERCORRECTION = fabs(((DriveBackLeftCAN->GetPosition()-DBLA))*CorrectionMultiplier) + CorrectionAdditive;
 	if (DBLA + TURNMARGINOFERROR <= DriveBackLeftCAN->GetPosition() )
 	{
 		DriveBackLeftCAN->Set(TURNVELOCITY * TURNMODIFIERCORRECTION);
@@ -65,7 +83,7 @@ void DriveTrain::DoAutoAlign(double DFLA, double DBLA, double DBRA, double DFRA)
 	} else {
 		DriveBackLeftCAN->Set(0.0);
 	}
-	TURNMODIFIERCORRECTION = fabs(((DriveBackRightCAN->GetPosition()-DBRA))*6)+ 0.04;
+	TURNMODIFIERCORRECTION = fabs(((DriveBackRightCAN->GetPosition()-DBRA))*CorrectionMultiplier)+ CorrectionAdditive;
 	if (DBRA + TURNMARGINOFERROR <= DriveBackRightCAN->GetPosition() )
 	{
 		DriveBackRightCAN->Set(TURNVELOCITY * TURNMODIFIERCORRECTION);
@@ -73,7 +91,7 @@ void DriveTrain::DoAutoAlign(double DFLA, double DBLA, double DBRA, double DFRA)
 	{
 		DriveBackRightCAN->Set(-TURNVELOCITY * TURNMODIFIERCORRECTION);
 	}
-	TURNMODIFIERCORRECTION = fabs(((DriveFrontRightCAN->GetPosition()-DFRA))*6)+ 0.04;
+	TURNMODIFIERCORRECTION = fabs(((DriveFrontRightCAN->GetPosition()-DFRA))*CorrectionMultiplier)+ CorrectionAdditive;
 	if (DFRA + TURNMARGINOFERROR <= DriveFrontRightCAN->GetPosition() )
 	{
 		DriveFrontRightCAN->Set(TURNVELOCITY * TURNMODIFIERCORRECTION);
@@ -81,7 +99,7 @@ void DriveTrain::DoAutoAlign(double DFLA, double DBLA, double DBRA, double DFRA)
 	{
 		DriveFrontRightCAN->Set(-TURNVELOCITY * TURNMODIFIERCORRECTION);
 	}
-	TURNMODIFIERCORRECTION = fabs(((DriveFrontLeftCAN->GetPosition()-DFLA))*6)+ 0.04;
+	TURNMODIFIERCORRECTION = fabs(((DriveFrontLeftCAN->GetPosition()-DFLA))*CorrectionMultiplier)+CorrectionAdditive;
 	if (DFLA + TURNMARGINOFERROR <= DriveFrontLeftCAN->GetPosition() )
 	{
 		DriveFrontLeftCAN->Set(TURNVELOCITY * TURNMODIFIERCORRECTION);
@@ -89,6 +107,14 @@ void DriveTrain::DoAutoAlign(double DFLA, double DBLA, double DBRA, double DFRA)
 	{
 		DriveFrontLeftCAN->Set(-TURNVELOCITY * TURNMODIFIERCORRECTION);
 	}
+
+	frc::SmartDashboard::PutNumber("Front Left Wheel Angle", DriveFrontLeftCAN->GetPosition());
+	frc::SmartDashboard::PutNumber("Front Right Wheel Angle", DriveFrontRightCAN->GetPosition());
+	frc::SmartDashboard::PutNumber("Back Left Wheel Angle", DriveBackLeftCAN->GetPosition());
+	frc::SmartDashboard::PutNumber("Back Right Wheel Angle", DriveBackRightCAN->GetPosition());
+	frc::SmartDashboard::PutNumber("Gyro Angle", Gyro->GetAngle());
+	frc::SmartDashboard::PutNumber("Accelerometer Angle", Accelerometer->GetAcceleration());
+
 	return;
 }
 
@@ -115,6 +141,14 @@ void DriveTrain::KillDrive() {
 
 void DriveTrain::ResetAlignment() {
 	this->DoAutoAlign(0,0,0,0);
+	return;
+}
+
+void DriveTrain::SetZeros() {
+	DriveFrontLeftCAN->SetPosition(0);
+	DriveFrontRightCAN->SetPosition(0);
+	DriveBackLeftCAN->SetPosition(0);
+	DriveBackRightCAN->SetPosition(0);
 	return;
 }
 

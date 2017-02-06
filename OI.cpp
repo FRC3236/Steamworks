@@ -19,6 +19,7 @@ OI::OI() {
 	ExtendGearDoor = new JoystickButton(LeftStick, 6);
 	RetractGearDoor = new JoystickButton(LeftStick, 4);
 	RopeClimbButton = new JoystickButton(LeftStick, 1);
+	ToggleGearBall = new JoystickButton(LeftStick, 2);
 
 	std::cout << "[oi] OperatorInterface initialized." << std::endl;
 }

@@ -7,10 +7,10 @@
 #include <Commands/Command.h>
 
 #include "OI.h"
-#include "Subsystems/ExampleSubsystem.h"
 #include "Subsystems/DriveTrain.h"
 #include "Subsystems/RopeClimber.h"
 #include "Subsystems/GearSystem.h"
+#include "Subsystems/GearBallToggle.h"
 
 class CommandBase: public frc::Command {
 public:
@@ -18,6 +18,7 @@ public:
 	static OI *controls;
 	static DriveTrain *drivetrain;
 	static RopeClimber *ropeclimber;
+	static GearBallToggle *gearballtoggle;
 	CommandBase(char const *name);
 	CommandBase();
 	static void init();

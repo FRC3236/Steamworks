@@ -30,7 +30,8 @@
 #include <LiveWindow/LiveWindow.h>
 #include <SmartDashboard/SendableChooser.h>
 #include <SmartDashboard/SmartDashboard.h>
-
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #include "Commands/AutoDefault.h"
 #include "Commands/TeleopDefault.h"
 #include "Commands/AutoMoveForward.h"
@@ -46,9 +47,31 @@ private:
 	std::unique_ptr<frc::Command> autonomousMode;
 	std::unique_ptr<frc::Command> teleopMode;
 
+
+	static void VisionThread() {
+		cs::UsbCamera camera = CameraServer::GetInstance()->StartAutomaticCapture();
+		if (camera.IsConnected()) {
+			camera.SetResolution(640,480);
+			camera.SetFPS(60);
+			cs::CvSink cvSink = CameraServer::GetInstance()->GetVideo();
+			cs::CvSource outputStreamStd = CameraServer::GetInstance()->PutVideo("Color", 640, 480);
+			cv::Mat source;
+			cv::Mat output;
+			while (true) {
+				cvSink.GrabFrame(source);
+				cvtColor(source, output, cv::COLOR_BGR2RGB);
+				outputStreamStd.PutFrame(output);
+			}
+		}
+	}
+
+
 public:
 	void RobotInit() override {
 		std::cout << "[robot] Robot initalizing..." << std::endl;
+
+		std::thread visionThread(VisionThread);
+		visionThread.detach();
 
 		CommandBase::init();
 		teleopChooser.AddDefault("Default Driver", new TeleopDefault());
@@ -99,5 +122,4 @@ public:
 		frc::Scheduler::GetInstance()->ResetAll();
 	}
 };
-
 START_ROBOT_CLASS(Robot);

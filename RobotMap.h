@@ -7,7 +7,7 @@
 #define BackRightCANPort 3
 #define FrontRightCANPort 4
 
-#define PCMCANPort 11
+#define PCMCANPort 0
 
 #define SolenoidIPort 0
 #define SolenoidIIPort 2
@@ -27,8 +27,8 @@
 #define TURNVELOCITY 0.8
 
 //JOYSTICK INFORMATION
-#define RIGHTSTICKPORT 3
-#define LEFTSTICKPORT 2
+#define RIGHTSTICKPORT 2
+#define LEFTSTICKPORT 3
 
 #define JOYSTICKDEADZONE 0.25
 
@@ -39,6 +39,10 @@
 
 //OPERATOR STICK
 #define CLIMBERBUTTON 1
+#define OPENGEARDOORBUTTON 6
+#define CLOSEGEARDOORBUTTON 4
+#define EXTENDGEARPUSHERBUTTON 5
+#define RETRACTGEARPUSHERBUTTON 3
 
 
 #endif  // ROBOTMAP_H

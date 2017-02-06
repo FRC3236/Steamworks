@@ -14,15 +14,11 @@
 
 class DriveTrain: public frc::Subsystem {
 public:
-	CANTalon *DriveFrontLeftCAN;
-	CANTalon *DriveFrontRightCAN;
-	CANTalon *DriveBackLeftCAN;
-	CANTalon *DriveBackRightCAN;
+	CANTalon *DriveFrontLeftCAN, *DriveFrontRightCAN, *DriveBackLeftCAN, *DriveBackRightCAN;
+	Talon *DriveFrontLeft, *DriveBackLeft, *DriveBackRight, *DriveFrontRight;
 
-	Talon *DriveFrontLeft;
-	Talon *DriveBackLeft;
-	Talon *DriveBackRight;
-	Talon *DriveFrontRight;
+	AnalogGyro *Gyro;
+	AnalogAccelerometer *Accelerometer;
 
 	DriveTrain();
 	void Initialize();
@@ -31,8 +27,10 @@ public:
 	void ResetAlignment();
 	void Drive(double);
 	void KillDrive();
+	void SetZeros();
 	void DriveSpecial(double, double, double, double);
 	void KillSpin();
+	double DegreeToRadian(double);
 };
 
 
