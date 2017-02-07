@@ -10,7 +10,7 @@
 
 #include "WPILib.h"
 #include <Commands/Subsystem.h>
-#include "CANTalon.h"
+
 class GearSystem: public frc::Subsystem {
 public:
 	DoubleSolenoid *SolenoidI;
@@ -19,17 +19,14 @@ public:
 	DoubleSolenoid *SolenoidIV;
 
 	Compressor *CompressorPort;
-	//CANTalon *PCMCAN;
 
 	GearSystem();
 	void Initalize();
 	void Execute();
-	void ExtendGearInput();
-	void RetractGearInput();
-	void PushGearOutput();
-	void PullGearOutput();
-	void RunTest();
 	void StopAll();
+	void StartCompressor();
+	void StopCompressor();
+	void ToggleCompressor();
 };
 
 

@@ -7,14 +7,13 @@ GearSystem::GearSystem() : Subsystem("GearSystem") {
 
 	std::cout << "[gearsystem] GearSystem initializing..." << std::endl;
 
-	//Solenoid1 is Extending Gear Slot - forward
-	//Solenoid2 extends gear pusher - reverse
+	//Solenoid1 is Extending Gear Slot - forward extends it out, reverse pulls it in
+	//Solenoid2 extends gear pusher - reverse extends it, forward retracts it
 	//Solenoid3 does nothing
-	//Solenoid4 is the gear/ball toggle
+	//Solenoid4 is the gear/ball toggle - forward is up, reverse is down.
 
-	//PCMCAN = new CANTalon(PCMCANPort);
+
 	CompressorPort = new Compressor(0);
-	std::cout << "[gearsystem] Compressor test: " << CompressorPort->Enabled() << " " << CompressorPort->GetCompressorCurrent() << std::endl;
 	SolenoidI = new DoubleSolenoid(SolenoidIPort, SolenoidIPort+1);
 	SolenoidII = new DoubleSolenoid(SolenoidIIPort, SolenoidIIPort+1);
 	SolenoidIII = new DoubleSolenoid(SolenoidIIIPort, SolenoidIIIPort+1);
@@ -36,25 +35,22 @@ void GearSystem::Execute() {
 	return;
 }
 
-void GearSystem::ExtendGearInput() {
-	SolenoidI->Set(DoubleSolenoid::Value::kForward);
-}
-
-void GearSystem::RetractGearInput() {
-	SolenoidI->Set(DoubleSolenoid::Value::kReverse);
-}
-
-void GearSystem::PushGearOutput() {
-	SolenoidII->Set(DoubleSolenoid::Value::kReverse);
-}
-
-void GearSystem::PullGearOutput() {
-	SolenoidII->Set(DoubleSolenoid::Value::kForward);
-}
-
 void GearSystem::StopAll() {
 	SolenoidI->Set(DoubleSolenoid::Value::kOff);
 	SolenoidII->Set(DoubleSolenoid::Value::kOff);
 	SolenoidIII->Set(DoubleSolenoid::Value::kOff);
 	SolenoidIV->Set(DoubleSolenoid::Value::kOff);
+	this->StopCompressor();
+}
+
+void GearSystem::StartCompressor() {
+	CompressorPort->SetClosedLoopControl(true);
+}
+
+void GearSystem::StopCompressor() {
+	CompressorPort->SetClosedLoopControl(false);
+}
+
+void GearSystem::ToggleCompressor() {
+	CompressorPort->SetClosedLoopControl(!CompressorPort->GetClosedLoopControl());
 }

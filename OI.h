@@ -5,22 +5,23 @@
 
 class OI {
 public:
-	OI();
+
 	Joystick *RightStick;
 	Joystick *LeftStick;
 
 	//Driver stick stuff
-	JoystickButton *ResetButton;
-	JoystickButton *SpinButton;
-	JoystickButton *TraverseButton;
+	JoystickButton	*ResetButton,
+					*SpinButton,
+					*TraverseButton;
+
+	JoystickButton	*DropGearButton,
+					*PushGearButton,
+					*DropFuelButton;
+
 
 	//Operator stick stuff
-	JoystickButton *RopeClimbButton;
-	JoystickButton *ExtendGearDoor;
-	JoystickButton *RetractGearDoor;
-	JoystickButton *ExtendGearPusher;
-	JoystickButton *RetractGearPusher;
-	JoystickButton *ToggleGearBall;
+
+	OI();
 };
 
 #endif  // OI_H

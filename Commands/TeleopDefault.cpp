@@ -13,7 +13,6 @@ TeleopDefault::TeleopDefault() {
 	Requires(drivetrain);
 	Requires(gearsystem);
 	Requires(ropeclimber);
-	//Requires(gearballtoggle);
 	TeleopTimer = new Timer();
 }
 
@@ -72,34 +71,7 @@ void TeleopDefault::Execute() {
 		}
 	}
 
-	//Operator stuff
-	double POV = controls->RopeClimbButton->Get();
-	double POVMultiplier = controls->LeftStick->GetRawAxis(3);
-	if (POV) {
-		ropeclimber->Climb(POVMultiplier);
-		//gearsystem->SolenoidIII->Set(DoubleSolenoid::Value::kReverse);
-	} else {
-		//gearsystem->SolenoidIII->Set(DoubleSolenoid::Value::kOff);
-		ropeclimber->Stop();
-	}
-	if (controls->ExtendGearDoor->Get()) {
-		gearsystem->SolenoidI->Set(DoubleSolenoid::Value::kForward);
-	} else if (controls->RetractGearDoor->Get()) {
-		gearsystem->SolenoidI->Set(DoubleSolenoid::Value::kReverse);
-	} else {
-		gearsystem->SolenoidI->Set(DoubleSolenoid::Value::kOff);
-	}
-	if (controls->ExtendGearPusher->Get()) {
-		gearsystem->SolenoidII->Set(DoubleSolenoid::Value::kReverse);
-	} else if (controls->RetractGearPusher->Get()) {
-		gearsystem->SolenoidII->Set(DoubleSolenoid::Value::kForward);
-	} else {
-		gearsystem->SolenoidII->Set(DoubleSolenoid::Value::kOff);
-	}
-	if (controls->ToggleGearBall->Get()) {
-		//gearballtoggle->Extend();
-		//gearballtoggle->GetValue();
-	}
+	//Operator stuff is handed by OI.cpp and the buttons' "WhenPressed()" method.
 }
 
 bool TeleopDefault::IsFinished() {
@@ -109,11 +81,13 @@ bool TeleopDefault::IsFinished() {
 void TeleopDefault::End() {
 	std::cout << "[teleop] Teleop->End() has been called. Ending Teleop..." << std::endl;
 	drivetrain->KillDrive();
+	drivetrain->KillSpin();
 }
 
 void TeleopDefault::Interrupted() {
 	std::cout << "[teleop] Teleop was interrtuped. Aborting..." << std::endl;
 	drivetrain->KillDrive();
+	drivetrain->KillSpin();
 }
 
 
