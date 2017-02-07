@@ -9,6 +9,12 @@
 #include "../CommandBase.h"
 #include "../RobotMap.h"
 
+#include "DropGear.h"
+#include "DropFuel.h"
+#include "PushGear.h"
+#include "DisableCompressor.h"
+#include "EnableCompressor.h"
+
 TeleopDefault::TeleopDefault() {
 	Requires(drivetrain);
 	Requires(gearsystem);
@@ -21,12 +27,33 @@ void TeleopDefault::Initialize() {
 	drivetrain->ResetAlignment();
 	TeleopTimer->Reset();
 	TeleopTimer->Start();
+
+	controls->DropGearButton->WhenPressed(new DropGear());
+	controls->DropGearButton->WhenReleased(this);
+	controls->DropFuelButton->WhenPressed(new DropFuel());
+	controls->DropFuelButton->WhenReleased(this);
+	controls->PushGearButton->WhenPressed(new PushGear());
+	controls->PushGearButton->WhenReleased(this);
+
+	//Print Solenoid information to smart dashboard for debugging.
+	frc::SmartDashboard::PutNumber("Solenoid I (gear door)", gearsystem->SolenoidI->Get());
+	frc::SmartDashboard::PutNumber("Solenoid II (gear pusher)", gearsystem->SolenoidII->Get());
+	frc::SmartDashboard::PutNumber("Solenoid III (doesn't do anything)", 0);
+	frc::SmartDashboard::PutNumber("Solenoid IV (gear/ball toggle)", gearsystem->SolenoidIV->Get());
+
 	std::cout << "[teleop] Teleop initialized." << std::endl;
 }
 
 void TeleopDefault::Execute() {
+
 	double DeadzoneX = controls->RightStick->GetX();
 	double DeadzoneY = controls->RightStick->GetY();
+
+	frc::SmartDashboard::PutNumber("Solenoid I (gear door)", gearsystem->SolenoidI->Get());
+	frc::SmartDashboard::PutNumber("Solenoid II (gear pusher)", gearsystem->SolenoidII->Get());
+	frc::SmartDashboard::PutNumber("Solenoid III (doesn't do anything)", 0);
+	frc::SmartDashboard::PutNumber("Solenoid IV (gear/ball toggle)", gearsystem->SolenoidIV->Get());
+
 	if (controls->TraverseButton->Get()) {
 		if (DeadzoneX > JOYSTICKDEADZONE || DeadzoneX < -JOYSTICKDEADZONE) {
 			double TurnAngle = (controls->RightStick->GetX()/4)*-1;

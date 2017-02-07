@@ -1,12 +1,12 @@
-#ifndef AutoTest3_H
-#define AutoTest3_H
+#ifndef DropFuel_H
+#define DropFuel_H
 
 #include "../CommandBase.h"
 
-class AutoTest3 : public CommandBase {
+class DropFuel : public CommandBase {
 public:
 	Timer *AutoTimer;
-	AutoTest3();
+	DropFuel();
 	void Initialize();
 	void Execute();
 	bool IsFinished();
@@ -14,4 +14,4 @@ public:
 	void Interrupted();
 };
 
-#endif  // AutoTest3_H
+#endif  // DropFuel_H

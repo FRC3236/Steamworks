@@ -32,11 +32,10 @@
 #include <SmartDashboard/SmartDashboard.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+
+//Include all the commands//
 #include "Commands/AutoDefault.h"
 #include "Commands/TeleopDefault.h"
-#include "Commands/AutoMoveForward.h"
-#include "Commands/AutoTest2.h"
-#include "Commands/AutoTest3.h"
 #include "Commands/DropGear.h"
 #include "Commands/PushGear.h"
 
@@ -54,7 +53,7 @@ private:
 		cs::UsbCamera camera = CameraServer::GetInstance()->StartAutomaticCapture();
 		if (camera.IsConnected()) {
 			camera.SetResolution(640,480);
-			camera.SetFPS(60);
+			camera.SetFPS(30);
 			cs::CvSink cvSink = CameraServer::GetInstance()->GetVideo();
 			cs::CvSource outputStreamStd = CameraServer::GetInstance()->PutVideo("Color", 640, 480);
 			cv::Mat source;
@@ -76,11 +75,9 @@ public:
 		visionThread.detach();
 
 		CommandBase::init();
+
 		teleopChooser.AddDefault("Default Driver", new TeleopDefault());
 		autonomousChooser.AddDefault("AutoDefault", new AutoDefault());
-		autonomousChooser.AddObject("AutoMoveForward", new AutoMoveForward());
-		autonomousChooser.AddObject("AutoTest2", new AutoTest2());
-		autonomousChooser.AddObject("AutoTest3", new AutoTest3());
 		autonomousChooser.AddObject("DropGear", new DropGear());
 		autonomousChooser.AddObject("PushGear", new PushGear());
 		frc::SmartDashboard::PutData("Auto Modes", &autonomousChooser);
@@ -104,7 +101,7 @@ public:
 		frc::Scheduler::GetInstance()->Run();
 		//std::cout << "AutoPeriodic After" << std::endl;
 	}
-	//what does this do
+
 	void TeleopInit() override {
 		teleopMode.reset(teleopChooser.GetSelected());
 		if (teleopMode != nullptr) {
@@ -116,14 +113,16 @@ public:
 	}
 
 	void TeleopPeriodic() override {
-		std::cout << "TeleopPeriodic before" << std::endl;
+		//std::cout << "TeleopPeriodic before" << std::endl;
 		frc::Scheduler::GetInstance()->Run();
-		std::cout << "TeleopPeriodic after" << std::endl;
+		//std::cout << "TeleopPeriodic after" << std::endl;
 	}
 
 	void DisabledInit() override {
 		std::cout << "[robot] Reseting all frc scheduler instances..." << std::endl;
 		frc::Scheduler::GetInstance()->ResetAll();
+		frc::Scheduler::GetInstance()->RemoveAll(); //Trying this out. Maybe this will work, maybe not. :P
 	}
+
 };
 START_ROBOT_CLASS(Robot);

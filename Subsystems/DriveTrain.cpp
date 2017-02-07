@@ -12,8 +12,8 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	frc::Subsystem("DriveTrain");
 	std::cout << "[drivetrain] DriveTrain initializing..." << std::endl;
 
-	Gyro = new AnalogGyro(3);
-	Accelerometer = new AnalogAccelerometer(2);
+	Gyro = new AnalogGyro(0);
+	Accelerometer = new AnalogAccelerometer(1);
 
 	DriveFrontLeftCAN = new CANTalon(FrontLeftCANPort);
 	DriveBackLeftCAN = new CANTalon(BackLeftCANPort);
@@ -34,17 +34,12 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	DriveBackLeft = new Talon(BackLeftPWMPort);
 	DriveBackRight = new Talon(BackRightPWMPort);
 
-	double CorrectionMultiplier = 5;
-	double CorrectionAdditive = 0.1;
-
 	frc::SmartDashboard::PutNumber("Front Left Wheel Angle", DriveFrontLeftCAN->GetPosition());
 	frc::SmartDashboard::PutNumber("Front Right Wheel Angle", DriveFrontRightCAN->GetPosition());
 	frc::SmartDashboard::PutNumber("Back Left Wheel Angle", DriveBackLeftCAN->GetPosition());
 	frc::SmartDashboard::PutNumber("Back Right Wheel Angle", DriveBackRightCAN->GetPosition());
 	frc::SmartDashboard::PutNumber("Gyro Angle", Gyro->GetAngle());
 	frc::SmartDashboard::PutNumber("Accelerometer Angle", Accelerometer->GetAcceleration());
-	frc::SmartDashboard::PutNumber("Wheel Alignment Correction", CorrectionMultiplier);
-	frc::SmartDashboard::PutNumber("Wheel Alignment Additive", CorrectionAdditive);
 
 	this->SetZeros();
 
@@ -54,7 +49,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 void DriveTrain::Initialize() {
 	Gyro->Reset();
 	Accelerometer->SetSensitivity(0.018);
-	Accelerometer->SetZero(2.5);
+	Accelerometer->SetZero(0);
 	this->ResetAlignment();
 	this->Drive(0);
 	return;
@@ -76,8 +71,8 @@ double DriveTrain::DegreeToRadian(double Degree) {
 
 void DriveTrain::DoAutoAlign(double DFLA, double DBLA, double DBRA, double DFRA) {
 
-	double CorrectionMultiplier = 5; //frc::SmartDashboard::GetNumber("Wheel Alignment Correction", CorrectionMultiplier);
-	double CorrectionAdditive = 0.1; //frc::SmartDashboard::GetNumber("Wheel Alignment Additive", CorrectionAdditive);
+	double CorrectionMultiplier = 5.5; //frc::SmartDashboard::GetNumber("Wheel Alignment Correction", CorrectionMultiplier);
+	double CorrectionAdditive = 0.05; //frc::SmartDashboard::GetNumber("Wheel Alignment Additive", CorrectionAdditive);
 
 	std::cout << "CORRECTION NUMBERS:: " << CorrectionMultiplier << " " << CorrectionAdditive;
 

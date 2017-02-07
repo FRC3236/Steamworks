@@ -17,6 +17,8 @@ public:
 	static OI *controls;
 	static DriveTrain *drivetrain;
 	static RopeClimber *ropeclimber;
+
+	void Reset();
 	CommandBase(char const *name);
 	CommandBase();
 	static void init();

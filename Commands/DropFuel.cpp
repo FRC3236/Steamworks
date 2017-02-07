@@ -1,24 +1,25 @@
-#include "DropGear.h"
+#include "DropFuel.h"
 #include "WPILib.h"
 
-bool Toggle = false;
+bool FuelToggle = false;
 
-DropGear::DropGear() {
+DropFuel::DropFuel() {
 	AutoTimer = new Timer();
 	Requires(gearsystem);
 }
 
 // Called just before this Command runs the first time
-void DropGear::Initialize() {
+void DropFuel::Initialize() {
 	AutoTimer->Reset();
 	AutoTimer->Start();
+	return;
 }
 
 // Called repeatedly when this Command is scheduled to run
 
-void DropGear::Execute() {
+void DropFuel::Execute() {
 	double Time = AutoTimer->Get();
-	if (Toggle) {
+	if (FuelToggle) {
 		//Set up the gear door to be ready to accept a gear.
 		gearsystem->SolenoidIV->Set(DoubleSolenoid::Value::kForward);
 		gearsystem->SolenoidI->Set(DoubleSolenoid::Value::kForward);
@@ -32,10 +33,11 @@ void DropGear::Execute() {
 			gearsystem->StopAll();
 		}
 	}
+	return;
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool DropGear::IsFinished() {
+bool DropFuel::IsFinished() {
 	if (AutoTimer->Get() < 1) {
 		return false;
 	} else {
@@ -44,12 +46,14 @@ bool DropGear::IsFinished() {
 }
 
 // Called once after isFinished returns true
-void DropGear::End() {
-	Toggle = !Toggle;
+void DropFuel::End() {
+	FuelToggle = !FuelToggle;
+	return;
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void DropGear::Interrupted() {
-	Toggle = !Toggle;
+void DropFuel::Interrupted() {
+	FuelToggle = !FuelToggle;
+	return;
 }

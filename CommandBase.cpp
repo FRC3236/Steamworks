@@ -12,7 +12,6 @@ OI* CommandBase::controls = NULL;
 DriveTrain* CommandBase::drivetrain = NULL;
 RopeClimber* CommandBase::ropeclimber = NULL;
 GearSystem* CommandBase::gearsystem = NULL;
-
 CommandBase::CommandBase(char const *name): frc::Command(name) {}
 
 CommandBase::CommandBase(): frc::Command() {}
@@ -20,6 +19,12 @@ CommandBase::CommandBase(): frc::Command() {}
 void CommandBase::init() {
 
 	std::cout << "[commandbase] CommandBase initalizing..." << std::endl;
+
+	drivetrain = NULL;
+	controls = NULL;
+	ropeclimber = NULL;
+	gearsystem = NULL;
+
 
 	drivetrain = new DriveTrain();
 	controls = new OI();

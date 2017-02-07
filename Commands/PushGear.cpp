@@ -18,7 +18,7 @@ void PushGear::Execute() {
 		gearsystem->SolenoidIV->Set(DoubleSolenoid::Value::kForward);
 	} else if (Time > 0.3 && Time < 0.6) {
 		gearsystem->SolenoidII->Set(DoubleSolenoid::Value::kReverse);
-	} else if (Time > 0.6 && Time < 1) {
+	} else if (Time > 0.6 && Time < 1.3) {
 		gearsystem->SolenoidII->Set(DoubleSolenoid::Value::kForward);
 		gearsystem->SolenoidIV->Set(DoubleSolenoid::Value::kReverse);
 	} else {
@@ -28,7 +28,7 @@ void PushGear::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool PushGear::IsFinished() {
-	if (AutoTimer->Get() < 1) {
+	if (AutoTimer->Get() < 1.3) {
 		return false;
 	} else {
 		return true;

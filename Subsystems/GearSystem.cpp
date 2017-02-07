@@ -40,7 +40,6 @@ void GearSystem::StopAll() {
 	SolenoidII->Set(DoubleSolenoid::Value::kOff);
 	SolenoidIII->Set(DoubleSolenoid::Value::kOff);
 	SolenoidIV->Set(DoubleSolenoid::Value::kOff);
-	this->StopCompressor();
 }
 
 void GearSystem::StartCompressor() {

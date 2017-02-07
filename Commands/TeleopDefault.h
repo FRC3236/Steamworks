@@ -7,7 +7,8 @@
 
 #ifndef TELEOPDEFAULT_H
 #define TELEOPDEFAULT_H
-
+#include "PushGear.h"
+#include "DropGear.h"
 #include "../CommandBase.h"
 
 class TeleopDefault: public CommandBase {

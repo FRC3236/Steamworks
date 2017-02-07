@@ -9,7 +9,6 @@ OI::OI() {
 
 	std::cout << "[oi] OperatorInterface initializing..." << std::endl;
 
-	// Process operator interface input here.
 	RightStick = new Joystick(RIGHTSTICKPORT); //Driver stick
 	LeftStick = new Joystick(LEFTSTICKPORT); //Operator Stick
 
@@ -19,14 +18,20 @@ OI::OI() {
 	TraverseButton = new JoystickButton(RightStick, TRAVERSEBUTTON);
 
 	//Operator Stick
-	DropGearButton = new JoystickButton(LeftStick, 3);
-	DropGearButton->WhenPressed(new DropGear());
+	DropGearButton = new JoystickButton(LeftStick, 5);
+	PushGearButton = new JoystickButton(LeftStick, 3);
+	//PushGearButton->WhenPressed(new PushGear());
+	DropFuelButton = new JoystickButton(LeftStick, 6);
+	ClimberButton = new JoystickButton(LeftStick, 1);
 
-	PushGearButton = new JoystickButton(LeftStick, 5);
-	PushGearButton->WhenPressed(new PushGear());
+	//Used for adding fuel to the hopper
+	//DropFuelButton->WhenPressed(new DropFuel());
 
-	DropFuelButton = new JoystickButton(LeftStick, 4); //Used for adding fuel to the hopper
-	//DropBallButton->WhenPressed(new DropFuel());
+	//DropGearButton->WhenPressed(new DropGear());
+	//DropFuelButton->WhenPressed(new DropFuel());
+	//PushGearButton->WhenPressed(new PushGear());
+	//ClimberButton->WhenPressed(new DisableCompressor());
+	//ClimberButton->WhenReleased(new EnableCompressor());
 
 	std::cout << "[oi] OperatorInterface initialized." << std::endl;
 }
