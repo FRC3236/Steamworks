@@ -22,6 +22,8 @@
 */
 
 
+//I just wanna see shweg. -Kevin, 2k17.
+
 #include <memory>
 
 #include <Commands/Command.h>
@@ -47,13 +49,17 @@ private:
 	frc::SendableChooser<frc::Command*> teleopChooser;
 	std::unique_ptr<frc::Command> autonomousMode;
 	std::unique_ptr<frc::Command> teleopMode;
+	frc::Command* teleopDefault;
+	frc::Command* autoDefault;
+	frc::Command* dropGear;
+	frc::Command* pushGear;
 
 
 	static void VisionThread() {
 		cs::UsbCamera camera = CameraServer::GetInstance()->StartAutomaticCapture();
 		if (camera.IsConnected()) {
 			camera.SetResolution(640,480);
-			camera.SetFPS(30);
+			camera.SetFPS(60);
 			cs::CvSink cvSink = CameraServer::GetInstance()->GetVideo();
 			cs::CvSource outputStreamStd = CameraServer::GetInstance()->PutVideo("Color", 640, 480);
 			cv::Mat source;
@@ -76,10 +82,20 @@ public:
 
 		CommandBase::init();
 
-		teleopChooser.AddDefault("Default Driver", new TeleopDefault());
-		autonomousChooser.AddDefault("AutoDefault", new AutoDefault());
-		autonomousChooser.AddObject("DropGear", new DropGear());
-		autonomousChooser.AddObject("PushGear", new PushGear());
+		teleopDefault = NULL;
+		autoDefault = NULL;
+		pushGear = NULL;
+		dropGear = NULL;
+		teleopDefault = new TeleopDefault();
+		autoDefault = new AutoDefault();
+		pushGear = new PushGear();
+		dropGear = new DropGear();
+
+
+		teleopChooser.AddDefault("Default Driver", teleopDefault);
+		autonomousChooser.AddDefault("AutoDefault", autoDefault);
+		autonomousChooser.AddObject("DropGear", dropGear);
+		autonomousChooser.AddObject("PushGear", pushGear);
 		frc::SmartDashboard::PutData("Auto Modes", &autonomousChooser);
 		frc::SmartDashboard::PutData("Teleop Modes", &teleopChooser);
 

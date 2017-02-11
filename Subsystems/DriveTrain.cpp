@@ -57,24 +57,76 @@ void DriveTrain::Initialize() {
 
 void DriveTrain::Drive(double speed) {
 
-	DriveBackLeft->Set(speed);
-	DriveBackRight->Set(-speed);
-	DriveFrontLeft->Set(speed);
-	DriveFrontRight->Set(-speed);
+	DriveBackLeft->Set(-speed);
+	DriveBackRight->Set(speed);
+	DriveFrontLeft->Set(-speed);
+	DriveFrontRight->Set(speed);
 	return;
 
 }
 
+void DriveTrain::Traverse(double X, double Y) {
+	double TurnAngle;
+	double Speed;
+	if (Y >= 0) {
+		TurnAngle = atan2f(-X, Y)/(2*M_PI);
+		Speed = hypotf(Y, X)/3;
+	} else if (Y < 0) {
+		TurnAngle = (atan2f(-X, Y)/(2*M_PI))+0.5;
+		Speed = -(hypotf(Y, X)/3);
+	} else {
+		TurnAngle = 0;
+		Speed = 0;
+	}
+
+	std::cout << "SWERVEANGLE: " << TurnAngle << std::endl;
+	if (fabs(Speed) > JOYSTICKDEADZONE) {
+		this->DoAutoAlign(TurnAngle, TurnAngle, TurnAngle, TurnAngle);
+		this->Drive(Speed);
+	} else {
+		this->Drive(0);
+		this->ResetAlignment();
+	}
+}
+
+void DriveTrain::TurnAbout(double Distance, double Speed) {
+	double LeftDegree = -0.5*M_1_PI*atanf(7.5/(Distance-7.5));
+	double RightDegree = -0.5*M_1_PI*atanf(7.5/(Distance+7.5));
+	double Swing = hypotf(7.5, Distance + 7.5)/hypotf(7.5, Distance - 7.5) || 1;
+	double LeftSpeed;
+	double RightSpeed;
+	if (Swing > 1) {
+		LeftSpeed = Speed;
+		RightSpeed = Speed/Swing;
+	} else if (Swing < 1) {
+		LeftSpeed = Speed*Swing;
+		RightSpeed = Speed;
+	} else {
+		LeftSpeed = Speed;
+		RightSpeed = Speed;
+	}
+
+	std::cout << "SPEEDS: " << Swing << " " << LeftSpeed << "  " << RightSpeed << std::endl;
+
+	//std::cout << "[drivetrain] Right degree:" << RightDegree << std::endl << "Left Degree: " << LeftDegree << std::endl;
+	this->DoAutoAlign(LeftDegree, -LeftDegree, -RightDegree, RightDegree);
+	DriveBackLeft->Set(-LeftSpeed);
+	DriveBackRight->Set(RightSpeed);
+	DriveFrontLeft->Set(-LeftSpeed);
+	DriveFrontRight->Set(RightSpeed);
+}
+
 double DriveTrain::DegreeToRadian(double Degree) {
 	return 360/Degree;
+	//return M_PI*Degree/180;
 }
 
 void DriveTrain::DoAutoAlign(double DFLA, double DBLA, double DBRA, double DFRA) {
 
-	double CorrectionMultiplier = 5.5; //frc::SmartDashboard::GetNumber("Wheel Alignment Correction", CorrectionMultiplier);
-	double CorrectionAdditive = 0.05; //frc::SmartDashboard::GetNumber("Wheel Alignment Additive", CorrectionAdditive);
+	double CorrectionMultiplier = 9; //frc::SmartDashboard::GetNumber("Wheel Alignment Correction", CorrectionMultiplier);
+	double CorrectionAdditive = 0; //frc::SmartDashboard::GetNumber("Wheel Alignment Additive", CorrectionAdditive);
 
-	std::cout << "CORRECTION NUMBERS:: " << CorrectionMultiplier << " " << CorrectionAdditive;
+	//std::cout << "CORRECTION NUMBERS:: " << CorrectionMultiplier << " " << CorrectionAdditive << std::endl;
 
 	double TURNMODIFIERCORRECTION = fabs(((DriveBackLeftCAN->GetPosition()-DBLA))*CorrectionMultiplier) + CorrectionAdditive;
 	if (DBLA + TURNMARGINOFERROR <= DriveBackLeftCAN->GetPosition() )

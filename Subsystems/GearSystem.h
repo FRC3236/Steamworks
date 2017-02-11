@@ -20,6 +20,8 @@ public:
 
 	Compressor *CompressorPort;
 
+	bool TopToggle;
+
 	GearSystem();
 	void Initalize();
 	void Execute();
@@ -27,6 +29,7 @@ public:
 	void StartCompressor();
 	void StopCompressor();
 	void ToggleCompressor();
+	void Toggle(); //For toggling the commands
 };
 
 

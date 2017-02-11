@@ -33,3 +33,13 @@ void CommandBase::init() {
 
 	std::cout << "[commandbase] CommandBase initialized." << std::endl;
 }
+
+void CommandBase::Reset() {
+	drivetrain = NULL;
+	controls = NULL;
+	ropeclimber = NULL;
+
+	drivetrain = new DriveTrain();
+	controls = new OI();
+	ropeclimber = new RopeClimber();
+}

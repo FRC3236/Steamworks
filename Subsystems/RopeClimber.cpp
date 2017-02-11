@@ -30,6 +30,7 @@ void RopeClimber::Execute() {
 }
 
 void RopeClimber::Climb(double Multiplier) {
+	//std::cout << "CLIMBING " << Multiplier << std::endl;
 	ClimbLeftTalon->Set(-1*Multiplier);
 	ClimbRightTalon->Set(-1*Multiplier);
 }

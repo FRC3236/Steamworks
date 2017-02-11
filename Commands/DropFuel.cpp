@@ -1,8 +1,6 @@
 #include "DropFuel.h"
 #include "WPILib.h"
 
-bool FuelToggle = false;
-
 DropFuel::DropFuel() {
 	AutoTimer = new Timer();
 	Requires(gearsystem);
@@ -19,9 +17,9 @@ void DropFuel::Initialize() {
 
 void DropFuel::Execute() {
 	double Time = AutoTimer->Get();
-	if (FuelToggle) {
+	if (gearsystem->TopToggle) {
 		//Set up the gear door to be ready to accept a gear.
-		gearsystem->SolenoidIV->Set(DoubleSolenoid::Value::kForward);
+		gearsystem->SolenoidIV->Set(DoubleSolenoid::Value::kReverse);
 		gearsystem->SolenoidI->Set(DoubleSolenoid::Value::kForward);
 	} else {
 		//Time the gear system to drop a gear.
@@ -47,13 +45,13 @@ bool DropFuel::IsFinished() {
 
 // Called once after isFinished returns true
 void DropFuel::End() {
-	FuelToggle = !FuelToggle;
+	gearsystem->Toggle();
 	return;
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void DropFuel::Interrupted() {
-	FuelToggle = !FuelToggle;
+	gearsystem->Toggle();
 	return;
 }

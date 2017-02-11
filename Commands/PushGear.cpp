@@ -9,6 +9,7 @@ PushGear::PushGear() {
 void PushGear::Initialize() {
 	AutoTimer->Reset();
 	AutoTimer->Start();
+	return;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -24,6 +25,7 @@ void PushGear::Execute() {
 	} else {
 		gearsystem->StopAll();
 	}
+	return;
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -37,11 +39,11 @@ bool PushGear::IsFinished() {
 
 // Called once after isFinished returns true
 void PushGear::End() {
-
+	return;
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void PushGear::Interrupted() {
-
+	return;
 }

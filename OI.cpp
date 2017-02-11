@@ -23,13 +23,12 @@ OI::OI() {
 	//PushGearButton->WhenPressed(new PushGear());
 	DropFuelButton = new JoystickButton(LeftStick, 6);
 	ClimberButton = new JoystickButton(LeftStick, 1);
+	RopeClimbButton = new JoystickButton(LeftStick,4);
 
 	//Used for adding fuel to the hopper
 	//DropFuelButton->WhenPressed(new DropFuel());
 
-	//DropGearButton->WhenPressed(new DropGear());
 	//DropFuelButton->WhenPressed(new DropFuel());
-	//PushGearButton->WhenPressed(new PushGear());
 	//ClimberButton->WhenPressed(new DisableCompressor());
 	//ClimberButton->WhenReleased(new EnableCompressor());
 

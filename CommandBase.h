@@ -18,10 +18,10 @@ public:
 	static DriveTrain *drivetrain;
 	static RopeClimber *ropeclimber;
 
-	void Reset();
 	CommandBase(char const *name);
 	CommandBase();
 	static void init();
+	static void Reset();
 };
 
 #endif //COMMAND_BASE_H

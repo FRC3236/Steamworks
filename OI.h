@@ -17,7 +17,8 @@ public:
 	JoystickButton	*DropGearButton,
 					*PushGearButton,
 					*DropFuelButton,
-					*ClimberButton;
+					*ClimberButton,
+					*RopeClimbButton;
 
 
 	//Operator stick stuff

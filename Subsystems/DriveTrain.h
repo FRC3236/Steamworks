@@ -26,6 +26,8 @@ public:
 	void DoAutoAlign(double, double, double, double);
 	void ResetAlignment();
 	void Drive(double);
+	void Traverse(double, double);
+	void TurnAbout(double, double);
 	void KillDrive();
 	void SetZeros();
 	void DriveSpecial(double, double, double, double);

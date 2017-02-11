@@ -24,18 +24,19 @@ void AutoDefault::Initialize() {
 
 void AutoDefault::Execute() {
 	std::cout << "[autonomous] Program 'AutoDefault' is executing." << std::endl;
-	if (AutoTimer->Get() < 1) {
-		drivetrain->Drive(0.2);
-	} else if (AutoTimer->Get() > 1 && AutoTimer->Get() < 2) {
-		drivetrain->DoAutoAlign(0.125, 0.125, 0.125, 0.125);
-		drivetrain->Drive(-0.2);
-	} else {
+	if (AutoTimer->Get() < 4.5) {
+		drivetrain->Drive(-0.5);
+		drivetrain->DoAutoAlign(0,0,0,0);
+	} else if (AutoTimer->Get() > 4.5) {
+		//drivetrain->Drive(0);
 		this->End();
+	} else {
+		drivetrain->Drive(0);
 	}
 }
 
 bool AutoDefault::IsFinished() {
-	if (AutoTimer->Get() < 2) {
+	if (AutoTimer->Get() < 4.4) {
 		return false;
 	} else {
 		return true;

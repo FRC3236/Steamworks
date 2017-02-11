@@ -1,8 +1,6 @@
 #include "DropGear.h"
 #include "WPILib.h"
 
-bool Toggle = false;
-
 DropGear::DropGear() {
 	AutoTimer = new Timer();
 	Requires(gearsystem);
@@ -12,13 +10,14 @@ DropGear::DropGear() {
 void DropGear::Initialize() {
 	AutoTimer->Reset();
 	AutoTimer->Start();
+	return;
 }
 
 // Called repeatedly when this Command is scheduled to run
 
 void DropGear::Execute() {
 	double Time = AutoTimer->Get();
-	if (Toggle) {
+	if (gearsystem->TopToggle) {
 		//Set up the gear door to be ready to accept a gear.
 		gearsystem->SolenoidIV->Set(DoubleSolenoid::Value::kForward);
 		gearsystem->SolenoidI->Set(DoubleSolenoid::Value::kForward);
@@ -32,6 +31,7 @@ void DropGear::Execute() {
 			gearsystem->StopAll();
 		}
 	}
+	return;
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -45,11 +45,13 @@ bool DropGear::IsFinished() {
 
 // Called once after isFinished returns true
 void DropGear::End() {
-	Toggle = !Toggle;
+	gearsystem->Toggle();
+	return;
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void DropGear::Interrupted() {
-	Toggle = !Toggle;
+	gearsystem->Toggle();
+	return;
 }

@@ -12,6 +12,7 @@ GearSystem::GearSystem() : Subsystem("GearSystem") {
 	//Solenoid3 does nothing
 	//Solenoid4 is the gear/ball toggle - forward is up, reverse is down.
 
+	TopToggle = false;
 
 	CompressorPort = new Compressor(0);
 	SolenoidI = new DoubleSolenoid(SolenoidIPort, SolenoidIPort+1);
@@ -52,4 +53,8 @@ void GearSystem::StopCompressor() {
 
 void GearSystem::ToggleCompressor() {
 	CompressorPort->SetClosedLoopControl(!CompressorPort->GetClosedLoopControl());
+}
+
+void GearSystem::Toggle() {
+	TopToggle = !TopToggle;
 }

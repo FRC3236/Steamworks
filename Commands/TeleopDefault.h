@@ -13,6 +13,8 @@
 
 class TeleopDefault: public CommandBase {
 public:
+	DropGear *dropgear;
+	PushGear *pushgear;
 	Timer *TeleopTimer;
 	TeleopDefault();
 	void Initialize() override;
