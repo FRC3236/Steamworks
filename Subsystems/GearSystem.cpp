@@ -20,6 +20,8 @@ GearSystem::GearSystem() : Subsystem("GearSystem") {
 	SolenoidIII = new DoubleSolenoid(SolenoidIIIPort, SolenoidIIIPort+1);
 	SolenoidIV = new DoubleSolenoid(SolenoidIVPort, SolenoidIVPort+1);
 
+	LimitSwitch = new DigitalInput(0);
+
 	std::cout << "[gearsystem] GearSystem initialized." << std::endl;
 
 }

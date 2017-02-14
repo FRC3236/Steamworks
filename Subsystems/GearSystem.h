@@ -17,6 +17,7 @@ public:
 	DoubleSolenoid *SolenoidII;
 	DoubleSolenoid *SolenoidIII;
 	DoubleSolenoid *SolenoidIV;
+	DigitalInput *LimitSwitch;
 
 	Compressor *CompressorPort;
 

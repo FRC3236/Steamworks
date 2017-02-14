@@ -1,59 +1,30 @@
-/*
- * AutoDefault.cpp
- *
- *  Created on: Jan 28, 2017
- *      Author: ROBOTICS-Net
- */
 #include "AutoDefault.h"
-#include "../CommandBase.h"
+#include "AutoDrive.h"
+#include "PushGear.h"
+#include "DoNothing.h"
+#include "ZeroWheels.h"
+AutoDefault::AutoDefault() {
+	// Add Commands here:
+	// e.g. AddSequential(new Command1());
+	//      AddSequential(new Command2());
+	// these will run in order.
 
-AutoDefault::AutoDefault() : CommandBase("AutoDefault") {
-	Requires(drivetrain);
-	drivetrain->ResetAlignment();
-	AutoTimer = new Timer();
+	// To run multiple commands at the same time,
+	// use AddParallel()
+	// e.g. AddParallel(new Command1());
+	//      AddSequential(new Command2());
+	// Command1 and Command2 will run in parallel.
+
+	// A command group will require all of the subsystems that each member
+	// would require.
+	// e.g. if Command1 requires chassis, and Command2 requires arm,
+	// a CommandGroup containing them would require both the chassis and the
+	// arm.
+	AddSequential(new AutoDrive(0.3), 2.5);
+	AddSequential(new DoNothing(), 0.75);
+	AddSequential(new PushGear());
+	AddSequential(new DoNothing(), 0.75);
+	AddSequential(new ZeroWheels(), 1);
+	AddSequential(new AutoDrive(-0.3), 1);
+	AddSequential(new ZeroWheels(), 0.5);
 }
-
-void AutoDefault::Initialize() {
-	std::cout << "[autonomous] Program 'AutoDefault' is initializing." << std::endl;
-
-	frc::SmartDashboard::PutNumber("Autonomous Time", AutoTimer->Get());
-	drivetrain->ResetAlignment();
-	AutoTimer->Reset();
-	AutoTimer->Start();
-}
-
-void AutoDefault::Execute() {
-	std::cout << "[autonomous] Program 'AutoDefault' is executing." << std::endl;
-	if (AutoTimer->Get() < 4.5) {
-		drivetrain->Drive(-0.5);
-		drivetrain->DoAutoAlign(0,0,0,0);
-	} else if (AutoTimer->Get() > 4.5) {
-		//drivetrain->Drive(0);
-		this->End();
-	} else {
-		drivetrain->Drive(0);
-	}
-}
-
-bool AutoDefault::IsFinished() {
-	if (AutoTimer->Get() < 4.4) {
-		return false;
-	} else {
-		return true;
-	}
-}
-
-void AutoDefault::Interrupted() {
-	std::cout << "[autonomous] Program 'AutoDefault' has been interrupted. Aborting..." << std::endl;
-	this->End();
-	return;
-}
-
-void AutoDefault::End() {
-	std::cout << "[autonomous] Program 'AutoDefault' has reached the end of its sequence." << std::endl;
-	drivetrain->ResetAlignment();
-	drivetrain->KillDrive();
-	AutoTimer->Stop();
-	return;
-}
-

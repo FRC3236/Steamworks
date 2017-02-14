@@ -58,7 +58,7 @@ void TeleopDefault::Execute() {
 	frc::SmartDashboard::PutNumber("Solenoid IV (gear/ball toggle)", gearsystem->SolenoidIV->Get());
 
 	if (controls->TraverseButton->Get()) {
-		drivetrain->Traverse(controls->RightStick->GetX(), controls->RightStick->GetY());
+		drivetrain->Traverse2(controls->RightStick->GetX(), controls->RightStick->GetY());
 	} else if (controls->SpinButton->Get()) {
 		drivetrain->DoAutoAlign(0.125, -0.125, 0.125, -0.125);
 		double DeadzoneX = controls->RightStick->GetX();
@@ -68,6 +68,9 @@ void TeleopDefault::Execute() {
 		} else {
 			drivetrain->Drive(0);
 		}
+
+	} else if (controls->LeftStick->GetRawButton(11)) {
+		drivetrain->SpinTo(90, 0.5);
 	} else {
 		drivetrain->TurnAbout(15/(controls->RightStick->GetX()),controls->RightStick->GetY());
 	}

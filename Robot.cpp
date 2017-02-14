@@ -40,6 +40,8 @@
 #include "Commands/TeleopDefault.h"
 #include "Commands/DropGear.h"
 #include "Commands/PushGear.h"
+#include "Commands/AutoDrive.h"
+#include "Commands/DoNothing.h"
 
 #include "CommandBase.h"
 
@@ -103,6 +105,7 @@ public:
 	}
 
 	void AutonomousInit() override {
+		autonomousMode.release(); //RELINQUISH THE AUTONOMOUS!
 		autonomousMode.reset(autonomousChooser.GetSelected());
 		if (autonomousMode != nullptr) {
 			autonomousMode->Start();
@@ -119,6 +122,8 @@ public:
 	}
 
 	void TeleopInit() override {
+		//teleopMode.reset(teleopChooser.GetSelected());
+		teleopMode.release(); //RELINQUISH THE TELEOP!
 		teleopMode.reset(teleopChooser.GetSelected());
 		if (teleopMode != nullptr) {
 			std::cout << "[teleop] Teleop mode is starting." << std::endl;

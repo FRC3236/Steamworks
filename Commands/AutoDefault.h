@@ -1,25 +1,11 @@
-/*
- * AutoDefault.h
- *
- *  Created on: Jan 28, 2017
- *      Author: ROBOTICS-Net
- */
+#ifndef AutoDefault_H
+#define AutoDefault_H
 
-#ifndef AUTODEFAULT_H
-#define AUTODEFAULT_H
+#include <Commands/CommandGroup.h>
 
-#include "../CommandBase.h"
-
-class AutoDefault: public CommandBase {
+class AutoDefault : public CommandGroup {
 public:
-
-	Timer *AutoTimer;
 	AutoDefault();
-	void Initialize() override;
-	void Execute() override;
-	bool IsFinished() override;
-	void End() override;
-	void Interrupted() override;
 };
 
-#endif /* SRC_COMMANDS_AUTODEFAULT_H_ */
+#endif  // AutoDefault_H
