@@ -17,12 +17,12 @@
 #include <cmath>
 
 TeleopDefault::TeleopDefault() {
-	std::cout << "Making a new teleop!" << std::endl;
 	Requires(drivetrain);
 	Requires(ropeclimber);
 	TeleopTimer = new Timer();
 	dropgear = new DropGear();
-	pushgear = new PushGear();
+	pushgear = new PushGear(true);
+	pushgearoverride = new PushGear(false);
 	//this->SetInterruptible(false);
 }
 
@@ -33,11 +33,12 @@ void TeleopDefault::Initialize() {
 	TeleopTimer->Start();
 
 	controls->DropGearButton->WhenPressed(new DropGear());
-	//controls->DropGearButton->WhenReleased(this);
-	//controls->DropFuelButton->ToggleWhenPressed();
-	//controls->DropFuelButton->WhenReleased(this);
-	controls->PushGearButton->WhenPressed(new PushGear());
-	//controls->PushGearButton->WhenReleased(this);
+
+	controls->PushGearButton->WhenPressed(this->pushgear);
+	controls->GearSafetyButton->WhenPressed(this->pushgearoverride);
+
+	controls->ClimberButton->WhenPressed(new DisableCompressor()); //disable the compressor during climb.
+	controls->ClimberButton->WhenReleased(new EnableCompressor()); //reenable the compressor after the climb.
 
 	//Print Solenoid information to smart dashboard for debugging.
 	frc::SmartDashboard::PutNumber("Solenoid I (gear door)", gearsystem->SolenoidI->Get());
@@ -50,15 +51,15 @@ void TeleopDefault::Initialize() {
 
 void TeleopDefault::Execute() {
 
-	//std::cout << "TeleopDefault Execute!" << std::endl;
-
 	frc::SmartDashboard::PutNumber("Solenoid I (gear door)", gearsystem->SolenoidI->Get());
 	frc::SmartDashboard::PutNumber("Solenoid II (gear pusher)", gearsystem->SolenoidII->Get());
 	frc::SmartDashboard::PutNumber("Solenoid III (doesn't do anything)", 0);
 	frc::SmartDashboard::PutNumber("Solenoid IV (gear/ball toggle)", gearsystem->SolenoidIV->Get());
 
 	if (controls->TraverseButton->Get()) {
-		drivetrain->Traverse2(controls->RightStick->GetX(), controls->RightStick->GetY());
+		drivetrain->TraverseSimple(controls->RightStick->GetX());
+	} else if (controls->RightStick->GetPOV() >= 0) {
+		drivetrain->Crawl((double) controls->RightStick->GetPOV()/360);
 	} else if (controls->SpinButton->Get()) {
 		drivetrain->DoAutoAlign(0.125, -0.125, 0.125, -0.125);
 		double DeadzoneX = controls->RightStick->GetX();
@@ -72,7 +73,7 @@ void TeleopDefault::Execute() {
 	} else if (controls->LeftStick->GetRawButton(11)) {
 		drivetrain->SpinTo(90, 0.5);
 	} else {
-		drivetrain->TurnAbout(15/(controls->RightStick->GetX()),controls->RightStick->GetY());
+		drivetrain->TurnAbout(15*fabs(controls->RightStick->GetX())/(powf(controls->RightStick->GetX(),3)),-(controls->RightStick->GetY()));
 	}
 
 	//Operator stuff is handed by OI.cpp and the buttons' "WhenPressed()" method.
@@ -90,7 +91,9 @@ bool TeleopDefault::IsFinished() {
 
 void TeleopDefault::End() {
 	std::cout << "[teleop] Teleop->End() has been called. Ending Teleop..." << std::endl;
-	//CommandBase::Reset(); //Reset all the subsystems to be new again!
+	drivetrain->Drive(0);
+	drivetrain->KillSpin();
+	drivetrain->ResetAlignment();
 }
 
 void TeleopDefault::Interrupted() {

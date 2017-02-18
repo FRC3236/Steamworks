@@ -4,9 +4,13 @@
 #include "../CommandBase.h"
 
 class PushGear : public CommandBase {
+
 public:
+	bool safety;
 	Timer *AutoTimer;
-	PushGear();
+	bool finished;
+	bool startedtimer;
+	PushGear(bool);
 	void Initialize();
 	void Execute();
 	bool IsFinished();

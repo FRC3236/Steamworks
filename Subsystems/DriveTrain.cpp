@@ -7,7 +7,7 @@
 #include "DriveTrain.h"
 #include "WPILib.h"
 #include "../RobotMap.h"
-#include "../Douboole.h"
+
 /*
  *
  */
@@ -67,7 +67,7 @@ void DriveTrain::Initialize() {
  *
  */
 void DriveTrain::Drive(double speed) {
-	this->DriveSpecial(speed,speed,speed,speed);
+	this->DriveSpecial(speed,speed,-speed,-speed);
 
 	return;
 }
@@ -77,14 +77,14 @@ void DriveTrain::Drive(double speed) {
  */
 void DriveTrain::Drive2(double speed) {
 	if (fabs(this->GetDeltaAngle2(DriveBackLeftCAN->GetPosition(), DBLA)) < 0.25) {
-		DriveBackLeft->Set(speed);
-	} else {
 		DriveBackLeft->Set(-speed);
+	} else {
+		DriveBackLeft->Set(speed);
 	}
 	if (fabs(this->GetDeltaAngle2(DriveBackRightCAN->GetPosition(), DBRA)) < 0.25) {
-		DriveBackRight->Set(-speed);
-	} else {
 		DriveBackRight->Set(speed);
+	} else {
+		DriveBackRight->Set(-speed);
 	}
 	if (fabs(this->GetDeltaAngle2(DriveFrontLeftCAN->GetPosition(), DFLA)) < 0.25) {
 		DriveFrontLeft->Set(-speed);
@@ -96,6 +96,24 @@ void DriveTrain::Drive2(double speed) {
 	} else {
 		DriveFrontRight->Set(-speed);
 	}
+}
+
+/*
+ *
+ */
+void DriveTrain::Crawl(double Angle) {
+	double Speed = 0.4;
+	this->DoAutoAlign(Angle, Angle, Angle, Angle);
+	this->Drive(Speed);
+}
+
+/*
+ *
+ */
+void DriveTrain::TraverseSimple(double Speed) {
+	this->DoAutoAlign(0.25, 0.25, 0.25, 0.25);
+	this->Drive(Speed);
+	return;
 }
 
 /*
@@ -118,7 +136,7 @@ void DriveTrain::Traverse(double X, double Y) {
 	std::cout << "SWERVEANGLE: " << TurnAngle << std::endl;
 	this->DoAutoAlign(TurnAngle, TurnAngle, TurnAngle, TurnAngle);
 	if (fabs(Speed) > JOYSTICKDEADZONE) {
-		this->Drive(Speed);
+		this->DriveSpecial(-Speed,Speed,-Speed,Speed);
 	} else {
 		this->Drive(0);
 	}
@@ -173,14 +191,9 @@ void DriveTrain::TurnAbout(double Radius, double Speed) {
 		RightSpeed = Speed;
 	}
 
-	std::cout << "SPEEDS: " << Swing << " " << LeftSpeed << "  " << RightSpeed << std::endl;
-
 	//std::cout << "[drivetrain] Right degree:" << RightDegree << std::endl << "Left Degree: " << LeftDegree << std::endl;
 	this->DoAutoAlign(LeftDegree, -LeftDegree, -RightDegree, RightDegree);
-	DriveBackLeft->Set(-LeftSpeed);
-	DriveBackRight->Set(RightSpeed);
-	DriveFrontLeft->Set(-LeftSpeed);
-	DriveFrontRight->Set(RightSpeed);
+	this->DriveSpecial(LeftSpeed, LeftSpeed, -RightSpeed, -RightSpeed);
 	return;
 }
 
@@ -202,7 +215,7 @@ void DriveTrain::DriveStraight(double Speed, double StartAngle) {
 	//double MarginOfError = 1;
 	double DeltaAngle = StartAngle - Gyro->GetAngle();
 	std::cout << Speed << std::endl;
-	if (fabs(floor(DeltaAngle))==0) {
+	if (fabs(DeltaAngle) < 0.05) {
 		this->Drive(Speed);
 	} else {
 		this->TurnAbout(360/DeltaAngle, Speed);
@@ -227,7 +240,6 @@ void DriveTrain::DoAutoAlign(double _DFLA, double _DBLA, double _DBRA, double _D
 	//std::cout << "CORRECTION NUMBERS:: " << CorrectionMultiplier << " " << CorrectionAdditive << std::endl;
 
 	double TURNMODIFIERCORRECTION = this->GetDeltaAngle(DriveBackLeftCAN->GetPosition(), DBLA);
-	std::cout << "MODIFIER: " << TURNMODIFIERCORRECTION << std::endl;
 	if (fabs(TURNMODIFIERCORRECTION) > TURNMARGINOFERROR) {
 		DriveBackLeftCAN->Set(-TURNMODIFIERCORRECTION * CorrectionMultiplier);
 	} else {

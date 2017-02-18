@@ -21,9 +21,9 @@
 *
 */
 
-
 //I just wanna see shweg. -Kevin, 2k17.
 
+#include <Commands/AutoCenterPeg.h>
 #include <memory>
 
 #include <Commands/Command.h>
@@ -35,13 +35,16 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+#include "Subsystems/BetterCameraServer.h"
+
 //Include all the commands//
-#include "Commands/AutoDefault.h"
 #include "Commands/TeleopDefault.h"
 #include "Commands/DropGear.h"
 #include "Commands/PushGear.h"
 #include "Commands/AutoDrive.h"
+#include "Commands/AutoDriveForward.h"
 #include "Commands/DoNothing.h"
+#include "Commands/AutoLeftPeg.h"
 
 #include "CommandBase.h"
 
@@ -56,11 +59,11 @@ private:
 	frc::Command* dropGear;
 	frc::Command* pushGear;
 
-
 	static void VisionThread() {
-		cs::UsbCamera camera = CameraServer::GetInstance()->StartAutomaticCapture();
+		cs::UsbCamera camera = frc::CameraServer::GetInstance()->StartAutomaticCapture();
+		camera.SetBrightness(20);
 		if (camera.IsConnected()) {
-			camera.SetResolution(640,480);
+			camera.SetResolution(640,480); //lower than 480p
 			camera.SetFPS(60);
 			cs::CvSink cvSink = CameraServer::GetInstance()->GetVideo();
 			cs::CvSource outputStreamStd = CameraServer::GetInstance()->PutVideo("Color", 640, 480);
@@ -79,6 +82,7 @@ public:
 	void RobotInit() override {
 		std::cout << "[robot] Robot initalizing..." << std::endl;
 
+		//std::thread visionThread(BetterCameraServer::Thread);
 		std::thread visionThread(VisionThread);
 		visionThread.detach();
 
@@ -90,15 +94,15 @@ public:
 		dropGear = NULL;
 		teleopDefault = new TeleopDefault();
 		autoDefault = new AutoDefault();
-		pushGear = new PushGear();
 		dropGear = new DropGear();
 
 
-		teleopChooser.AddDefault("Default Driver", teleopDefault);
-		autonomousChooser.AddDefault("AutoDefault", autoDefault);
-		autonomousChooser.AddObject("DropGear", dropGear);
-		autonomousChooser.AddObject("PushGear", pushGear);
+		teleopChooser.AddDefault("Default Driver", new TeleopDefault());
+		autonomousChooser.AddDefault("Center Start (appx. 14 seconds)", new AutoDefault());
+		autonomousChooser.AddObject("Left Start (appx ? seconds)", new AutoLeftPeg());
+		autonomousChooser.AddObject("Right Start (appx ? seconds)", new DoNothing());
 		frc::SmartDashboard::PutData("Auto Modes", &autonomousChooser);
+		frc::SmartDashboard::PutNumber("Autonomous Pause", 0);
 		frc::SmartDashboard::PutData("Teleop Modes", &teleopChooser);
 
 		std::cout << "[robot] Robot initialized." << std::endl;

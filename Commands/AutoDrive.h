@@ -4,6 +4,9 @@
 #include "../CommandBase.h"
 
 class AutoDrive : public CommandBase {
+private:
+	double speed;
+	double startangle;
 public:
 	AutoDrive(double);
 	void Initialize();

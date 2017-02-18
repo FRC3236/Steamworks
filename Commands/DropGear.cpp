@@ -17,12 +17,15 @@ void DropGear::Initialize() {
 
 void DropGear::Execute() {
 	double Time = AutoTimer->Get();
+	std::cout << gearsystem->LimitSwitch->Get() << " :: LIMIT SWITCH" << std::endl;
 	if (gearsystem->TopToggle) {
 		//Set up the gear door to be ready to accept a gear.
+		gearsystem->SolenoidII->Set(DoubleSolenoid::Value::kForward); //Close the gear pusher
 		gearsystem->SolenoidIV->Set(DoubleSolenoid::Value::kForward);
 		gearsystem->SolenoidI->Set(DoubleSolenoid::Value::kForward);
 	} else {
 		//Time the gear system to drop a gear.
+		gearsystem->SolenoidII->Set(DoubleSolenoid::Value::kForward); //Close the gear pusher
 		if (Time < 0.35) {
 			gearsystem->SolenoidI->Set(DoubleSolenoid::Value::kReverse);
 		} else if (Time > 0.39 && Time < 1) {

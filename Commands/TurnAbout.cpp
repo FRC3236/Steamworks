@@ -1,35 +1,33 @@
-#include "AutoDrive.h"
+#include "TurnAbout.h"
 
-
-AutoDrive::AutoDrive(double Speed) {
+TurnAbout::TurnAbout(double Distance, double Speed) {
 	Requires(drivetrain);
-	Requires(gearsystem);
+	distance = Distance;
 	speed = Speed;
-	startangle = 0;
 }
 
 // Called just before this Command runs the first time
-void AutoDrive::Initialize() {
-	this->startangle = drivetrain->Gyro->GetAngle();
+void TurnAbout::Initialize() {
+
 }
 
 // Called repeatedly when this Command is scheduled to run
-void AutoDrive::Execute() {
-	drivetrain->DriveStraight(this->speed, this->startangle);
+void TurnAbout::Execute() {
+	drivetrain->TurnAbout(this->distance, this->speed);
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool AutoDrive::IsFinished() {
+bool TurnAbout::IsFinished() {
 	return false;
 }
 
 // Called once after isFinished returns true
-void AutoDrive::End() {
-	drivetrain->Drive(0);
+void TurnAbout::End() {
+
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void AutoDrive::Interrupted() {
-	drivetrain->Drive(0);
+void TurnAbout::Interrupted() {
+
 }

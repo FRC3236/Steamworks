@@ -11,7 +11,6 @@
 #include "WPILib.h"
 #include <Commands/Subsystem.h>
 #include "CANTalon.h"
-#include "../Douboole.h"
 
 class DriveTrain: public frc::Subsystem {
 public:
@@ -31,6 +30,8 @@ public:
 	void ResetAlignment();
 	void Drive(double);
 	void Drive2(double);
+	void Crawl(double);
+	void TraverseSimple(double);
 	void Traverse(double, double);
 	void Traverse2(double, double);
 	void TurnAbout(double, double);

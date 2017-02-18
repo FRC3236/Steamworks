@@ -12,16 +12,17 @@ public:
 	//Driver stick stuff
 	JoystickButton	*ResetButton,
 					*SpinButton,
-					*TraverseButton;
-
-	JoystickButton	*DropGearButton,
-					*PushGearButton,
-					*DropFuelButton,
-					*ClimberButton,
-					*RopeClimbButton;
-
+					*TraverseButton,
+					*CameraSwitchButton;
 
 	//Operator stick stuff
+	JoystickButton	*DropGearButton,
+					*PushGearButton,
+					*PushGearOverrideButton,
+					*DropFuelButton,
+					*ClimberButton,
+					*RopeClimbButton,
+					*GearSafetyButton;
 
 	OI();
 };
