@@ -7,8 +7,12 @@
 #include "TurnAbout.h"
 #include "WPILib.h"
 AutoDefault::AutoDefault() {
+	//Current Time: 14.25
 	double pause = 0;
 	frc::SmartDashboard::GetNumber("Autonomous Pause", pause);
+	if (pause > 0.75) {
+		pause = 0.75;
+	}
 	AddSequential(new DoNothing(), pause);
 	AddSequential(new ZeroWheels(), 0.30);
 	AddSequential(new AutoDrive(0.31), 2.55);

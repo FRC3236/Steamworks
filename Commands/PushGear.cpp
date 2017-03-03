@@ -31,7 +31,7 @@ void PushGear::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void PushGear::Execute() {
 	std::cout << "PUSHGEAR: " << gearsystem->LimitSwitch->Get() << std::endl << std::endl;
-	if (gearsystem->LimitSwitch->Get() == 0 || !this->safety) {
+	if (gearsystem->LimitSwitch->Get() == 1 || !this->safety) {
 		if (!this->startedtimer) {
 			this->finished = false;
 			this->AutoTimer->Reset();
