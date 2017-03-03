@@ -83,8 +83,8 @@ public:
 		std::cout << "[robot] Robot initalizing..." << std::endl;
 
 		//std::thread visionThread(BetterCameraServer::Thread);
-		std::thread visionThread(VisionThread);
-		visionThread.detach();
+		//std::thread visionThread(VisionThread);
+		//visionThread.detach();
 
 		CommandBase::init();
 
@@ -98,9 +98,12 @@ public:
 
 
 		teleopChooser.AddDefault("Default Driver", new TeleopDefault());
-		autonomousChooser.AddDefault("Center Start (appx. 14 seconds)", new AutoDefault());
+		std::cout << "Adding autonomous modes..." << std::endl;
+		autonomousChooser.AddDefault("Center Start (appx. 14.25 seconds)", new AutoDefault());
 		autonomousChooser.AddObject("Left Start (appx ? seconds)", new AutoLeftPeg());
 		autonomousChooser.AddObject("Right Start (appx ? seconds)", new DoNothing());
+		autonomousChooser.AddObject("AutoDriveForward", new AutoDriveForward());
+		std::cout << "Completed adding autonomous modes!" << std::endl;
 		frc::SmartDashboard::PutData("Auto Modes", &autonomousChooser);
 		frc::SmartDashboard::PutNumber("Autonomous Pause", 0);
 		frc::SmartDashboard::PutData("Teleop Modes", &teleopChooser);

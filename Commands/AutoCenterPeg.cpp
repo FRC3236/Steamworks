@@ -15,7 +15,7 @@ AutoDefault::AutoDefault() {
 	}
 	AddSequential(new DoNothing(), pause);
 	AddSequential(new ZeroWheels(), 0.30);
-	AddSequential(new AutoDrive(0.31), 2.55);
+	AddSequential(new AutoDrive(0.41), 2.55);
 	AddSequential(new AutoDrive(0.1), 1.60); //coast into peg
 	AddSequential(new PushGear(true), 1.00);
 	AddSequential(new DoNothing(), 0.2);
@@ -24,7 +24,7 @@ AutoDefault::AutoDefault() {
 	AddSequential(new AutoDrive(-0.5), .9);
 	AddSequential(new ZeroWheels(), 0.20);
 	AddSequential(new SpinToFromHere(60, 0.5), 2.2);
-	AddSequential(new TurnAbout(60, 0.5), 2.10);
+	AddSequential(new TurnAbout(50, 0.6), 2.10);
 	AddSequential(new AutoDrive(0.4), 1.50);
 	AddSequential(new DoNothing(), 0.50);
 	AddSequential(new ZeroWheels(), 0.60);

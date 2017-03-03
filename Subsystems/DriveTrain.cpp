@@ -282,6 +282,23 @@ void DriveTrain::DoAutoAlign(double _DFLA, double _DBLA, double _DBRA, double _D
  *
  * @return void
  */
+
+
+bool DriveTrain::WheelsAreAligned() {
+	double FRA, FLA, BRA, BLA;
+	FRA = this->DriveFrontRightCAN->GetPosition();
+	FLA = this->DriveFrontLeftCAN->GetPosition();
+	BLA = this->DriveBackLeftCAN->GetPosition();
+	BRA = this->DriveBackRightCAN->GetPosition();
+	double margin = TURNMARGINOFERROR*2;
+	return (FRA < margin && FRA > margin) &&
+			(FLA < margin && FLA > margin) &&
+			(BRA < margin && BRA > margin) &&
+			(BLA < margin && BLA > margin);
+}
+
+
+
 void DriveTrain::DoAutoAlign2(double _DFLA, double _DBLA, double _DBRA, double _DFRA) {
 	DFLA = _DFLA;
 	DFRA = _DFRA;

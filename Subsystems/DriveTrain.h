@@ -40,6 +40,7 @@ public:
 	void DriveAlignedTo(double, double);
 	void DriveStraight(double, double);
 	void SetZeros();
+	bool WheelsAreAligned();
 	void DriveSpecial(double, double, double, double);
 	void KillSpin();
 	double DegreeToRadian(double);

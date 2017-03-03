@@ -12,6 +12,7 @@
 #include "DropGear.h"
 #include "DropFuel.h"
 #include "PushGear.h"
+#include "ZeroWheels.h"
 #include "DisableCompressor.h"
 #include "EnableCompressor.h"
 #include <cmath>
@@ -72,6 +73,8 @@ void TeleopDefault::Execute() {
 
 	} else if (controls->LeftStick->GetRawButton(11)) {
 		drivetrain->SpinTo(90, 0.5);
+	} else if (controls->ResetButton->Get()) {
+		drivetrain->DoAutoAlign(0,0,0,0);
 	} else {
 		drivetrain->TurnAbout(15*fabs(controls->RightStick->GetX())/(powf(controls->RightStick->GetX(),3)),-(controls->RightStick->GetY()));
 	}
