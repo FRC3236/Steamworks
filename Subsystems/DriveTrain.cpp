@@ -234,7 +234,7 @@ void DriveTrain::DoAutoAlign(double _DFLA, double _DBLA, double _DBRA, double _D
 	DBRA = _DBRA;
 	DBLA = _DBLA;
 
-	double CorrectionMultiplier = 5; //frc::SmartDashboard::GetNumber("Wheel Alignment Correction", CorrectionMultiplier);
+	double CorrectionMultiplier = 8; //frc::SmartDashboard::GetNumber("Wheel Alignment Correction", CorrectionMultiplier);
 	//double CorrectionAdditive = 0; //frc::SmartDashboard::GetNumber("Wheel Alignment Additive", CorrectionAdditive);
 
 	//std::cout << "CORRECTION NUMBERS:: " << CorrectionMultiplier << " " << CorrectionAdditive << std::endl;

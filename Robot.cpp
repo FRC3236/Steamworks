@@ -45,7 +45,7 @@
 #include "Commands/AutoDriveForward.h"
 #include "Commands/DoNothing.h"
 #include "Commands/AutoLeftPeg.h"
-
+#include "Commands/Drive.h"-0
 #include "CommandBase.h"
 
 class Robot: public frc::IterativeRobot {
@@ -80,6 +80,7 @@ private:
 
 public:
 	void RobotInit() override {
+
 		std::cout << "[robot] Robot initalizing..." << std::endl;
 
 		//std::thread visionThread(BetterCameraServer::Thread);
@@ -99,10 +100,10 @@ public:
 
 		teleopChooser.AddDefault("Default Driver", new TeleopDefault());
 		std::cout << "Adding autonomous modes..." << std::endl;
-		autonomousChooser.AddDefault("Center Start (appx. 14.25 seconds)", new AutoDefault());
+		autonomousChooser.AddDefault("Center Start (appx. 14.25 seconds)", new Drive());
 		autonomousChooser.AddObject("Left Start (appx ? seconds)", new AutoLeftPeg());
 		autonomousChooser.AddObject("Right Start (appx ? seconds)", new DoNothing());
-		autonomousChooser.AddObject("AutoDriveForward", new AutoDriveForward());
+		autonomousChooser.AddObject("AutoDriveForward", new Drive());
 		std::cout << "Completed adding autonomous modes!" << std::endl;
 		frc::SmartDashboard::PutData("Auto Modes", &autonomousChooser);
 		frc::SmartDashboard::PutNumber("Autonomous Pause", 0);

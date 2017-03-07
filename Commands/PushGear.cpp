@@ -91,7 +91,7 @@ bool PushGear::IsFinished() {
 
 // Called once after isFinished returns true
 void PushGear::End() {
-	std::cout << "RESET TIMER 3" << std::endl;
+//	std::cout << "RESET TIMER 3" << std::endl;
 	//this->AutoTimer->Reset();
 	//this->AutoTimer->Stop();
 	//this->startedtimer = false;
