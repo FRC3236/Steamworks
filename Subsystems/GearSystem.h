@@ -14,17 +14,18 @@
 class GearSystem: public frc::Subsystem {
 private:
 
+public:
+
+
 	DoubleSolenoid *SolenoidI;
 	DoubleSolenoid *SolenoidII;
 	DoubleSolenoid *SolenoidIII;
 	DoubleSolenoid *SolenoidIV;
-	DigitalInput *LimitSwitch;
 
 	Compressor *CompressorPort;
 
 	bool TopToggle;
-
-public:
+	DigitalInput *LimitSwitch;
 	GearSystem();
 	void Initalize();
 	void Execute();

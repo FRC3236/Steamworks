@@ -91,13 +91,13 @@ double VisionTracking::FindPeg() {
  *	Here's the basic structure (in pseudocode):
  *	contours = {
  *		[0] = { //Contour 0
- *			10,	//AREA
- *			5,	//WIDTH
- *			2,	//HEIGHT
- *			0.5,//SOLIDITY
- *			1,	//CENTERX
- *			1,	//CENTERY
- *		},
+ *			["width"] = 10,
+ *			["centerX"] = 10,
+ *			["centerY"] = 10,
+ *			["solidity"] = 0.5,
+ *			["area"] = 100,
+ *			["height"] = 10,
+ *		}
  *	}
  */
 vector< vector<string,double> > VisionTracking::GetContours() {
@@ -127,14 +127,14 @@ vector< vector<string,double> > VisionTracking::GetContours() {
  * 	This function returns a 2D vector, meaning there are vectors within the main vector.
  *	Here's the basic structure (in pseudocode):
  *	contours = {
- *		[0] = {
- *			10, //AREA
- *			5, //WIDTH
- *			2, //HEIGHT
- *			0.5, //SOLIDITY
- *			1, //CENTERX
- *			1, //CENTERY
- *		},
+ *		[0] = { //Contour 0
+ *			["width"] = 10,
+ *			["centerX"] = 10,
+ *			["centerY"] = 10,
+ *			["solidity"] = 0.5,
+ *			["area"] = 100,
+ *			["height"] = 10,
+ *		}
  *	}
  */
 vector< vector<string,double> > VisionTracking::GetSpecificContours(double MinW, double MinH, double MaxW, double MaxH) {

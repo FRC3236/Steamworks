@@ -17,9 +17,10 @@ private:
 	CANTalon *DriveFrontLeftCAN, *DriveFrontRightCAN, *DriveBackLeftCAN, *DriveBackRightCAN;
 	Talon *DriveFrontLeft, *DriveBackLeft, *DriveBackRight, *DriveFrontRight;
 
+public:
+
 	ADXRS450_Gyro *Gyro;
 	AnalogAccelerometer *Accelerometer;
-public:
 	DriveTrain();
 	void Initialize();
 	double GetDeltaAngle(double, double);

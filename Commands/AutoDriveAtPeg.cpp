@@ -22,8 +22,10 @@ void AutoDriveAtPeg::Execute() {
 	double TargetAngle = vt->FindPeg();
 	double CurrentAngle = drivetrain->Gyro->GetAngle();
 	int Margin = 5;
-	if (TargetAngle != nullptr && ceil(TargetAngle - CurrentAngle) < Margin) {
-		drivetrain->SpinTo(round(TargetAngle % 360), 0.5);
+	if (TargetAngle) {
+		if (ceil(TargetAngle - CurrentAngle) < Margin) {
+			drivetrain->SpinTo(round(fmod(TargetAngle,360)), 0.5);
+		}
 	}
 
 	drivetrain->Drive(0.3);
