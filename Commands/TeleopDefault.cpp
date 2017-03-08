@@ -24,7 +24,6 @@ TeleopDefault::TeleopDefault() {
 	dropgear = new DropGear();
 	pushgear = new PushGear(true);
 	pushgearoverride = new PushGear(false);
-	//this->SetInterruptible(false);
 	LockAngle = 0;
 }
 

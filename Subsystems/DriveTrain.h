@@ -13,13 +13,13 @@
 #include "CANTalon.h"
 
 class DriveTrain: public frc::Subsystem {
-public:
+private:
 	CANTalon *DriveFrontLeftCAN, *DriveFrontRightCAN, *DriveBackLeftCAN, *DriveBackRightCAN;
 	Talon *DriveFrontLeft, *DriveBackLeft, *DriveBackRight, *DriveFrontRight;
 
 	ADXRS450_Gyro *Gyro;
 	AnalogAccelerometer *Accelerometer;
-
+public:
 	DriveTrain();
 	void Initialize();
 	double GetDeltaAngle(double, double);

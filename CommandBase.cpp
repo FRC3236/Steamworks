@@ -40,8 +40,12 @@ void CommandBase::Reset() {
 	drivetrain = NULL;
 	controls = NULL;
 	ropeclimber = NULL;
+	gearsystem = NULL;
+	vt = NULL;
 
 	drivetrain = new DriveTrain();
 	controls = new OI();
 	ropeclimber = new RopeClimber();
+	gearsystem = new GearSystem();
+	vt = new VisionTracking();
 }

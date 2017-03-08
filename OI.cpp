@@ -23,18 +23,10 @@ OI::OI() {
 	DropGearButton = new JoystickButton(LeftStick, 5);
 	PushGearButton = new JoystickButton(LeftStick, 3);
 	PushGearOverrideButton = new JoystickButton(LeftStick, 4);
-	//PushGearButton->WhenPressed(new PushGear());
 	DropFuelButton = new JoystickButton(LeftStick, 6);
 	ClimberButton = new JoystickButton(LeftStick, 1);
 	RopeClimbButton = new JoystickButton(LeftStick,4);
 	GearSafetyButton = new JoystickButton(LeftStick, GEAROVERRIDEBUTTON);
-
-	//Used for adding fuel to the hopper
-	//DropFuelButton->WhenPressed(new DropFuel());
-
-	//DropFuelButton->WhenPressed(new DropFuel());
-	//ClimberButton->WhenPressed(new DisableCompressor());
-	//ClimberButton->WhenReleased(new EnableCompressor());
 
 	std::cout << "[oi] OperatorInterface initialized." << std::endl;
 }

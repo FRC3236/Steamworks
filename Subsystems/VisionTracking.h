@@ -12,7 +12,12 @@ private:
 
 public:
 	VisionTracking();
-	vector<double> FindPeg();
+	void Update();
+	double FindPeg();
+	vector< vector<string,double> > GetContours();
+	vector< vector<string,double> > GetSpecificContours(double, double, double, double);
+	vector<string,double> GetLargestContour();
+	vector<string,double> GetSmallestContour();
 };
 
 #endif  // VisionTracking_H

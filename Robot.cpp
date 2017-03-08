@@ -23,7 +23,6 @@
 
 //I just wanna see shweg. -Kevin, 2k17.
 
-#include <Commands/AutoCenterPeg.h>
 #include <memory>
 
 #include <Commands/Command.h>
@@ -35,35 +34,34 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-#include "Subsystems/BetterCameraServer.h"
-
 //Include all the commands//
 #include "Commands/TeleopDefault.h"
 #include "Commands/DropGear.h"
 #include "Commands/PushGear.h"
 #include "Commands/AutoDrive.h"
-#include "Commands/AutoDriveForward.h"
 #include "Commands/DoNothing.h"
-#include "Commands/AutoLeftPeg.h"
 #include "Commands/Drive.h"
 #include "CommandBase.h"
 
-class Robot: public frc::IterativeRobot {
+using namespace frc;
+using namespace std;
+
+class Robot: public IterativeRobot {
 private:
-	frc::SendableChooser<frc::Command*> autonomousChooser;
-	frc::SendableChooser<frc::Command*> teleopChooser;
-	std::unique_ptr<frc::Command> autonomousMode;
-	std::unique_ptr<frc::Command> teleopMode;
-	frc::Command* teleopDefault;
-	frc::Command* autoDefault;
-	frc::Command* dropGear;
-	frc::Command* pushGear;
+	SendableChooser<Command*> autonomousChooser;
+	SendableChooser<Command*> teleopChooser;
+	unique_ptr<Command> autonomousMode;
+	unique_ptr<Command> teleopMode;
+	Command* teleopDefault;
+	Command* autoDefault;
+	Command* dropGear;
+	Command* pushGear;
 
 	static void VisionThread() {
-		cs::UsbCamera camera = frc::CameraServer::GetInstance()->StartAutomaticCapture();
+		cs::UsbCamera camera = CameraServer::GetInstance()->StartAutomaticCapture();
 		camera.SetBrightness(20);
 		if (camera.IsConnected()) {
-			camera.SetResolution(640,480); //lower than 480p
+			camera.SetResolution(640,480);
 			camera.SetFPS(60);
 			cs::CvSink cvSink = CameraServer::GetInstance()->GetVideo();
 			cs::CvSource outputStreamStd = CameraServer::GetInstance()->PutVideo("Color", 640, 480);
@@ -81,31 +79,11 @@ private:
 public:
 	void RobotInit() override {
 
-		std::cout << "[robot] Robot initalizing..." << std::endl;
+		cout << "[robot] Robot initalizing..." << endl;
 
-		CommandBase::init();
+		CommandBase::init(); //Initializes all commands and subsystems
 
-		teleopDefault = NULL;
-		autoDefault = NULL;
-		pushGear = NULL;
-		dropGear = NULL;
-		teleopDefault = new TeleopDefault();
-		autoDefault = new AutoDefault();
-		dropGear = new DropGear();
-
-
-		teleopChooser.AddDefault("Default Driver", new TeleopDefault());
-		std::cout << "Adding autonomous modes..." << std::endl;
-		autonomousChooser.AddDefault("Center Start (appx. 14.25 seconds)", new Drive());
-		autonomousChooser.AddObject("Left Start (appx ? seconds)", new AutoLeftPeg());
-		autonomousChooser.AddObject("Right Start (appx ? seconds)", new DoNothing());
-		autonomousChooser.AddObject("AutoDriveForward", new Drive());
-		std::cout << "Completed adding autonomous modes!" << std::endl;
-		frc::SmartDashboard::PutData("Auto Modes", &autonomousChooser);
-		frc::SmartDashboard::PutNumber("Autonomous Pause", 0);
-		frc::SmartDashboard::PutData("Teleop Modes", &teleopChooser);
-
-		std::cout << "[robot] Robot initialized." << std::endl;
+		cout << "[robot] Robot initialization complete!" << endl;
 	}
 
 	void AutonomousInit() override {
@@ -113,40 +91,43 @@ public:
 		autonomousMode.reset(autonomousChooser.GetSelected());
 		if (autonomousMode != nullptr) {
 			autonomousMode->Start();
-			std::cout << "[autonomous] Autonomous program has started." << std::endl;
+			cout << "[autonomous] Autonomous program has started." << endl;
 		} else {
-			std::cout << "[autonomous] There was a problem starting the autonomous mode." << std::endl;
+			cout << "[autonomous] There was a problem starting the autonomous mode." << endl;
 		}
 	}
 
 	void AutonomousPeriodic() override {
-		//std::cout << "AutoPeriodic Before" << std::endl;
-		frc::Scheduler::GetInstance()->Run();
-		//std::cout << "AutoPeriodic After" << std::endl;
+		Scheduler::GetInstance()->Run();
 	}
 
 	void TeleopInit() override {
-		//teleopMode.reset(teleopChooser.GetSelected());
 		teleopMode.release(); //RELINQUISH THE TELEOP!
 		teleopMode.reset(teleopChooser.GetSelected());
 		if (teleopMode != nullptr) {
-			std::cout << "[teleop] Teleop mode is starting." << std::endl;
+			cout << "[teleop] Teleop mode is starting." << endl;
 			teleopMode->Start();
 		} else {
-			std::cout << "[teleop] Teleop mode could not start." << std::endl;
+			cout << "[teleop] Teleop mode could not start." << endl;
 		}
 	}
 
 	void TeleopPeriodic() override {
-		//std::cout << "TeleopPeriodic before" << std::endl;
-		frc::Scheduler::GetInstance()->Run();
-		//std::cout << "TeleopPeriodic after" << std::endl;
+		Scheduler::GetInstance()->Run();
 	}
 
 	void DisabledInit() override {
-		std::cout << "[robot] Reseting all frc scheduler instances..." << std::endl;
-		frc::Scheduler::GetInstance()->ResetAll();
-		frc::Scheduler::GetInstance()->RemoveAll(); //Trying this out. Maybe this will work, maybe not. :P
+
+		//Moved to down here because sometimes the SmartDashboard forgets to add them.
+
+		teleopChooser.AddDefault("Default Driver", new TeleopDefault());
+
+		autonomousChooser.AddDefault("Center Start (appx. 14.25 seconds)", new Drive());
+		autonomousChooser.AddObject("Right Start (appx ? seconds)", new DoNothing());
+		autonomousChooser.AddObject("AutoDriveForward", new Drive());
+
+		SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
+		SmartDashboard::PutData("Teleoperated Modes", &teleopChooser);
 	}
 
 };

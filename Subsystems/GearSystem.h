@@ -12,7 +12,8 @@
 #include <Commands/Subsystem.h>
 
 class GearSystem: public frc::Subsystem {
-public:
+private:
+
 	DoubleSolenoid *SolenoidI;
 	DoubleSolenoid *SolenoidII;
 	DoubleSolenoid *SolenoidIII;
@@ -23,6 +24,7 @@ public:
 
 	bool TopToggle;
 
+public:
 	GearSystem();
 	void Initalize();
 	void Execute();

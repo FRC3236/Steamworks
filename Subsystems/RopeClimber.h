@@ -12,10 +12,11 @@
 #include <Commands/Subsystem.h>
 
 class RopeClimber: public frc::Subsystem {
-public:
+private:
 	Talon *ClimbLeftTalon;
 	Talon *ClimbRightTalon;
 
+public:
 	RopeClimber();
 	void Initialize();
 	void Execute();

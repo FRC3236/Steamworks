@@ -1,14 +1,8 @@
-/*
- * RopeClimber.cpp
- *
- *  Created on: Jan 28, 2017
- *      Author: ROBOTICS-Net
- */
 #include "RopeClimber.h"
 #include "../RobotMap.h"
 #include "WPILib.h"
 
-RopeClimber::RopeClimber() : Subsystem("RopeClimber") {
+RopeClimber::RopeClimber() : frc::Subsystem("RopeClimber") {
 	frc::Subsystem("RopeClimber");
 
 	std::cout << "[ropeclimber] RopeClimber initializing..." << std::endl;
@@ -30,7 +24,6 @@ void RopeClimber::Execute() {
 }
 
 void RopeClimber::Climb(double Multiplier) {
-	//std::cout << "CLIMBING " << Multiplier << std::endl;
 	ClimbLeftTalon->Set(-1*Multiplier);
 	ClimbRightTalon->Set(-1*Multiplier);
 }
