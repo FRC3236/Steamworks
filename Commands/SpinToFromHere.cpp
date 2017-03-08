@@ -1,8 +1,6 @@
 #include "SpinToFromHere.h"
 
 SpinToFromHere::SpinToFromHere(double Target, double Speed) {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(Robot::chassis.get());
 	Requires(drivetrain);
 	startangle = drivetrain->Gyro->GetAngle();
 	target = Target + startangle;

@@ -15,6 +15,7 @@
 *  Programmer's Assistants:
 *  	+ John Winship
 *  	+ Antonio Figueiredo
+*	+ Kevin Kohls
 *
 *  	Thanks to all the teams who helped us
 *  	out via email and through ChiefDelphi!
@@ -40,11 +41,15 @@
 #include "Commands/PushGear.h"
 #include "Commands/AutoDrive.h"
 #include "Commands/DoNothing.h"
+#include "Commands/AutoDriveAtPeg.h"
+#include "Commands/AutoDriveAtPegFromLeft.h"
+#include "Commands/AutoDriveAtPegFromRight.h"
 #include "Commands/Drive.h"
 #include "CommandBase.h"
 
 using namespace frc;
 using namespace std;
+
 
 class Robot: public IterativeRobot {
 private:
@@ -54,8 +59,6 @@ private:
 	unique_ptr<Command> teleopMode;
 	Command* teleopDefault;
 	Command* autoDefault;
-	Command* dropGear;
-	Command* pushGear;
 
 	static void VisionThread() {
 		cs::UsbCamera camera = CameraServer::GetInstance()->StartAutomaticCapture();
@@ -74,8 +77,6 @@ private:
 			}
 		}
 	}
-
-
 public:
 	void RobotInit() override {
 
