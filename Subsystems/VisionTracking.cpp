@@ -9,6 +9,13 @@ VisionTracking::VisionTracking() : Subsystem("VisionTracking") {
 
 }
 
+/*
+ * 	Update()
+ * 	Updates all the vectors based on the info in the NetworkTable.
+ * 	This function is called internally by every function that
+ * 	processes contours, so unless something is terribly wrong,
+ * 	this function shouldn't have to be called externally.
+ */
 void VisionTracking::Update() {
 	area = table->GetNumberArray("area", llvm::ArrayRef<double>());
 	width = table->GetNumberArray("width", llvm::ArrayRef<double>());
@@ -37,26 +44,26 @@ double VisionTracking::FindPeg() {
 				peg = 0,
 				diff = 10000;
 
-		vector< vector<string,double> > contours = this->GetContours(); //Get list of all contours found.
+		vector< vector<double> > contours = this->GetContours(); //Get list of all contours found.
 		for (vector<int>::size_type i = 0; i != contours.size(); i++) {
 
-			vector<string,double> contourA = contours[i]; // Select the main comparison contour vector
+			vector<double> contourA = contours[i]; // Select the main comparison contour vector
 			for (vector<int>::size_type j = i+1; j != contours.size(); i++) {
 
-				vector<string,double> contourB = contours[j]; // Select the secondary comparison contour vector
+				vector<double> contourB = contours[j]; // Select the secondary comparison contour vector
 
 				//First, compare widths//
-				double widthDiff = fabs(contourB["width"] - contourA["width"]);
-				double heightDiff = fabs(contourB["height"] - contourA["height"]);
+				double widthDiff = fabs(contourB[4] - contourA[4]);
+				double heightDiff = fabs(contourB[5] - contourA[5]);
 				if (widthDiff < 10 && widthDiff < diff && heightDiff < 10) {
 					//We have found a candidate for our peg!
 					diff = widthDiff;
-					if (contourA["centerX"] > contourB["centerX"]) {
-						left = contourA["centerX"];
-						right = contourB["centerX"];
+					if (contourA[1] > contourB[1]) {
+						left = contourA[1];
+						right = contourB[1];
 					} else {
-						left = contourB["centerX"];
-						right = contourA["centerX"];
+						left = contourB[1];
+						right = contourA[1];
 					}
 				}
 			}
@@ -91,28 +98,28 @@ double VisionTracking::FindPeg() {
  *	Here's the basic structure (in pseudocode):
  *	contours = {
  *		[0] = { //Contour 0
- *			["width"] = 10,
- *			["centerX"] = 10,
- *			["centerY"] = 10,
- *			["solidity"] = 0.5,
- *			["area"] = 100,
- *			["height"] = 10,
+ *			10,		//AREA [0]
+ *			100,	//CENTERX [1]
+ *			100,	//CENTERY [2]
+ *			1,		//SOLIDITY [3]
+ *			5,		//WIDTH [4]
+ *			2,		//HEIGHT [5]
  *		}
  *	}
  */
-vector< vector<string,double> > VisionTracking::GetContours() {
-	vector< vector<string,double> > returnVec; //Woo, 2d vectors!
+vector< vector<double> > VisionTracking::GetContours() {
+	vector< vector<double> > returnVec; //Woo, 2d vectors!
 
 	this->Update(); //Update all the tables before checking all of them.
 
 	for (vector<int>::size_type i = 0; i != centerX.size(); i++) {
-		vector<string,double> contour;
-		contour["area"] = area[i];
-		contour["centerX"] = centerX[i];
-		contour["centerY"] = centerY[i];
-		contour["solidity"] = solidity[i];
-		contour["width"] = width[i];
-		contour["height"] = height[i];
+		vector<double> contour;
+		contour.push_back(area[i]);
+		contour.push_back(centerX[i]);
+		contour.push_back(centerY[i]);
+		contour.push_back(solidity[i]);
+		contour.push_back(width[i]);
+		contour.push_back(height[i]);
 
 		returnVec.push_back(contour);
 	}
@@ -128,17 +135,17 @@ vector< vector<string,double> > VisionTracking::GetContours() {
  *	Here's the basic structure (in pseudocode):
  *	contours = {
  *		[0] = { //Contour 0
- *			["width"] = 10,
- *			["centerX"] = 10,
- *			["centerY"] = 10,
- *			["solidity"] = 0.5,
- *			["area"] = 100,
- *			["height"] = 10,
+ *			10,		//AREA
+ *			100,	//CENTERX
+ *			100,	//CENTERY
+ *			1,		//SOLIDITY
+ *			5,		//WIDTH
+ *			2,		//HEIGHT
  *		}
  *	}
  */
-vector< vector<string,double> > VisionTracking::GetSpecificContours(double MinW, double MinH, double MaxW, double MaxH) {
-	vector< vector<string,double> > returnVec;
+vector< vector<double> > VisionTracking::GetSpecificContours(double MinW, double MinH, double MaxW, double MaxH) {
+	vector< vector<double> > returnVec;
 
 	this->Update(); //Update all the tables before checking all of them.
 
@@ -146,13 +153,13 @@ vector< vector<string,double> > VisionTracking::GetSpecificContours(double MinW,
 		double w = width[i];
 		double h = height[i];
 		if (w >= MinW && w <= MaxW && h >= MinH && h <= MaxH) {
-			vector<string,double> contour;
-			contour["area"] = area[i];
-			contour["centerX"] = centerX[i];
-			contour["centerY"] = centerY[i];
-			contour["solidity"] = solidity[i];
-			contour["width"] = width[i];
-			contour["height"] = height[i];
+			vector<double> contour;
+			contour.push_back(area[i]);
+			contour.push_back(centerX[i]);
+			contour.push_back(centerY[i]);
+			contour.push_back(solidity[i]);
+			contour.push_back(width[i]);
+			contour.push_back(height[i]);
 
 			returnVec.push_back(contour);
 		}
@@ -162,16 +169,15 @@ vector< vector<string,double> > VisionTracking::GetSpecificContours(double MinW,
 }
 
 
-vector<string,double> VisionTracking::GetLargestContour() {
+vector<double> VisionTracking::GetLargestContour() {
 
 	double largest = 0;
 	double largestI = 0;
-	this->Update();
 	vector< vector<string,double> > contours = this->GetContours();
 
 	for (vector<int>::size_type i = 0; i != contours.size(); i++) {
 		vector<string,double> contour = contours[i];
-		if (contour["area"] > largest) {
+		if (contour[0] > largest) {
 			largest = contour[0];
 			largestI = i;
 		}
@@ -181,16 +187,15 @@ vector<string,double> VisionTracking::GetLargestContour() {
 
 }
 
-vector<string,double> VisionTracking::GetSmallestContour() {
+vector<double> VisionTracking::GetSmallestContour() {
 
 	double smallest = 100000;
 	double smallestI = 0;
-	this->Update();
 	vector< vector<string,double> > contours = this->GetContours();
 
 	for (vector<int>::size_type i = 0; i != contours.size(); i++) {
 		vector<string,double> contour = contours[i];
-		if (contour["area"] < smallest) {
+		if (contour[0] < smallest) {
 			smallest = contour[0];
 			smallestI = i;
 		}

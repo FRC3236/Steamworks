@@ -6,11 +6,11 @@
 class PushGear : public CommandBase {
 
 public:
-	bool safety;
 	Timer *AutoTimer;
 	bool finished;
+	bool enabled;
 	bool startedtimer;
-	PushGear(bool);
+	PushGear();
 	void Initialize();
 	void Execute();
 	bool IsFinished();
