@@ -2,12 +2,13 @@
 
 #include <Commands/Scheduler.h>
 
+#include "Subsystems/VisionTracking.h"
 #include "Subsystems/DriveTrain.h"
 #include "Subsystems/RopeClimber.h"
 #include "Subsystems/GearSystem.h"
 
 
-
+VisionTracking* CommandBase::vt = NULL;
 OI* CommandBase::controls = NULL;
 DriveTrain* CommandBase::drivetrain = NULL;
 RopeClimber* CommandBase::ropeclimber = NULL;
@@ -24,12 +25,13 @@ void CommandBase::init() {
 	controls = NULL;
 	ropeclimber = NULL;
 	gearsystem = NULL;
-
+	vt = NULL;
 
 	drivetrain = new DriveTrain();
 	controls = new OI();
 	ropeclimber = new RopeClimber();
 	gearsystem = new GearSystem();
+	vt = new VisionTracking();
 
 	std::cout << "[commandbase] CommandBase initialized." << std::endl;
 }

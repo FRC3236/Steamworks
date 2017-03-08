@@ -9,6 +9,7 @@
 #include "OI.h"
 #include "Subsystems/DriveTrain.h"
 #include "Subsystems/RopeClimber.h"
+#include "Subsystems/VisionTracking.h"
 #include "Subsystems/GearSystem.h"
 
 class CommandBase: public frc::Command {
@@ -17,6 +18,7 @@ public:
 	static OI *controls;
 	static DriveTrain *drivetrain;
 	static RopeClimber *ropeclimber;
+	static VisionTracking *vt;
 
 	CommandBase(char const *name);
 	CommandBase();

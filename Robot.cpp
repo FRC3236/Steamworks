@@ -45,7 +45,7 @@
 #include "Commands/AutoDriveForward.h"
 #include "Commands/DoNothing.h"
 #include "Commands/AutoLeftPeg.h"
-#include "Commands/Drive.h"-0
+#include "Commands/Drive.h"
 #include "CommandBase.h"
 
 class Robot: public frc::IterativeRobot {
@@ -82,10 +82,6 @@ public:
 	void RobotInit() override {
 
 		std::cout << "[robot] Robot initalizing..." << std::endl;
-
-		//std::thread visionThread(BetterCameraServer::Thread);
-		//std::thread visionThread(VisionThread);
-		//visionThread.detach();
 
 		CommandBase::init();
 

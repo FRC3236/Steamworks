@@ -1,22 +1,18 @@
-/*
- * TeleopDefault.h
- *
- *  Created on: Jan 28, 2017
- *      Author: ROBOTICS-Net
- */
-
 #ifndef TELEOPDEFAULT_H
 #define TELEOPDEFAULT_H
+
 #include "PushGear.h"
 #include "DropGear.h"
 #include "../CommandBase.h"
 
 class TeleopDefault: public CommandBase {
-public:
+private:
 	DropGear *dropgear;
 	PushGear *pushgear;
 	PushGear *pushgearoverride;
 	Timer *TeleopTimer;
+	double LockAngle;
+public:
 	TeleopDefault();
 	void Initialize() override;
 	void Execute() override;

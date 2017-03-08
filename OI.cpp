@@ -17,6 +17,7 @@ OI::OI() {
 	ResetButton = new JoystickButton(RightStick, RESETBUTTON);
 	TraverseButton = new JoystickButton(RightStick, TRAVERSEBUTTON);
 	CameraSwitchButton = new JoystickButton(RightStick, CAMERASWITCHBUTTON);
+	LockAngleButton = new JoystickButton(RightStick, LOCKANGLEBUTTON);
 
 	//Operator Stick
 	DropGearButton = new JoystickButton(LeftStick, 5);

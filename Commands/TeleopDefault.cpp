@@ -25,6 +25,7 @@ TeleopDefault::TeleopDefault() {
 	pushgear = new PushGear(true);
 	pushgearoverride = new PushGear(false);
 	//this->SetInterruptible(false);
+	LockAngle = 0;
 }
 
 void TeleopDefault::Initialize() {
@@ -41,21 +42,11 @@ void TeleopDefault::Initialize() {
 	controls->ClimberButton->WhenPressed(new DisableCompressor()); //disable the compressor during climb.
 	controls->ClimberButton->WhenReleased(new EnableCompressor()); //reenable the compressor after the climb.
 
-	//Print Solenoid information to smart dashboard for debugging.
-	frc::SmartDashboard::PutNumber("Solenoid I (gear door)", gearsystem->SolenoidI->Get());
-	frc::SmartDashboard::PutNumber("Solenoid II (gear pusher)", gearsystem->SolenoidII->Get());
-	frc::SmartDashboard::PutNumber("Solenoid III (doesn't do anything)", 0);
-	frc::SmartDashboard::PutNumber("Solenoid IV (gear/ball toggle)", gearsystem->SolenoidIV->Get());
-
 	std::cout << "[teleop] Teleop initialized." << std::endl;
+	LockAngle = 0;
 }
 
 void TeleopDefault::Execute() {
-
-	frc::SmartDashboard::PutNumber("Solenoid I (gear door)", gearsystem->SolenoidI->Get());
-	frc::SmartDashboard::PutNumber("Solenoid II (gear pusher)", gearsystem->SolenoidII->Get());
-	frc::SmartDashboard::PutNumber("Solenoid III (doesn't do anything)", 0);
-	frc::SmartDashboard::PutNumber("Solenoid IV (gear/ball toggle)", gearsystem->SolenoidIV->Get());
 
 	if (controls->TraverseButton->Get()) {
 		drivetrain->TraverseSimple(controls->RightStick->GetX());

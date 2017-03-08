@@ -22,7 +22,8 @@ public:
 					*DropFuelButton,
 					*ClimberButton,
 					*RopeClimbButton,
-					*GearSafetyButton;
+					*GearSafetyButton,
+					*LockAngleButton;
 
 	OI();
 };
