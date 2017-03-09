@@ -1,7 +1,9 @@
 #include "VisionTracking.h"
 #include "../RobotMap.h"
+#include "../CommandBase.h"
 
 using namespace std;
+using namespace frc;
 
 VisionTracking::VisionTracking() : Subsystem("VisionTracking") {
 
@@ -45,6 +47,7 @@ double VisionTracking::FindPeg() {
 				peg = 0,
 				diff = 10000;
 
+
 		vector< vector<double> > contours = this->GetContours(); //Get list of all contours found.
 		for (vector<int>::size_type i = 0; i != contours.size(); i++) {
 
@@ -52,21 +55,23 @@ double VisionTracking::FindPeg() {
 			for (vector<int>::size_type j = i+1; j != contours.size(); i++) {
 
 				vector<double> contourB = contours[j]; // Select the secondary comparison contour vector
+				if (contourB != contourA) { //Make sure we're not comparing a contour with itself (even though it shouldn't happen				//First, compare widths. Then, compare heights//
+					double widthDiff = fabs(contourB[4] - contourA[4]);
+					double heightDiff = fabs(contourB[5] - contourA[5]);
+					if (widthDiff < 10 && widthDiff < diff && heightDiff < 10) {
+						//We have found a candidate for our peg!
+						diff = widthDiff;
+						if (contourA[1] > contourB[1]) {
 
-				//First, compare widths//
-				double widthDiff = fabs(contourB[4] - contourA[4]);
-				double heightDiff = fabs(contourB[5] - contourA[5]);
-				if (widthDiff < 10 && widthDiff < diff && heightDiff < 10) {
-					//We have found a candidate for our peg!
-					diff = widthDiff;
-					if (contourA[1] > contourB[1]) {
-						cout << "Left is contour 1, right is contour 2" << endl;
-						left = contourA[1];
-						right = contourB[1];
-					} else {
-						cout << "Left is contour 2, right is contour 1" << endl;
-						left = contourB[1];
-						right = contourA[1];
+							CommandBase::debug->LogWithTime("VisionTracking", "ContourA is on the left");
+
+							left = contourA[1];
+							right = contourB[1];
+						} else {
+							cout << "Left is contour 2, right is contour 1" << endl;
+							left = contourB[1];
+							right = contourA[1];
+						}
 					}
 				}
 			}
@@ -76,7 +81,7 @@ double VisionTracking::FindPeg() {
 		if (diff > 1000) {
 
 			//The contours are too far apart to be the ones we're looking for
-			cout << "Contours are too far apart to be the ones we're looking for" << endl;
+			CommandBase::debug->LogWithTime("VisionTracking", "Contours are too far apart for use!");
 			return 0x00;
 
 		} else {
@@ -87,9 +92,10 @@ double VisionTracking::FindPeg() {
 		}
 
 	} else {
+		CommandBase::debug->LogWithTime("VisionTracking", "Cannot find enough contours!");
 		angle = 0x00;
 	}
-	cout << "Angle of peg: " << angle << endl;
+	CommandBase::debug->LogWithTime("VisionTracking", "Angle: " + to_string(angle));
 	return angle;
 
 }

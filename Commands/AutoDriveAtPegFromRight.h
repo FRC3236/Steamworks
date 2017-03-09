@@ -1,14 +1,14 @@
-#ifndef AutoDriveAtPegFromLeft_H
-#define AutoDriveAtPegFromLeft_H
+#ifndef AutoDriveAtPegFromRight_H
+#define AutoDriveAtPegFromRight_H
 
 #include "../CommandBase.h"
 
-class AutoDriveAtPegFromLeft : public CommandBase {
+class AutoDriveAtPegFromRight : public CommandBase {
 public:
 	bool Complete;
 	bool FoundPeg;
 	double DriveStraightReference;
-	AutoDriveAtPegFromLeft();
+	AutoDriveAtPegFromRight();
 	void Initialize();
 	void Execute();
 	bool IsFinished();

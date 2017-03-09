@@ -137,8 +137,7 @@ void DriveTrain::Traverse(double X, double Y) {
 		TurnAngle = 0;
 		Speed = 0;
 	}
-
-	std::cout << "SWERVEANGLE: " << TurnAngle << std::endl;
+	TurnAngle = fmod(TurnAngle, 360)/360;
 	this->DoAutoAlign(TurnAngle, TurnAngle, TurnAngle, TurnAngle);
 	if (fabs(Speed) > JOYSTICKDEADZONE) {
 		this->DriveSpecial(-Speed,Speed,-Speed,Speed);

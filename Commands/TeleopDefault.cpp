@@ -49,7 +49,7 @@ void TeleopDefault::Initialize() {
 void TeleopDefault::Execute() {
 
 	if (controls->TraverseButton->Get()) {
-		drivetrain->TraverseSimple(controls->RightStick->GetX());
+		drivetrain->Traverse(controls->RightStick->GetX(), controls->RightStick->GetY());
 	} else if (controls->RightStick->GetPOV() >= 0) {
 		drivetrain->Crawl((double) controls->RightStick->GetPOV()/360);
 	} else if (controls->SpinButton->Get()) {

@@ -1,7 +1,6 @@
-#include "AutoDriveAtPegFromLeft.h"
+#include "Commands/AutoDriveAtPegFromRight.h"
 
-
-AutoDriveAtPegFromLeft::AutoDriveAtPegFromLeft() {
+AutoDriveAtPegFromRight::AutoDriveAtPegFromRight() {
 	Requires(drivetrain);
 	Requires(gearsystem);
 	Requires(vt);
@@ -10,15 +9,15 @@ AutoDriveAtPegFromLeft::AutoDriveAtPegFromLeft() {
 	DriveStraightReference = 0;
 }
 
-void AutoDriveAtPegFromLeft::Initialize() {
+void AutoDriveAtPegFromRight::Initialize() {
 	drivetrain->ResetAlignment();
 	vt->Update();
 }
 
-void AutoDriveAtPegFromLeft::Execute() {
+void AutoDriveAtPegFromRight::Execute() {
 	double TargetAngle = vt->FindPeg(), CurrentAngle = drivetrain->Gyro->GetAngle();
-	if (TargetAngle != 0x00) {
-		// Peg has been found and we have a valid value.
+	if (TargetAngle) {
+		//Peg has been found and we have a valid value.
 		int Margin = 5;
 		if (ceil(TargetAngle - CurrentAngle) < Margin) {
 			FoundPeg = false;
@@ -36,23 +35,25 @@ void AutoDriveAtPegFromLeft::Execute() {
 		//so we'll just drive in that general
 		//direction.
 		FoundPeg = false;
-		drivetrain->TurnAbout(-75, 0.35);
+		drivetrain->TurnAbout(75, 0.35);
 	}
+
+	drivetrain->Drive(0.3);
 
 	if (gearsystem->LimitSwitch->Get()) {
 		Complete = true;
 	}
 }
 
-bool AutoDriveAtPegFromLeft::IsFinished() {
+bool AutoDriveAtPegFromRight::IsFinished() {
 	return Complete;
 }
 
-void AutoDriveAtPegFromLeft::End() {
+void AutoDriveAtPegFromRight::End() {
 	drivetrain->KillDrive();
 	drivetrain->ResetAlignment();
 }
 
-void AutoDriveAtPegFromLeft::Interrupted() {
+void AutoDriveAtPegFromRight::Interrupted() {
 	this->End();
 }

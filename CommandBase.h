@@ -11,6 +11,7 @@
 #include "Subsystems/RopeClimber.h"
 #include "Subsystems/VisionTracking.h"
 #include "Subsystems/GearSystem.h"
+#include "Subsystems/Debug.h"
 
 class CommandBase: public frc::Command {
 public:
@@ -19,11 +20,11 @@ public:
 	static DriveTrain *drivetrain;
 	static RopeClimber *ropeclimber;
 	static VisionTracking *vt;
+	static Debug *debug;
 
 	CommandBase(char const *name);
 	CommandBase();
 	static void init();
-	static void Reset();
 };
 
 #endif //COMMAND_BASE_H

@@ -8,23 +8,19 @@ bool completed = false;
 bool foundPeg = false;
 
 AutoDriveAtPeg::AutoDriveAtPeg() {
-	cout << "AutoDriveAtPeg" << endl;
 	Requires(drivetrain);
 	Requires(gearsystem);
 	Requires(vt);
 	AutoTimer = new Timer();
 	pushGearAndBackUp = new PushGearAndBackUp();
-	cout << "AutoDriveAtPeg2" << endl;
 }
 
 // Called just before this Command runs the first time
 void AutoDriveAtPeg::Initialize() {
-	cout << "Auto init" << endl;
 	drivetrain->ResetAlignment();
 	AutoTimer->Stop();
 	AutoTimer->Reset();
 	AutoTimer->Start();
-	cout << "Auto init2" << endl;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -39,14 +35,13 @@ void AutoDriveAtPeg::Execute() {
 			int Margin = 3;
 			if (TargetAngle != 0x00) {
 				if (ceil(TargetAngle - CurrentAngle) < Margin) {
-					cout << "--------FMOD ANGLE " << fmod(TargetAngle, 360) << endl;
+					CommandBase::debug->LogWithTime("AutoDriveAtPeg", "FMOD info: " + to_string(round(fmod(TargetAngle, 360))));
 					//drivetrain->Crawl(round(fmod(TargetAngle,360)), 0.5);
 				} else {
 					if (!foundPeg) {
 						driveStraightReference = drivetrain->Gyro->GetAngle();
 						foundPeg = true;
 					}
-					cout << "--------DRIVESTRAIGHTREFERENCE: " << driveStraightReference << endl;
 					drivetrain->DriveStraight(0.3, driveStraightReference);
 				}
 			} else {

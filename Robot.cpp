@@ -24,6 +24,8 @@
 
 //I just wanna see shweg. -Kevin, 2k17.
 
+#include <Commands/AutoDriveAtPegFromLeft.h>
+#include <Commands/AutoDriveAtPegFromRight.h>
 #include <memory>
 
 #include <Commands/Command.h>
@@ -39,7 +41,6 @@
 #include "Commands/TeleopDefault.h"
 #include "Commands/DropGear.h"
 #include "Commands/PushGear.h"
-#include "Commands/AutoDrive.h"
 #include "Commands/DoNothing.h"
 #include "Commands/AutoDriveAtPeg.h"
 #include "Commands/AutoDriveAtPegFromLeft.h"
@@ -49,6 +50,9 @@
 
 using namespace frc;
 using namespace std;
+
+double Debug = false;
+
 
 class Robot: public IterativeRobot {
 private:
@@ -77,11 +81,8 @@ private:
 		}
 	}
 public:
+
 	void RobotInit() override {
-
-		cout << "[robot] Robot initalizing..." << endl;
-
-
 
 		CommandBase::init(); //Initializes all commands and subsystems
 
@@ -89,13 +90,14 @@ public:
 		//Moved to down here because sometimes the SmartDashboard forgets to add them.
 		std::thread visionThread(VisionThread);
 		visionThread.detach();
+	}
+
+	void DisabledInit() override {
+		frc::Scheduler::GetInstance()->ResetAll();
+		frc::Scheduler::GetInstance()->RemoveAll();
+
 
 		teleopChooser.AddDefault("Default Driver", new TeleopDefault());
-
-		/*autonomousChooser.AddDefault("Center Start (appx. 14.25 seconds)", new Drive());
-		autonomousChooser.AddObject("Right Start (appx ? seconds)", new DoNothing());
-		autonomousChooser.AddObject("AutoDriveForward", new Drive());
-		*/
 
 		autonomousChooser.AddDefault("Drive at Peg (center)", new AutoDriveAtPeg());
 		autonomousChooser.AddObject("Drive at Peg (left)", new AutoDriveAtPegFromLeft());
@@ -104,12 +106,6 @@ public:
 		SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 		SmartDashboard::PutData("Teleoperated Modes", &teleopChooser);
 
-		cout << "[robot] Robot initialization complete!" << endl;
-	}
-
-	void DisabledInit() override {
-		frc::Scheduler::GetInstance()->ResetAll();
-		frc::Scheduler::GetInstance()->RemoveAll(); //Trying this out. Maybe this will work, maybe not. :P
 	}
 
 	void AutonomousInit() override {
@@ -118,9 +114,9 @@ public:
 		if (autonomousMode != nullptr) {
 
 			autonomousMode->Start();
-			cout << "[autonomous] Autonomous program has started." << endl;
+			CommandBase::debug->LogWithTime("Autonomous", "Starting autonomous program...");
 		} else {
-			cout << "[autonomous] There was a problem starting the autonomous mode." << endl;
+			CommandBase::debug->LogWithTime("Autonomous", "Autonomous could not start.");
 		}
 	}
 
@@ -132,10 +128,10 @@ public:
 		teleopMode.release(); //RELINQUISH THE TELEOP!
 		teleopMode.reset(teleopChooser.GetSelected());
 		if (teleopMode != nullptr) {
-			cout << "[teleop] Teleop mode is starting." << endl;
+			CommandBase::debug->LogWithTime("Teleoperated", "Starting teleop program...");
 			teleopMode->Start();
 		} else {
-			cout << "[teleop] Teleop mode could not start." << endl;
+			CommandBase::debug->LogWithTime("Teleoperated", "Teleop program could not start.");
 		}
 	}
 
