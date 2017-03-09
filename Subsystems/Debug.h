@@ -12,9 +12,15 @@ private:
 public:
 	Timer *TrackingTimer;
 	bool Tracking;
-	double *Frequency;
+	bool Enabled;
+	double Frequency;
 	Debug();
+	void SetFrequency(double);
+	void Toggle();
+	void Enable();
+	void Disable();
 	void StartTracking();
+	void StopTracking();
 	void ToggleTracking();
 	void ResetTracking();
 	void Log(string Information);

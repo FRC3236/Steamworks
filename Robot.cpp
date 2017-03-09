@@ -86,13 +86,13 @@ public:
 
 		CommandBase::init(); //Initializes all commands and subsystems
 
-
 		//Moved to down here because sometimes the SmartDashboard forgets to add them.
 		std::thread visionThread(VisionThread);
 		visionThread.detach();
 	}
 
 	void DisabledInit() override {
+		CommandBase::debug->ResetTracking();
 		frc::Scheduler::GetInstance()->ResetAll();
 		frc::Scheduler::GetInstance()->RemoveAll();
 
@@ -109,14 +109,15 @@ public:
 	}
 
 	void AutonomousInit() override {
+		CommandBase::debug->StartTracking();
 		autonomousMode.release(); //RELINQUISH THE AUTONOMOUS!
 		autonomousMode.reset(autonomousChooser.GetSelected());
 		if (autonomousMode != nullptr) {
 
 			autonomousMode->Start();
-			CommandBase::debug->LogWithTime("Autonomous", "Starting autonomous program...");
+			CommandBase::debug->LogWithTime("AutoInit", "Starting autonomous program...");
 		} else {
-			CommandBase::debug->LogWithTime("Autonomous", "Autonomous could not start.");
+			CommandBase::debug->LogWithTime("AutoInit", "Autonomous program could not start.");
 		}
 	}
 
@@ -125,13 +126,14 @@ public:
 	}
 
 	void TeleopInit() override {
+		CommandBase::debug->StartTracking();
 		teleopMode.release(); //RELINQUISH THE TELEOP!
 		teleopMode.reset(teleopChooser.GetSelected());
 		if (teleopMode != nullptr) {
-			CommandBase::debug->LogWithTime("Teleoperated", "Starting teleop program...");
+			CommandBase::debug->LogWithTime("TeleopInit", "Starting teleop program...");
 			teleopMode->Start();
 		} else {
-			CommandBase::debug->LogWithTime("Teleoperated", "Teleop program could not start.");
+			CommandBase::debug->LogWithTime("TeleopInit", "Teleop program could not start.");
 		}
 	}
 
