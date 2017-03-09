@@ -3,9 +3,12 @@
 
 #include "../CommandBase.h"
 
-class AutoDriveAtPegFromRight : public CommandBase {
+class AutoDriveAtPegFromLeft : public CommandBase {
 public:
-	AutoDriveAtPegFromRight();
+	bool Complete;
+	bool FoundPeg;
+	double DriveStraightReference;
+	AutoDriveAtPegFromLeft();
 	void Initialize();
 	void Execute();
 	bool IsFinished();

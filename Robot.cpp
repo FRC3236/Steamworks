@@ -50,7 +50,6 @@
 using namespace frc;
 using namespace std;
 
-
 class Robot: public IterativeRobot {
 private:
 	SendableChooser<Command*> autonomousChooser;
@@ -82,15 +81,42 @@ public:
 
 		cout << "[robot] Robot initalizing..." << endl;
 
+
+
 		CommandBase::init(); //Initializes all commands and subsystems
 
+
+		//Moved to down here because sometimes the SmartDashboard forgets to add them.
+		std::thread visionThread(VisionThread);
+		visionThread.detach();
+
+		teleopChooser.AddDefault("Default Driver", new TeleopDefault());
+
+		/*autonomousChooser.AddDefault("Center Start (appx. 14.25 seconds)", new Drive());
+		autonomousChooser.AddObject("Right Start (appx ? seconds)", new DoNothing());
+		autonomousChooser.AddObject("AutoDriveForward", new Drive());
+		*/
+
+		autonomousChooser.AddDefault("Drive at Peg (center)", new AutoDriveAtPeg());
+		autonomousChooser.AddObject("Drive at Peg (left)", new AutoDriveAtPegFromLeft());
+		autonomousChooser.AddObject("Drive at Peg (right)", new AutoDriveAtPegFromRight());
+
+		SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
+		SmartDashboard::PutData("Teleoperated Modes", &teleopChooser);
+
 		cout << "[robot] Robot initialization complete!" << endl;
+	}
+
+	void DisabledInit() override {
+		frc::Scheduler::GetInstance()->ResetAll();
+		frc::Scheduler::GetInstance()->RemoveAll(); //Trying this out. Maybe this will work, maybe not. :P
 	}
 
 	void AutonomousInit() override {
 		autonomousMode.release(); //RELINQUISH THE AUTONOMOUS!
 		autonomousMode.reset(autonomousChooser.GetSelected());
 		if (autonomousMode != nullptr) {
+
 			autonomousMode->Start();
 			cout << "[autonomous] Autonomous program has started." << endl;
 		} else {
@@ -99,7 +125,7 @@ public:
 	}
 
 	void AutonomousPeriodic() override {
-		Scheduler::GetInstance()->Run();
+		frc::Scheduler::GetInstance()->Run();
 	}
 
 	void TeleopInit() override {
@@ -114,21 +140,7 @@ public:
 	}
 
 	void TeleopPeriodic() override {
-		Scheduler::GetInstance()->Run();
-	}
-
-	void DisabledInit() override {
-
-		//Moved to down here because sometimes the SmartDashboard forgets to add them.
-
-		teleopChooser.AddDefault("Default Driver", new TeleopDefault());
-
-		autonomousChooser.AddDefault("Center Start (appx. 14.25 seconds)", new Drive());
-		autonomousChooser.AddObject("Right Start (appx ? seconds)", new DoNothing());
-		autonomousChooser.AddObject("AutoDriveForward", new Drive());
-
-		SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
-		SmartDashboard::PutData("Teleoperated Modes", &teleopChooser);
+		frc::Scheduler::GetInstance()->Run();
 	}
 
 };

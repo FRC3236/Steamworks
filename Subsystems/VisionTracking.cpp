@@ -36,6 +36,7 @@ void VisionTracking::Update() {
 double VisionTracking::FindPeg() {
 
 	double angle = 0;
+	this->Update();
 
 	if (centerX.size() >= 2) {
 
@@ -59,9 +60,11 @@ double VisionTracking::FindPeg() {
 					//We have found a candidate for our peg!
 					diff = widthDiff;
 					if (contourA[1] > contourB[1]) {
+						cout << "Left is contour 1, right is contour 2" << endl;
 						left = contourA[1];
 						right = contourB[1];
 					} else {
+						cout << "Left is contour 2, right is contour 1" << endl;
 						left = contourB[1];
 						right = contourA[1];
 					}
@@ -73,7 +76,8 @@ double VisionTracking::FindPeg() {
 		if (diff > 1000) {
 
 			//The contours are too far apart to be the ones we're looking for
-			return nullptr;
+			cout << "Contours are too far apart to be the ones we're looking for" << endl;
+			return 0x00;
 
 		} else {
 
@@ -82,7 +86,10 @@ double VisionTracking::FindPeg() {
 
 		}
 
+	} else {
+		angle = 0x00;
 	}
+	cout << "Angle of peg: " << angle << endl;
 	return angle;
 
 }
@@ -173,10 +180,10 @@ vector<double> VisionTracking::GetLargestContour() {
 
 	double largest = 0;
 	double largestI = 0;
-	vector< vector<string,double> > contours = this->GetContours();
+	vector< vector<double> > contours = this->GetContours();
 
 	for (vector<int>::size_type i = 0; i != contours.size(); i++) {
-		vector<string,double> contour = contours[i];
+		vector<double> contour = contours[i];
 		if (contour[0] > largest) {
 			largest = contour[0];
 			largestI = i;
@@ -191,10 +198,10 @@ vector<double> VisionTracking::GetSmallestContour() {
 
 	double smallest = 100000;
 	double smallestI = 0;
-	vector< vector<string,double> > contours = this->GetContours();
+	vector< vector<double> > contours = this->GetContours();
 
 	for (vector<int>::size_type i = 0; i != contours.size(); i++) {
-		vector<string,double> contour = contours[i];
+		vector<double> contour = contours[i];
 		if (contour[0] < smallest) {
 			smallest = contour[0];
 			smallestI = i;

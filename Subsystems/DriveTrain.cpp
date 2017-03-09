@@ -107,6 +107,11 @@ void DriveTrain::Crawl(double Angle) {
 	this->Drive(Speed);
 }
 
+void DriveTrain::Crawl(double Angle, double Speed) {
+	this->DoAutoAlign(Angle, Angle, Angle, Angle);
+	this->Drive(Speed);
+}
+
 /*
  *
  */

@@ -32,6 +32,7 @@ public:
 	void Drive(double);
 	void Drive2(double);
 	void Crawl(double);
+	void Crawl(double, double);
 	void TraverseSimple(double);
 	void Traverse(double, double);
 	void Traverse2(double, double);

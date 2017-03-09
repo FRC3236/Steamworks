@@ -1,60 +1,58 @@
-#include "AutoDriveAtPegFromRight.h"
+#include "AutoDriveAtPegFromLeft.h"
 
-bool completed = false;
-bool foundPeg = false;
-double driveStraightReference = 0;
 
-AutoDriveAtPegFromRight::AutoDriveAtPegFromRight() {
+AutoDriveAtPegFromLeft::AutoDriveAtPegFromLeft() {
 	Requires(drivetrain);
 	Requires(gearsystem);
 	Requires(vt);
+	Complete = false;
+	FoundPeg = false;
+	DriveStraightReference = 0;
 }
 
-void AutoDriveAtPegFromRight::Initialize() {
+void AutoDriveAtPegFromLeft::Initialize() {
 	drivetrain->ResetAlignment();
 	vt->Update();
 }
 
-void AutoDriveAtPegFromRight::Execute() {
+void AutoDriveAtPegFromLeft::Execute() {
 	double TargetAngle = vt->FindPeg(), CurrentAngle = drivetrain->Gyro->GetAngle();
-	if (TargetAngle) {
-		//Peg has been found and we have a valid value.
+	if (TargetAngle != 0x00) {
+		// Peg has been found and we have a valid value.
 		int Margin = 5;
 		if (ceil(TargetAngle - CurrentAngle) < Margin) {
-			foundPeg = false;
+			FoundPeg = false;
 			drivetrain->SpinTo(round(fmod(TargetAngle,360)), 0.5);
 		} else {
-			if (!foundPeg) {
-				foundPeg = true;
-				driveStraightReference = drivetrain->Gyro->GetAngle();
+			if (!FoundPeg) {
+				FoundPeg = true;
+				DriveStraightReference = drivetrain->Gyro->GetAngle();
 			}
-			drivetrain->DriveStraight(0.3, driveStraightReference);
+			drivetrain->DriveStraight(0.3, DriveStraightReference);
 		}
 	} else {
 		//Peg couldn't be found. Look for it!
 		//The peg should be just to the left,
 		//so we'll just drive in that general
 		//direction.
-		foundPeg = false;
-		drivetrain->TurnAbout(60, 0.3);
+		FoundPeg = false;
+		drivetrain->TurnAbout(-75, 0.35);
 	}
-
-	drivetrain->Drive(0.3);
 
 	if (gearsystem->LimitSwitch->Get()) {
-		completed = true;
+		Complete = true;
 	}
 }
 
-bool AutoDriveAtPegFromRight::IsFinished() {
-	return completed;
+bool AutoDriveAtPegFromLeft::IsFinished() {
+	return Complete;
 }
 
-void AutoDriveAtPegFromRight::End() {
+void AutoDriveAtPegFromLeft::End() {
 	drivetrain->KillDrive();
 	drivetrain->ResetAlignment();
 }
 
-void AutoDriveAtPegFromRight::Interrupted() {
+void AutoDriveAtPegFromLeft::Interrupted() {
 	this->End();
 }

@@ -20,12 +20,10 @@ OI::OI() {
 	LockAngleButton = new JoystickButton(RightStick, LOCKANGLEBUTTON);
 
 	//Operator Stick
-	DropGearButton = new JoystickButton(LeftStick, 5);
-	PushGearButton = new JoystickButton(LeftStick, 3);
-	PushGearOverrideButton = new JoystickButton(LeftStick, 4);
-	DropFuelButton = new JoystickButton(LeftStick, 6);
-	ClimberButton = new JoystickButton(LeftStick, 1);
-	RopeClimbButton = new JoystickButton(LeftStick,4);
+	DropGearButton = new JoystickButton(LeftStick, DROPGEARBUTTON);
+	PushGearButton = new JoystickButton(LeftStick, PUSHGEARBUTTON);
+	PushGearOverrideButton = new JoystickButton(LeftStick, PUSHGEAROVERRIDEBUTTON);
+	ClimberButton = new JoystickButton(LeftStick, CLIMBERBUTTON);
 	GearSafetyButton = new JoystickButton(LeftStick, GEAROVERRIDEBUTTON);
 
 	std::cout << "[oi] OperatorInterface initialized." << std::endl;

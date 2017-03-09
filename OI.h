@@ -19,9 +19,7 @@ public:
 	JoystickButton	*DropGearButton,
 					*PushGearButton,
 					*PushGearOverrideButton,
-					*DropFuelButton,
 					*ClimberButton,
-					*RopeClimbButton,
 					*GearSafetyButton,
 					*LockAngleButton;
 

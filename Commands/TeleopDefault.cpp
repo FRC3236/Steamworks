@@ -12,6 +12,7 @@
 #include "DropGear.h"
 #include "DropFuel.h"
 #include "PushGear.h"
+#include "PushGearNoSafety.h"
 #include "ZeroWheels.h"
 #include "DisableCompressor.h"
 #include "EnableCompressor.h"
@@ -22,8 +23,8 @@ TeleopDefault::TeleopDefault() {
 	Requires(ropeclimber);
 	TeleopTimer = new Timer();
 	dropgear = new DropGear();
-	pushgear = new PushGear(true);
-	pushgearoverride = new PushGear(false);
+	pushgear = new PushGear();
+	pushgearoverride = new PushGearNoSafety();
 	LockAngle = 0;
 }
 

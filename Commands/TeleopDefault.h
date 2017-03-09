@@ -2,6 +2,7 @@
 #define TELEOPDEFAULT_H
 
 #include "PushGear.h"
+#include "PushGearNoSafety.h"
 #include "DropGear.h"
 #include "../CommandBase.h"
 
@@ -9,7 +10,7 @@ class TeleopDefault: public CommandBase {
 private:
 	DropGear *dropgear;
 	PushGear *pushgear;
-	PushGear *pushgearoverride;
+	PushGearNoSafety *pushgearoverride;
 	Timer *TeleopTimer;
 	double LockAngle;
 public:

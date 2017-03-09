@@ -2,6 +2,7 @@
 #define VisionTracking_H
 
 #include <Commands/Subsystem.h>
+#include "WPILib.h"
 
 using namespace std;
 

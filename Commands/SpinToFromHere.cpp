@@ -3,7 +3,7 @@
 SpinToFromHere::SpinToFromHere(double Target, double Speed) {
 	Requires(drivetrain);
 	startangle = drivetrain->Gyro->GetAngle();
-	target = Target + startangle;
+	target = fmod(Target + startangle, 360);
 	speed = Speed;
 
 }
