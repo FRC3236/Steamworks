@@ -6,6 +6,7 @@
 class PushGearNoSafety : public CommandBase {
 public:
 	Timer *AutoTimer;
+	bool finished;
 	PushGearNoSafety();
 	void Initialize();
 	void Execute();

@@ -38,14 +38,17 @@
 #include <opencv2/imgproc/imgproc.hpp>
 
 //Include all the commands//
+#include "Subsystems/Debug.h"
 #include "Commands/TeleopDefault.h"
 #include "Commands/DropGear.h"
 #include "Commands/PushGear.h"
 #include "Commands/DoNothing.h"
+#include "Commands/AutoDrive.h"
 #include "Commands/AutoDriveAtPeg.h"
 #include "Commands/AutoDriveAtPegFromLeft.h"
 #include "Commands/AutoDriveAtPegFromRight.h"
-#include "Commands/Drive.h"
+#include "Commands/AutoDriveFromLeftNV.h"
+#include "Commands/AutoDriveFromRightNV.h"
 #include "CommandBase.h"
 
 using namespace frc;
@@ -99,9 +102,9 @@ public:
 
 		teleopChooser.AddDefault("Default Driver", new TeleopDefault());
 
-		autonomousChooser.AddDefault("Drive at Peg (center)", new AutoDriveAtPeg());
-		autonomousChooser.AddObject("Drive at Peg (left)", new AutoDriveAtPegFromLeft());
-		autonomousChooser.AddObject("Drive at Peg (right)", new AutoDriveAtPegFromRight());
+		autonomousChooser.AddDefault("Drive at Peg (center) [NV]", new AutoDrive());
+		autonomousChooser.AddObject("Drive at Peg (left) [NV]", new AutoDriveFromLeftNV());
+		autonomousChooser.AddObject("Drive at Peg (right) [NV]", new AutoDriveFromRightNV());
 
 		SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 		SmartDashboard::PutData("Teleoperated Modes", &teleopChooser);
@@ -110,6 +113,7 @@ public:
 
 	void AutonomousInit() override {
 		CommandBase::debug->StartTracking();
+		CommandBase::debug->Enable();
 		autonomousMode.release(); //RELINQUISH THE AUTONOMOUS!
 		autonomousMode.reset(autonomousChooser.GetSelected());
 		if (autonomousMode != nullptr) {
@@ -127,6 +131,7 @@ public:
 
 	void TeleopInit() override {
 		CommandBase::debug->StartTracking();
+		CommandBase::debug->Enable();
 		teleopMode.release(); //RELINQUISH THE TELEOP!
 		teleopMode.reset(teleopChooser.GetSelected());
 		if (teleopMode != nullptr) {

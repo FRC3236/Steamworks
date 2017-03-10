@@ -20,7 +20,7 @@ void AutoDriveAtPegFromLeft::Execute() {
 	if (TargetAngle != 0x00) {
 		// Peg has been found and we have a valid value.
 		int Margin = 5;
-		if (ceil(TargetAngle - CurrentAngle) < Margin) {
+		if (ceil(TargetAngle - CurrentAngle) > Margin) {
 			FoundPeg = false;
 			drivetrain->SpinTo(round(fmod(TargetAngle,360)), 0.5);
 		} else {

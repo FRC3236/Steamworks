@@ -36,8 +36,8 @@ void TeleopDefault::Initialize() {
 
 	controls->DropGearButton->WhenPressed(new DropGear());
 
-	controls->PushGearButton->WhenPressed(this->pushgear);
-	controls->GearSafetyButton->WhenPressed(this->pushgearoverride);
+	controls->PushGearButton->WhenPressed(new PushGear());
+	controls->GearSafetyButton->WhenPressed(new PushGearNoSafety());
 
 	controls->ClimberButton->WhenPressed(new DisableCompressor()); //disable the compressor during climb.
 	controls->ClimberButton->WhenReleased(new EnableCompressor()); //reenable the compressor after the climb.

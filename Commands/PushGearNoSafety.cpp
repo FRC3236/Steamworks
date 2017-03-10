@@ -1,10 +1,10 @@
 #include "PushGearNoSafety.h"
 
-bool finished = false;
 
 PushGearNoSafety::PushGearNoSafety() {
 	Requires(gearsystem);
 	AutoTimer = new Timer();
+	finished = false;
 }
 
 // Called just before this Command runs the first time
@@ -36,7 +36,8 @@ void PushGearNoSafety::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool PushGearNoSafety::IsFinished() {
-	return finished;
+
+	return (AutoTimer->Get() > 1.2);
 }
 
 // Called once after isFinished returns true

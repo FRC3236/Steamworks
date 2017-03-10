@@ -54,32 +54,32 @@ void Debug::StopTracking() {
 
 void Debug::Log(string Information) {
 
-	if (fmod(TrackingTimer->Get(), Frequency) == 0 && Enabled) {
+	//if (fmod(TrackingTimer->Get(), Frequency) == 0 && Enabled) {
 		cout << "[Debug] " << Information << endl;
-	}
+	//}
 
 }
 
 void Debug::Log(string Location, string Information) {
 
-	if (fmod(TrackingTimer->Get(), Frequency) == 0 && Enabled) {
+	//if (fmod(TrackingTimer->Get(), Frequency) == 0 && Enabled) {
 		cout << "[" << Location << "] " << Information << endl;
-	}
+	//}
 
 }
 
 void Debug::LogWithTime(string Information) {
 
-	if (fmod(TrackingTimer->Get(), Frequency) == 0 && Enabled) {
+	//if (fmod(TrackingTimer->Get(), Frequency) == 0 && Enabled) {
 		cout << "[Debug : " << TrackingTimer->Get() << "] " << Information << endl;
-	}
+	//}
 
 }
 
 void Debug::LogWithTime(string Location, string Information) {
 
-	if (fmod(TrackingTimer->Get(), Frequency) == 0 && Enabled) {
+	//if (fmod(TrackingTimer->Get(), Frequency) == 0 && Enabled) {
 		cout << "[" << Location << " : " << TrackingTimer->Get() << "] " << Information << endl;
-	}
+	//}
 
 }

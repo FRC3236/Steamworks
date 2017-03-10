@@ -7,7 +7,7 @@ using namespace frc;
 
 VisionTracking::VisionTracking() : Subsystem("VisionTracking") {
 
-	table = NetworkTable::GetTable("GRIP/myContourReports");
+	table = NetworkTable::GetTable("GRIP/myContoursReport");
 
 }
 
@@ -40,7 +40,8 @@ double VisionTracking::FindPeg() {
 	double angle = 0;
 	this->Update();
 
-	if (centerX.size() >= 2) {
+	vector< vector<double> > contours = this->GetContours(); //Get list of all contours found.
+	if (contours.size() >= 2) {
 
 		double	left = 0,
 				right = 0,
@@ -48,11 +49,10 @@ double VisionTracking::FindPeg() {
 				diff = 10000;
 
 
-		vector< vector<double> > contours = this->GetContours(); //Get list of all contours found.
 		for (vector<int>::size_type i = 0; i != contours.size(); i++) {
 
 			vector<double> contourA = contours[i]; // Select the main comparison contour vector
-			for (vector<int>::size_type j = i+1; j != contours.size(); i++) {
+			for (vector<int>::size_type j = i+1; j != contours.size(); j++) {
 
 				vector<double> contourB = contours[j]; // Select the secondary comparison contour vector
 				if (contourB != contourA) { //Make sure we're not comparing a contour with itself (even though it shouldn't happen				//First, compare widths. Then, compare heights//
@@ -62,13 +62,11 @@ double VisionTracking::FindPeg() {
 						//We have found a candidate for our peg!
 						diff = widthDiff;
 						if (contourA[1] > contourB[1]) {
-
 							CommandBase::debug->LogWithTime("VisionTracking", "ContourA is on the left");
-
 							left = contourA[1];
 							right = contourB[1];
 						} else {
-							cout << "Left is contour 2, right is contour 1" << endl;
+							CommandBase::debug->LogWithTime("VisionTracking", "ContourA is on the right.");
 							left = contourB[1];
 							right = contourA[1];
 						}
@@ -95,7 +93,8 @@ double VisionTracking::FindPeg() {
 		CommandBase::debug->LogWithTime("VisionTracking", "Cannot find enough contours!");
 		angle = 0x00;
 	}
-	CommandBase::debug->LogWithTime("VisionTracking", "Angle: " + to_string(angle));
+	CommandBase::debug->LogWithTime("VisionTracking", to_string(angle));
+	//CommandBase::debug->LogWithTime("VisionTracking", "Angle: " + to_string(angle));
 	return angle;
 
 }
