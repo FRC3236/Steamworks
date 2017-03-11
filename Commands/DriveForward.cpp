@@ -4,17 +4,19 @@ DriveForward::DriveForward() {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
 	Requires(drivetrain);
+	driveStraightReference = 0;
 }
 
 // Called just before this Command runs the first time
 void DriveForward::Initialize() {
 	drivetrain->Drive(0);
 	drivetrain->ResetAlignment();
+	driveStraightReference = drivetrain->Gyro->GetAngle();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void DriveForward::Execute() {
-	drivetrain->Drive(0.5);
+	drivetrain->DriveStraight(0.4, driveStraightReference);
 }
 
 // Make this return true when this Command no longer needs to run execute()

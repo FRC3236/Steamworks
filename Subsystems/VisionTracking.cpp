@@ -62,11 +62,11 @@ double VisionTracking::FindPeg() {
 						//We have found a candidate for our peg!
 						diff = widthDiff;
 						if (contourA[1] > contourB[1]) {
-							CommandBase::debug->LogWithTime("VisionTracking", "ContourA is on the left");
+							//CommandBase::debug->LogWithTime("VisionTracking", "ContourA is on the left");
 							left = contourA[1];
 							right = contourB[1];
 						} else {
-							CommandBase::debug->LogWithTime("VisionTracking", "ContourA is on the right.");
+							//CommandBase::debug->LogWithTime("VisionTracking", "ContourA is on the right.");
 							left = contourB[1];
 							right = contourA[1];
 						}

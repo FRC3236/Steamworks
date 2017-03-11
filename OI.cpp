@@ -1,8 +1,6 @@
 #include "Commands/DropGear.h"
 #include "Commands/PushGear.h"
 
-#include "Triggers/LimitSwitch.h"
-
 #include "OI.h"
 #include "RobotMap.h"
 #include "WPILib.h"
@@ -27,8 +25,6 @@ OI::OI() {
 	PushGearOverrideButton = new JoystickButton(LeftStick, PUSHGEAROVERRIDEBUTTON);
 	ClimberButton = new JoystickButton(LeftStick, CLIMBERBUTTON);
 	GearSafetyButton = new JoystickButton(LeftStick, GEAROVERRIDEBUTTON);
-
-	LimitSwitchCheck = new LimitSwitch();
 	//LimitSwitchCheck.WhenActive ( a new thing );
 
 	std::cout << "[oi] OperatorInterface initialized." << std::endl;

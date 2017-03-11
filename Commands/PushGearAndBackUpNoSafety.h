@@ -1,15 +1,14 @@
-#ifndef PushGearAndBackUp_H
-#define PushGearAndBackUp_H
+#ifndef PushGearAndBackUpNoSafety_H
+#define PushGearAndBackUpNoSafety_H
 
 #include "../CommandBase.h"
 
-class PushGearAndBackUp : public CommandBase {
+class PushGearAndBackUpNoSafety : public CommandBase {
 private:
 public:
 
 	Timer *AutoTimer;
-	bool canExecute;
-	PushGearAndBackUp();
+	PushGearAndBackUpNoSafety();
 	void Initialize() override;
 	void Execute() override;
 	bool IsFinished() override;

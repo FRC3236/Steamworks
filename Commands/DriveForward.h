@@ -5,6 +5,7 @@
 
 class DriveForward : public CommandBase {
 public:
+	double driveStraightReference;
 	DriveForward();
 	void Initialize();
 	void Execute();

@@ -3,9 +3,10 @@
 #include "DoNothing.h"
 #include "ZeroWheels.h"
 #include "TurnAbout.h"
+#include "PushGearAndBackUp.h"
 AutoDrive::AutoDrive() {
-	AddSequential(new DriveForward(), 5);
-	AddSequential(new DoNothing(), 2);
-	AddSequential(new ZeroWheels(), 2);
+	AddSequential(new DriveForward(), 4);
 	AddSequential(new DoNothing(), 1);
+	AddSequential(new ZeroWheels(), 0.5);
+	AddSequential(new PushGearAndBackUp());
 }

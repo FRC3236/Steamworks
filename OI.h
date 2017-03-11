@@ -2,7 +2,6 @@
 #define OI_H
 
 #include "WPILib.h"
-#include "Triggers/LimitSwitch.h"
 
 class OI {
 public:
@@ -23,8 +22,6 @@ public:
 					*ClimberButton,
 					*GearSafetyButton,
 					*LockAngleButton;
-
-	LimitSwitch LimitSwitchCheck;
 
 	OI();
 };

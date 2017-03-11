@@ -105,6 +105,7 @@ public:
 		autonomousChooser.AddDefault("Drive at Peg (center) [NV]", new AutoDrive());
 		autonomousChooser.AddObject("Drive at Peg (left) [NV]", new AutoDriveFromLeftNV());
 		autonomousChooser.AddObject("Drive at Peg (right) [NV]", new AutoDriveFromRightNV());
+		autonomousChooser.AddObject("Drive at Peg (center) [VT]", new AutoDriveAtPeg());
 
 		SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 		SmartDashboard::PutData("Teleoperated Modes", &teleopChooser);
