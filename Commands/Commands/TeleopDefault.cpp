@@ -17,6 +17,8 @@
 #include "EnableCompressor.h"
 #include <cmath>
 
+using namespace std;
+
 TeleopDefault::TeleopDefault() {
 	Requires(drivetrain);
 	Requires(ropeclimber);
@@ -41,16 +43,21 @@ void TeleopDefault::Initialize() {
 	controls->ClimberButton->WhenPressed(new DisableCompressor()); //disable the compressor during climb.
 	controls->ClimberButton->WhenReleased(new EnableCompressor()); //reenable the compressor after the climb.
 
+	SmartDashboard::PutString("Gear panel open?", to_string(gearsystem->TopToggle));
+
 	std::cout << "[teleop] Teleop initialized." << std::endl;
 	LockAngle = 0;
 }
 
 void TeleopDefault::Execute() {
 
+	//Update the SmartDashboard with whether the panel is open or not.
+	SmartDashboard::PutString("Gear panel open?", to_string(gearsystem->TopToggle));
+
 	if (controls->TraverseButton->Get()) {
 		drivetrain->Traverse(controls->RightStick->GetX(), controls->RightStick->GetY());
 	} else if (controls->RightStick->GetPOV() >= 0) {
-		drivetrain->Crawl((double) controls->RightStick->GetPOV()/360);
+		drivetrain->Crawl((double)controls->RightStick->GetPOV()/360);
 	} else if (controls->SpinButton->Get()) {
 		drivetrain->DoAutoAlign(0.125, -0.125, 0.125, -0.125);
 		double DeadzoneX = controls->RightStick->GetX();

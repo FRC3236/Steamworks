@@ -17,6 +17,8 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	Gyro = new ADXRS450_Gyro(frc::SPI::kOnboardCS0);
 	Accelerometer = new AnalogAccelerometer(0);
 
+	StraightRef = Gyro->GetAngle();
+
 	DriveFrontLeftCAN = new CANTalon(FrontLeftCANPort);
 	DriveBackLeftCAN = new CANTalon(BackLeftCANPort);
 	DriveFrontRightCAN = new CANTalon(FrontRightCANPort);
@@ -81,7 +83,7 @@ void DriveTrain::Drive(double speed) {
 	@param Angle - the angle at which to crawl
 */
 void DriveTrain::Crawl(double Angle) {
-	double Speed = 0.4;
+	double Speed = 0.75;
 	this->DoAutoAlign(Angle, Angle, Angle, Angle);
 	this->Drive(Speed);
 	return;
@@ -168,7 +170,23 @@ void DriveTrain::TurnAbout(double Radius, double Speed) {
 void DriveTrain::DriveStraight(double Speed, double StartAngle) {
 	//double MarginOfError = 1;
 	double DeltaAngle = StartAngle - Gyro->GetAngle();
-	std::cout << Speed << std::endl;
+	//std::cout << Speed << std::endl;
+	if (fabs(DeltaAngle) < 0.05) {
+		this->Drive(Speed);
+	} else {
+		this->TurnAbout(360/DeltaAngle, Speed);
+	}
+	return;
+}
+
+/**
+	Drives the DriveTrain straight in accordance
+	to the Gyro (set by SetStraightReference).
+
+	@param Speed - speed at which to drive
+*/
+void DriveTrain::DriveStraight(double Speed) {
+	double DeltaAngle = StraightRef - Gyro->GetAngle();
 	if (fabs(DeltaAngle) < 0.05) {
 		this->Drive(Speed);
 	} else {
@@ -354,4 +372,12 @@ double DriveTrain::GetDeltaAngle(double Current, double Target) {
 	double Delta2 = Delta1 + 1;
 	double Delta3 = Delta1 - 1;
 	return fabs(Delta1)<fmin(fabs(Delta2),fabs(Delta3))?Delta1:fabs(Delta2)<fabs(Delta3)?Delta2:Delta3;
+}
+
+/**
+	Sets the internal reference to "straight ahead"
+*/
+void DriveTrain::SetStraightReference() {
+	StraightRef = Gyro->GetAngle();
+	return;
 }

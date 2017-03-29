@@ -3,6 +3,7 @@
 
 #include "WPILib.h"
 #include <Commands/Subsystem.h>
+#include <string>
 
 using namespace std;
 

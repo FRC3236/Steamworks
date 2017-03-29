@@ -9,11 +9,13 @@
 */
 
 #include "Debug.h"
+#include <iostream>
 #include <cmath>
 #include "../RobotMap.h"
 #include "WPILib.h"
 
 using namespace std;
+using namespace frc;
 
 Debug::Debug() : Subsystem("Debug") {
 	TrackingTimer = new Timer();

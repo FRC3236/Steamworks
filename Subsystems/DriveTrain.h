@@ -1,17 +1,16 @@
 #ifndef DRIVETRAIN_H
 #define DRIVETRAIN_H
 
+#include "CANTalon.h"
 #include "WPILib.h"
 #include <Commands/Subsystem.h>
-#include "CANTalon.h"
 
 class DriveTrain: public frc::Subsystem {
 private:
 	CANTalon *DriveFrontLeftCAN, *DriveFrontRightCAN, *DriveBackLeftCAN, *DriveBackRightCAN;
 	Talon *DriveFrontLeft, *DriveBackLeft, *DriveBackRight, *DriveFrontRight;
-
+	double StraightRef;
 public:
-
 	ADXRS450_Gyro *Gyro;
 	AnalogAccelerometer *Accelerometer;
 	DriveTrain();
@@ -29,10 +28,12 @@ public:
 	void SpinTo(double, double);
 	void DriveAlignedTo(double, double);
 	void DriveStraight(double, double);
+	void DriveStraight(double);
 	void SetZeros();
 	bool WheelsAreAligned();
 	void DriveSpecial(double, double, double, double);
 	void KillSpin();
+	void SetStraightReference();
 };
 
 

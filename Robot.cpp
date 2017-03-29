@@ -21,9 +21,8 @@
 *
 */
 
-
+#include <thread>
 #include <memory>
-
 #include <Commands/Command.h>
 #include <Commands/Scheduler.h>
 #include <IterativeRobot.h>
@@ -81,7 +80,7 @@ public:
 
 	void RobotInit() override {
 		CommandBase::init(); //Initializes all commands and subsystems
-		std::thread visionThread(VisionThread);
+		thread visionThread(VisionThread);
 		visionThread.detach();
 	}
 

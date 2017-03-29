@@ -45,8 +45,6 @@ void VisionTracking::Update() {
 		drive to the peg
 */
 pair<double, double> VisionTracking::FindPeg() {
-	//pair<double, double> returnPair;
-	double angle = 0;
 	this->Update();
 
 	vector< vector<double> > contours = this->GetContours(); //Get list of all contours found.
@@ -58,7 +56,6 @@ pair<double, double> VisionTracking::FindPeg() {
 				diff = 10000,
 				speedScale = 0,
 				areaS = 0; //Area for scaling.
-
 
 		for (vector<int>::size_type i = 0; i != contours.size(); i++) {
 			if (left != 0x00 && right != 0x00) {
@@ -123,7 +120,6 @@ pair<double, double> VisionTracking::FindPeg() {
 		//return make_pair(peg, 0x00);
 	} else {
 		CommandBase::debug->LogWithTime("VisionTracking", "Cannot find enough contours!");
-		angle = 0x00;
 		return make_pair(0x00,0x00);
 	}
 }
